@@ -1,0 +1,717 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="批判一番,Kotlin,Android,DSL," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="现在越来越多的人开始跟风使用Kotlin作为他们Android开发的第二语言，但在使用的时候却完全是Java的风格，给我的感觉就像连官方文档都没有看就拿起来开发了，真是可惜了这门语言，所以写这篇文章的目的就是列举使用Kotlin的正确姿势，帮助Android程序员在写代码时Thinking in Kotlin。 这篇文">
+<meta name="keywords" content="批判一番,Kotlin,Android,DSL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kotlin The Right Way">
+<meta property="og:url" content="https://acemerlin.github.io/posts/Android/2017-01-20-kotlin-the-right-way/index.html">
+<meta property="og:site_name" content="fmap happier $ Life me">
+<meta property="og:description" content="现在越来越多的人开始跟风使用Kotlin作为他们Android开发的第二语言，但在使用的时候却完全是Java的风格，给我的感觉就像连官方文档都没有看就拿起来开发了，真是可惜了这门语言，所以写这篇文章的目的就是列举使用Kotlin的正确姿势，帮助Android程序员在写代码时Thinking in Kotlin。 这篇文章会列举实战中的例子，并不会像官方文档一样一步步详细介绍Kotlin，想学习Ko">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-01-25T19:22:04.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kotlin The Right Way">
+<meta name="twitter:description" content="现在越来越多的人开始跟风使用Kotlin作为他们Android开发的第二语言，但在使用的时候却完全是Java的风格，给我的感觉就像连官方文档都没有看就拿起来开发了，真是可惜了这门语言，所以写这篇文章的目的就是列举使用Kotlin的正确姿势，帮助Android程序员在写代码时Thinking in Kotlin。 这篇文章会列举实战中的例子，并不会像官方文档一样一步步详细介绍Kotlin，想学习Ko">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://acemerlin.github.io/posts/Android/2017-01-20-kotlin-the-right-way/"/>
+
+  <title> Kotlin The Right Way | fmap happier $ Life me </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-55892506-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">fmap happier $ Life me</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">All about CS</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            四零四
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Kotlin The Right Way
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2017-01-20T11:30:00+08:00" content="2017-01-20">
+              2017-01-20
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>现在越来越多的人开始跟风使用Kotlin作为他们Android开发的第二语言，但在使用的时候却完全是Java的风格，给我的感觉就像连官方文档都没有看就拿起来开发了，真是可惜了这门语言，所以写这篇文章的目的就是列举使用Kotlin的正确姿势，帮助Android程序员在写代码时Thinking in Kotlin。</p>
+<p>这篇文章会列举实战中的例子，并不会像官方文档一样一步步详细介绍Kotlin，想学习Kotlin请移步<a href="https://kotlinlang.org/docs/reference/" target="_blank" rel="noopener">这里</a></p>
+<p>我找了一个Github上用Kotlin写的项目，<a href="https://github.com/rarnu/wechat_no_revoke" target="_blank" rel="noopener">wechat_no_revoke</a>（下面称作wnr），这个项目问题还是蛮多的，下面的文章主要就指出其中的问题（只是语言使用上的问题，不涉及它实现的功能–防微信撤销），并提供更好的解决方法。</p>
+<h2 id="use-let-instead-of-ifsth-null">use let instead of if(sth != null)</h2>
+<p>wnr中充斥着<code>if (sth != null) { doSomething() }</code>（看<code>WechatRevokeHook.kt</code>），Kotlin提供的标准库，可以完美解决这种冗余代码。</p>
+<p>The Right Way：所有用if判断对象是否为null的都用let代替：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sth?.let &#123; doSomething() &#125;</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<p><code>let</code>体内的代码只有在sth不为null时才会运行。实际上这个<code>let</code>不是什么Kotlin编译器里的特殊语法，它只是一个普通的函数，你自己都可以实现一个<code>let</code>，下面是标准库里的实现：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">inline</span> <span class="function"><span class="keyword">fun</span> <span class="type">&lt;T, R&gt;</span> T.<span class="title">let</span><span class="params">(block: (<span class="type">T</span>)</span></span> -&gt; R): R = block(<span class="keyword">this</span>)</div></pre></td></tr></table></figure>
+<p><code>let</code>是一个任意类型T上的扩展函数，参数是一个Lambda，然后再在Lambda上调用自己。这样说可能理解起来不那么容易，其实<code>let</code>是一个<a href="https://en.wikipedia.org/wiki/Scope_%28computer_science%29" target="_blank" rel="noopener">scoping function</a>，它保护了<code>let</code>体内的变量不泄露到外界，null检查只是附带的功能，举个例子：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">DbConnection.getConnection().let &#123; connection -&gt;</div><div class="line">&#125;</div><div class="line"><span class="comment">// connection到这里就访问不到了</span></div></pre></td></tr></table></figure>
+<h2 id="use-apply-to-simplify-your-code">use apply to simplify your code</h2>
+<p>在<code>WecahtDatebase.kt</code>中，有这样一段代码：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">val</span> v = ContentValues()</div><div class="line">v.put(<span class="string">"msgid"</span>, msgId)</div><div class="line">......</div><div class="line">v.put(<span class="string">"content"</span>, msg)</div><div class="line"><span class="keyword">if</span> (talkerId != <span class="number">-1</span>) &#123;</div><div class="line">    v.put(<span class="string">"talkerid"</span>, talkerId)</div><div class="line">&#125;</div><div class="line">insert(<span class="string">"message"</span>, <span class="string">""</span>, v)</div></pre></td></tr></table></figure>
+<p>同样Kotlin标准库中提供了<code>apply</code>函数，专门用来应付这种命令式的代码。</p>
+<p>The Right Way:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">ContentValues().apply &#123;</div><div class="line">    put(<span class="string">"msgid"</span>, msgId)</div><div class="line">    ......</div><div class="line">    put(<span class="string">"content"</span>, msg)</div><div class="line">    <span class="keyword">if</span> (talkerId != <span class="number">-1</span>) &#123;</div><div class="line">        put(<span class="string">"talkerid"</span>, talkerId)</div><div class="line">    &#125;</div><div class="line">    insert(<span class="string">"message"</span>, <span class="string">""</span>, <span class="keyword">this</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>同样apply也不是什么神奇的东西，它只是个普通的函数：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">fun</span> <span class="type">&lt;T&gt;</span> T.<span class="title">apply</span><span class="params">(f: <span class="type">T</span>.()</span></span> -&gt; <span class="built_in">Unit</span>): T &#123; f(); <span class="keyword">return</span> <span class="keyword">this</span> &#125;</div></pre></td></tr></table></figure>
+<p><code>apply</code>定义了一个所有类型上的扩展方法，调用<code>apply</code>的时候，会调用传进去的闭包，并返回在闭包上运行过的receiver对象。其实不是那么复杂，看下面的例子你就懂了：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//把string转为File对象，对此对象调用mkdirs()方法，最后返回此对象</span></div><div class="line">File(dir).apply &#123; mkdirs() &#125;</div><div class="line"></div><div class="line"><span class="comment">//下面是等同的Java代码</span></div><div class="line">File makeDir(String path) &#123;</div><div class="line">  File result = new File(path);</div><div class="line">  result.mkdirs();</div><div class="line">  <span class="keyword">return</span> result;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>能用一行解决的就不要用多行。</p>
+<p>既然标准库说了这么多，就顺便说完吧：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//如果那要对同一个对象多次调用不同的方法，就用with</span></div><div class="line"><span class="function"><span class="keyword">fun</span> <span class="type">&lt;T, R&gt;</span> <span class="title">with</span><span class="params">(receiver: <span class="type">T</span>, f: <span class="type">T</span>.()</span></span> -&gt; R): R = receiver.f()</div><div class="line"></div><div class="line"><span class="keyword">val</span> w = Window()</div><div class="line">with(w) &#123;</div><div class="line">  setWidth(<span class="number">100</span>)</div><div class="line">  setHeight(<span class="number">200</span>)</div><div class="line">  setBackground(RED)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//用run表示链式调用（run是with和let的合体）</span></div><div class="line"><span class="function"><span class="keyword">fun</span> <span class="type">&lt;T, R&gt;</span> T.<span class="title">run</span><span class="params">(f: <span class="type">T</span>.()</span></span> -&gt; R): R = f()</div><div class="line"></div><div class="line"><span class="string">"123"</span>.run &#123; print(<span class="keyword">this</span>) &#125;   </div><div class="line">        .run &#123; print(<span class="string">"hehe"</span>) &#125;   <span class="comment">//输出"123hehe"</span></div><div class="line">        </div><div class="line"><span class="comment">//用use得到与java try-with-resources一样的效果（资源会自动close），注意这里的use也只是个普通的函数而已，不像java一样要编译器用特殊的语法才能做到：</span></div><div class="line"><span class="function"><span class="keyword">fun</span> <span class="title">readProperties</span><span class="params">()</span></span> = Properties().apply &#123;</div><div class="line">    FileInputStream(<span class="string">"config.properties"</span>).use &#123; </div><div class="line">    fis -&gt;</div><div class="line">        load(fis)</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//下面是java 1.7及以上才有的try-with-resources</span></div><div class="line">Properties prop = new Properties();</div><div class="line"><span class="keyword">try</span> (FileInputStream fis = new FileInputStream(<span class="string">"config.properties"</span>)) &#123;</div><div class="line">    prop.load(fis);</div><div class="line">&#125;</div><div class="line"><span class="comment">// fis automatically closed</span></div></pre></td></tr></table></figure>
+<h2 id="use-to-indicate-nullable-carefully">use ? to indicate Nullable carefully</h2>
+<p>wnr中有这样一段代码（看<code>MessageUtil.kt</code>）：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">fun</span> <span class="title">extractContent</span><span class="params">(replace: <span class="type">String</span>?, str: <span class="type">String</span>?)</span></span>: String? &#123;</div><div class="line">        <span class="keyword">var</span> _replace = replace!!</div><div class="line">        <span class="keyword">var</span> _str = str!!</div><div class="line">        ......</div><div class="line">        ... <span class="keyword">do</span> something with _replace and _str</div><div class="line">        ......</div><div class="line">        <span class="keyword">return</span> _replace</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>!!</code>是程序员知道对象不可能为null时才用来强转为非null变量的（如果是null程序就崩了），而既然知道不可能为null，那为什么还要用<code>?</code>来表示参数可能为null呢，而且返回值居然带问号，excuse me？互相矛盾…无语。这样的问题充斥这整个项目，完全是乱的。</p>
+<p>The Right way:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">fun</span> <span class="title">extractContent</span><span class="params">(replace: <span class="type">String</span>, str: <span class="type">String</span>)</span></span>: String &#123;</div><div class="line">        ......</div><div class="line">        ... <span class="keyword">do</span> something with replace and str</div><div class="line">        ......</div><div class="line">        <span class="keyword">return</span> replace</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">val str1 = &quot;str1&quot; //str1类型为`String`，不可能为null</div><div class="line">var str2: String? = null //str2类型为`String?`，现在初始化是null，以后也可能是null</div><div class="line">str2 = &quot;some value&quot;  //str2还是`String?`，只不过现在值不是null了</div><div class="line">val str3 = str2!! //str3类型为`String`，这里这能在你确定str2不是null的情况下才能用，编译器并不能保证str2不是null</div></pre></td></tr></table></figure>
+<h2 id="use-first-class-function-instead-of-object">use first class function instead of object</h2>
+<p>既然上面说到MessageUtil了，那顺便说说这个问题。在Kotlin中，函数也是第一公民，下面是wnr中的代码：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//MessageUtil.kt:</span></div><div class="line"><span class="keyword">object</span> MessageUtil &#123;</div><div class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">extractContent</span><span class="params">(......)</span></span>: String? &#123;</div><div class="line">    ......</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//Some other file:</span></div><div class="line">content = MessageUtil.extractContent(replaceMsg, content)!!</div></pre></td></tr></table></figure>
+<p>就不说这个<code>!!</code>了，上面说过，全是乱的。我就说说比较明显的问题，这个object MessageUtil完全是多余的，在FP里，函数是第一公民，意味着你不必把方法写在类里，函数也是值，可以做参数，可以当返回值，可以独立于类存在（其实编译成class后函数也在类里，不过这对用户来说是隐藏的）。</p>
+<p>The Right Way:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//MessageUtil.kt:</span></div><div class="line"><span class="function"><span class="keyword">fun</span> <span class="title">extractContent</span><span class="params">(......)</span></span>: String &#123;</div><div class="line">......</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//Some other file:</span></div><div class="line">content = extractContent(replaceMsg, content)</div></pre></td></tr></table></figure>
+<h2 id="use-primary-constructor-instead-of-java-style-constructor">use primary constructor instead of java style constructor</h2>
+<p>下面的是wnr中的<code>WechatRevokeHook.kt</code></p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">WechatRevokeHook</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">var</span> _v: WechatVersion? = <span class="literal">null</span></div><div class="line">    </div><div class="line">    <span class="keyword">constructor</span>(ver: WechatVersion) &#123;</div><div class="line">        _v = ver</div><div class="line">    &#125;</div><div class="line">    ......</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>相信大多数人只要看过文档都不会写出这样的代码。</p>
+<p>The Right Way: 用primary constructor替代：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">class WechatRevokeHook(val ver: WechatVersion) &#123;</div><div class="line">    ......</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="use-delegates-to-initialize-field">use Delegates to initialize field</h2>
+<p>下面是wnr中的代码</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> : <span class="type">Activity</span></span>(),... &#123;</div><div class="line">    ......</div><div class="line">    <span class="keyword">private</span> <span class="keyword">var</span> tvVersion: TextView? = <span class="literal">null</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">var</span> tvProj: TextView? = <span class="literal">null</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">var</span> tvRepo1: TextView? = <span class="literal">null</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">var</span> tvRepo2: TextView? = <span class="literal">null</span></div><div class="line">    ......</div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onCreate</span><span class="params">(savedInstanceState: <span class="type">Bundle</span>?)</span></span> &#123;</div><div class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState)</div><div class="line">        setContentView(R.layout.main)</div><div class="line">        tvVersion = findViewById(R.id.tvVersion) <span class="keyword">as</span> TextView?</div><div class="line">        tvProj = findViewById(R.id.tvProj) <span class="keyword">as</span> TextView?</div><div class="line">        tvRepo1 = findViewById(R.id.tvRepo1) <span class="keyword">as</span> TextView?</div><div class="line">        tvRepo2 = findViewById(R.id.tvRepo2) <span class="keyword">as</span> TextView?</div><div class="line">        ......</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在下有一万种方法优化这坨代码（笑），首先，最简单的，用lazy delegate：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">val</span> tvVersion <span class="keyword">by</span> lazy &#123; findViewById(R.id.tvVersion) <span class="keyword">as</span> TextView &#125;</div></pre></td></tr></table></figure>
+<p>这样tvVersion只有在第一个用的时候才会初始化，以前分离的声明与初始化合在的一起，只有一行，更加优美，便于理解，而且没有null的烦恼，tvVersion既是val（不会变），又是TextView（没有<code>?</code>，不可能是null），更加安全。</p>
+<p>但是这里代码还是有点长，又要写lazy，又要强转View为TextView，这些代码我都不想写，有没有更简单的写法呢？答案是肯定的，只需要自己实现一个类似lazy的Delegate就可以了，注意，这里的lazy不是编译器里什么神奇的东西，它也是一个方法。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//ButterKnife.kt</span></div><div class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">fun</span> <span class="type">&lt;V : View&gt;</span> Activity.<span class="title">bindView</span><span class="params">(id: <span class="type">Int</span>)</span></span></div><div class="line">        : ReadOnlyProperty&lt;Activity, V&gt; = required(id, viewFinder)</div><div class="line">        </div><div class="line"><span class="keyword">private</span> <span class="keyword">val</span> Activity.viewFinder: Activity.(<span class="built_in">Int</span>) -&gt; View?</div><div class="line">    <span class="keyword">get</span>() = &#123; findViewById(it) &#125;</div><div class="line">        </div><div class="line"><span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="type">&lt;T, V : View&gt;</span> <span class="title">required</span><span class="params">(id: <span class="type">Int</span>, finder: <span class="type">T</span>.(<span class="type">Int</span>)</span></span> -&gt; View?)</div><div class="line">        = Lazy &#123; t: T, desc -&gt; t.finder(id) <span class="keyword">as</span> V? ?: viewNotFound(id, desc) &#125;</div><div class="line">        </div><div class="line"><span class="comment">// Like Kotlin's lazy delegate but the initializer gets the target and metadata passed to it</span></div><div class="line"><span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">Lazy</span>&lt;<span class="type">T, V</span>&gt;</span>(<span class="keyword">private</span> <span class="keyword">val</span> initializer: (T, KProperty&lt;*&gt;) -&gt; V) : ReadOnlyProperty&lt;T, V&gt; &#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">object</span> EMPTY</div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="keyword">var</span> value: Any? = EMPTY</div><div class="line"></div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">getValue</span><span class="params">(thisRef: <span class="type">T</span>, property: <span class="type">KProperty</span>&lt;*&gt;)</span></span>: V &#123;</div><div class="line">        <span class="keyword">if</span> (value == EMPTY) &#123;</div><div class="line">            value = initializer(thisRef, property)</div><div class="line">        &#125;</div><div class="line">        <span class="meta">@Suppress(<span class="meta-string">"UNCHECKED_CAST"</span>)</span></div><div class="line">        <span class="keyword">return</span> value <span class="keyword">as</span> V</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这样再在Activity里，就可以这样用：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">val</span> tvVersion <span class="keyword">by</span> bindView&lt;TextView&gt;(R.id.tvVersion)</div></pre></td></tr></table></figure>
+<p>再也没有findViewById的烦恼啦。</p>
+<p>上面那段代码来自Jake Wharton，是的，Jake Wharton用一个文件就解决了Butterknife Java版解决的问题，我曾经深入的研究过Java版Butterknife，还写了一个类似Butterknife的工具，Butterknife要在编译期用AnnotationProcessor处理java文件中的annotation，然后利用javapoet生成代码，在生成的代码中findViewById并进行绑定，其中涉及到的apt以及代码生成会影响到编译速度，而Kotlin版并没有这些问题，都是函数调用而已。</p>
+<h2 id="dsl">DSL</h2>
+<p>就Kotlin展开的话，涉及到了Functional Programming和DSL，前者这里就不在展开讨论了，大牛太多，后者我可以简单介绍下，毕竟不同语言构造DSL的方式都不大相同。</p>
+<p>不少人都用Retrofit，就拿Retrofit举个例子吧，下面是一个简单的Retrofit DSL，最终的效果是这样的：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">fun</span> <span class="title">httpService</span><span class="params">(base: <span class="type">String</span>)</span></span> =</div><div class="line">        retrofit &#123;</div><div class="line">            client &#123;</div><div class="line">                readTimeout = sc(<span class="number">100</span>)</div><div class="line">                connectTimeout = sc(<span class="number">100</span>)</div><div class="line">                headers &#123;</div><div class="line">                    <span class="string">"Api-Version"</span> with <span class="string">"dim"</span></div><div class="line">                    <span class="string">"Origin"</span> with <span class="string">"hehe"</span></div><div class="line">                    <span class="string">"Token"</span> with PreferencesUtils.getToken()</div><div class="line">                &#125;</div><div class="line">                sslCert(Application.getInstance().applicationContext) &#123;</div><div class="line">                    strong = <span class="literal">true</span></div><div class="line">                    certs = listOf(R.raw.https)</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">            hostUrl = ServerUtil.getCurrentServerBase();</div><div class="line">            baseUrl = base</div><div class="line">            converterFactories = listOf(GsonConverterFactory.create())</div><div class="line">        &#125;</div><div class="line"></div><div class="line"><span class="keyword">val</span> services: EnumPoll&lt;TEST, Retrofit, String&gt;</div><div class="line">    <span class="keyword">get</span>() = poll &#123;</div><div class="line">        mapping &#123;</div><div class="line">            TEST.A with <span class="string">"baseUrlA/"</span></div><div class="line">            TEST.B with <span class="string">"baseUrlB/"</span></div><div class="line">        &#125;</div><div class="line">        instance = ::httpService</div><div class="line">    &#125;</div><div class="line">    </div><div class="line"><span class="function"><span class="keyword">fun</span> <span class="title">testRetrofitDSL</span><span class="params">()</span></span> &#123;</div><div class="line">    testservice&lt;ApiTest&gt;().testBaidu().enqueue &#123;</div><div class="line">        onResponse &#123; res -&gt;</div><div class="line">            <span class="comment">//doSomethingWith Res</span></div><div class="line">        &#125;</div><div class="line"></div><div class="line">        onFailure &#123; throwable -&gt;</div><div class="line">            <span class="comment">//doSomethingWhen failure</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上面是合法的Kotlin代码，函数httpService返回一个Retrofit实例，client返回一个OkHttpClient，其中包含了header、https（SSL）等设置，services是包含Retrofit实例和baseUrl的HashMap，会重复利用有相同baseUrl的Retrofit对象，Api的baseUrl是通过annotation反射获得的，annotation的参数是个Enum，testRetrofitDSL是最终使用时的例子。完整实现代码在<a href="https://gist.github.com/ACEMerlin/77a5a50316b8b8947e3354c6cfd92424" target="_blank" rel="noopener">这里</a>，有兴趣的可以看一看，还是蛮有意思的。</p>
+<h2 id="总结">总结</h2>
+<p>Kotlin虽然入门简单，但是实际用起来还是需要使用者花点心思的，不然写出来的代码就是换个样子的Java。Functional Programming、DSL、Extention Function、Null Safety这些概念虽然不是什么新的点子，但Kotlin却用自己独特的实现方式，让这些特性都有很好的用武之地，不能好好利用就很可惜了。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/批判一番/" rel="tag">#批判一番</a>
+          
+            <a href="/tags/Kotlin/" rel="tag">#Kotlin</a>
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+            <a href="/tags/DSL/" rel="tag">#DSL</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/other/2016-09-24-Hello-World/" rel="next" title="Hello World">
+                <i class="fa fa-chevron-left"></i> Hello World
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/posts/计算的本质/2017-01-24-introduction-to-computation-part-1/" rel="prev" title="计算的本质 Part 1">
+                计算的本质 Part 1 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/haskell.png"
+               alt="Merlin" />
+          <p class="site-author-name" itemprop="name">Merlin</p>
+          <p class="site-description motion-element" itemprop="description">Denn man hat in der Welt nicht viel mehr, als die Wahl zwischen Einsamkeit und Gemeinheit.</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">14</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/ACEMerlin/" target="_blank" title="GitHub" rel="external nofollow">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#use-let-instead-of-ifsth-null"><span class="nav-number">1.</span> <span class="nav-text">use let instead of if(sth != null)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#use-apply-to-simplify-your-code"><span class="nav-number">2.</span> <span class="nav-text">use apply to simplify your code</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#use-to-indicate-nullable-carefully"><span class="nav-number">3.</span> <span class="nav-text">use ? to indicate Nullable carefully</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#use-first-class-function-instead-of-object"><span class="nav-number">4.</span> <span class="nav-text">use first class function instead of object</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#use-primary-constructor-instead-of-java-style-constructor"><span class="nav-number">5.</span> <span class="nav-text">use primary constructor instead of java style constructor</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#use-delegates-to-initialize-field"><span class="nav-number">6.</span> <span class="nav-text">use Delegates to initialize field</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dsl"><span class="nav-number">7.</span> <span class="nav-text">DSL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">8.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Merlin</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io" rel="external nofollow">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" rel="external nofollow">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+
+  
+<script type="text/javascript" async src="//push.zhanzhang.baidu.com/push.js">
+</script>
+
+</body>
+</html>

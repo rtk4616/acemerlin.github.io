@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+
+    
+  <url>
+    <loc>https://acemerlin.github.io/posts/%E6%9D%82%E8%B0%88/2018-04-09-windows-10-bash-wsl-spacemacs-setup/</loc>
+    <lastmod>2018-05-29T10:39:13.070Z</lastmod>
+    <data>
+        <display>
+        <title>Windows 10 Bash & Linux Subsystem & Spacemacs Setup</title>
+        <pubTime>2018-04-09T11:43:21.000Z</pubTime>
+        
+        <tag>Emacs</tag>
+         
+        <tag>Windows</tag>
+         
+        <tag>WSL</tag>
+         
+         
+           
+             
+              <breadCrumb title="杂谈" url="https://acemerlin.github.io/categories/%E6%9D%82%E8%B0%88/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://acemerlin.github.io/posts/%E6%9D%82%E8%B0%88/2018-03-02-dvorak/</loc>
+    <lastmod>2018-03-02T10:30:10.000Z</lastmod>
+    <data>
+        <display>
+        <title>Dvorak五年有感</title>
+        <pubTime>2018-03-02T06:12:21.000Z</pubTime>
+        
+        <tag>Emacs</tag>
+         
+        <tag>Dvorak</tag>
+         
+        <tag>RSI</tag>
+         
+         
+           
+             
+              <breadCrumb title="杂谈" url="https://acemerlin.github.io/categories/%E6%9D%82%E8%B0%88/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://acemerlin.github.io/posts/Haskell/2017-11-30-fibonacci/</loc>
+    <lastmod>2018-03-02T09:41:40.000Z</lastmod>
+    <data>
+        <display>
+        <title>Fibonacci in Haskell</title>
+        <pubTime>2017-11-30T12:34:51.000Z</pubTime>
+        
+        <tag>学习一个</tag>
+         
+        <tag>Haskell</tag>
+         
+         
+           
+             
+              <breadCrumb title="Haskell" url="https://acemerlin.github.io/categories/Haskell/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://acemerlin.github.io/posts/Haskell/2018-02-09-fibonacci-and-catamorphism/</loc>
+    <lastmod>2018-03-02T08:14:12.000Z</lastmod>
+    <data>
+        <display>
+        <title>Fibonacci and Catamorphism</title>
+        <pubTime>2018-02-09T13:01:22.000Z</pubTime>
+        
+        <tag>学习一个</tag>
+         
+        <tag>Haskell</tag>
+         
+        <tag>Category Theroy</tag>
+         
+        <tag>Catamorphism</tag>
+         
+         
+           
+             
+              <breadCrumb title="Haskell" url="https://acemerlin.github.io/categories/Haskell/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://acemerlin.github.io/posts/Life/2017-07-05-thats-it-for-my-first-job/</loc>
+    <lastmod>2017-07-05T00:23:54.000Z</lastmod>
+    <data>
+        <display>
+        <title>That's it for my first job</title>
+        <pubTime>2017-07-05T08:21:41.000Z</pubTime>
+        
+        <tag>Life</tag>
+         
+         
+           
+             
+              <breadCrumb title="Life" url="https://acemerlin.github.io/categories/Life/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://acemerlin.github.io/posts/Life/2017-07-03-how-much-of-a-life-do-I-not-have/</loc>
+    <lastmod>2017-07-04T23:41:50.000Z</lastmod>
+    <data>
+        <display>
+        <title>How much of a life do I not have?</title>
+        <pubTime>2017-07-03T10:31:41.000Z</pubTime>
+        
+        <tag>Life</tag>
+         
+         
+           
+             
+              <breadCrumb title="Life" url="https://acemerlin.github.io/categories/Life/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://acemerlin.github.io/posts/LLVM/2017-04-11-emacs-haskell-llvm-together/</loc>
+    <lastmod>2017-04-11T00:46:20.000Z</lastmod>
+    <data>
+        <display>
+        <title>Emacs、Haskell、LLVM</title>
+        <pubTime>2017-04-11T00:11:51.000Z</pubTime>
+        
+        <tag>Emacs</tag>
+         
+        <tag>LLVM</tag>
+         
+        <tag>Haskell</tag>
+         
+        <tag>批判一番</tag>
+         
+         
+           
+             
+              <breadCrumb title="LLVM" url="https://acemerlin.github.io/categories/LLVM/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://acemerlin.github.io/posts/%E8%AE%A1%E7%AE%97%E7%9A%84%E6%9C%AC%E8%B4%A8/2017-04-10-introduction-to-computation-part-2/</loc>
+    <lastmod>2017-04-10T02:35:56.000Z</lastmod>
+    <data>
+        <display>
+        <title>计算的本质 Part 2</title>
+        <pubTime>2017-04-10T02:16:41.000Z</pubTime>
+        
+        <tag>PLT</tag>
+         
+        <tag>学习一个</tag>
+         
+        <tag>Programming Languages</tag>
+         
+         
+           
+             
+              <breadCrumb title="计算的本质" url="https://acemerlin.github.io/categories/%E8%AE%A1%E7%AE%97%E7%9A%84%E6%9C%AC%E8%B4%A8/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://acemerlin.github.io/posts/uncategorized/2017-03-23-kotlin-presentation/</loc>
+    <lastmod>2017-03-22T22:47:44.000Z</lastmod>
+    <data>
+        <display>
+        <title>Kotlin: A Brief Introduction</title>
+        <pubTime>2017-03-22T22:27:51.000Z</pubTime>
+        
+        <tag>学习一个</tag>
+         
+        <tag>Kotlin</tag>
+         
+        <tag>Presentation</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://acemerlin.github.io/posts/Kotlin/2017-03-02-so-lets-talk-about-kotlin/</loc>
+    <lastmod>2017-03-02T01:30:50.000Z</lastmod>
+    <data>
+        <display>
+        <title>So Let's Talk About Kotlin</title>
+        <pubTime>2017-03-02T09:21:41.000Z</pubTime>
+        
+        <tag>学习一个</tag>
+         
+        <tag>Kotlin</tag>
+         
+        <tag>Android</tag>
+         
+         
+           
+             
+              <breadCrumb title="Kotlin" url="https://acemerlin.github.io/categories/Kotlin/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://acemerlin.github.io/posts/%E6%9D%82%E8%B0%88/2015-03-03-cs-history/</loc>
+    <lastmod>2017-02-09T00:59:00.000Z</lastmod>
+    <data>
+        <display>
+        <title>计算机的那些事儿</title>
+        <pubTime>2015-03-03T15:10:00.000Z</pubTime>
+        
+        <tag>PLT</tag>
+         
+        <tag>学习一个</tag>
+         
+        <tag>LISP</tag>
+         
+         
+           
+             
+              <breadCrumb title="杂谈" url="https://acemerlin.github.io/categories/%E6%9D%82%E8%B0%88/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://acemerlin.github.io/posts/%E8%AE%A1%E7%AE%97%E7%9A%84%E6%9C%AC%E8%B4%A8/2017-01-24-introduction-to-computation-part-1/</loc>
+    <lastmod>2017-01-25T19:34:14.000Z</lastmod>
+    <data>
+        <display>
+        <title>计算的本质 Part 1</title>
+        <pubTime>2017-01-24T08:43:00.000Z</pubTime>
+        
+        <tag>PLT</tag>
+         
+        <tag>学习一个</tag>
+         
+        <tag>Programming Languages</tag>
+         
+         
+           
+             
+              <breadCrumb title="计算的本质" url="https://acemerlin.github.io/categories/%E8%AE%A1%E7%AE%97%E7%9A%84%E6%9C%AC%E8%B4%A8/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://acemerlin.github.io/posts/Android/2017-01-20-kotlin-the-right-way/</loc>
+    <lastmod>2017-01-25T19:22:04.000Z</lastmod>
+    <data>
+        <display>
+        <title>Kotlin The Right Way</title>
+        <pubTime>2017-01-20T03:30:00.000Z</pubTime>
+        
+        <tag>批判一番</tag>
+         
+        <tag>Kotlin</tag>
+         
+        <tag>Android</tag>
+         
+        <tag>DSL</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="https://acemerlin.github.io/categories/Android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+    
+  <url>
+    <loc>https://acemerlin.github.io/posts/other/2016-09-24-Hello-World/</loc>
+    <lastmod>2016-09-23T19:58:44.000Z</lastmod>
+    <data>
+        <display>
+        <title>Hello World</title>
+        <pubTime>2016-09-24T03:55:34.000Z</pubTime>
+        
+         
+           
+             
+              <breadCrumb title="other" url="https://acemerlin.github.io/categories/other/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+</urlset>

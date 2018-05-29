@@ -1,0 +1,789 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="学习一个,Kotlin,Android," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="前言 我目前的工作是Android开发，没有FP的抽象能力，使用Java写业务逻辑是一个十分繁琐和痛苦的事情，所以就去找其他能在Android上开发的语言。虽然JVM上的语言很多，但Android上的选择真不多，看了很久，选择了Kotlin，静态、强类型、面向对象还有FP，符合要求。而且有JetBrain一帮大佬开发维">
+<meta name="keywords" content="学习一个,Kotlin,Android">
+<meta property="og:type" content="article">
+<meta property="og:title" content="So Let&#39;s Talk About Kotlin">
+<meta property="og:url" content="https://acemerlin.github.io/posts/Kotlin/2017-03-02-so-lets-talk-about-kotlin/index.html">
+<meta property="og:site_name" content="fmap happier $ Life me">
+<meta property="og:description" content="前言 我目前的工作是Android开发，没有FP的抽象能力，使用Java写业务逻辑是一个十分繁琐和痛苦的事情，所以就去找其他能在Android上开发的语言。虽然JVM上的语言很多，但Android上的选择真不多，看了很久，选择了Kotlin，静态、强类型、面向对象还有FP，符合要求。而且有JetBrain一帮大佬开发维护，有良好的Intellij支持，和Java无缝连接，我就想：就是它了。现在用了">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-03-02T01:30:50.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="So Let&#39;s Talk About Kotlin">
+<meta name="twitter:description" content="前言 我目前的工作是Android开发，没有FP的抽象能力，使用Java写业务逻辑是一个十分繁琐和痛苦的事情，所以就去找其他能在Android上开发的语言。虽然JVM上的语言很多，但Android上的选择真不多，看了很久，选择了Kotlin，静态、强类型、面向对象还有FP，符合要求。而且有JetBrain一帮大佬开发维护，有良好的Intellij支持，和Java无缝连接，我就想：就是它了。现在用了">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://acemerlin.github.io/posts/Kotlin/2017-03-02-so-lets-talk-about-kotlin/"/>
+
+  <title> So Let's Talk About Kotlin | fmap happier $ Life me </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-55892506-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">fmap happier $ Life me</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">All about CS</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            四零四
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                So Let's Talk About Kotlin
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2017-03-02T17:21:41+08:00" content="2017-03-02">
+              2017-03-02
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Kotlin/" itemprop="url" rel="index">
+                    <span itemprop="name">Kotlin</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言">前言</h2>
+<p>我目前的工作是Android开发，没有FP的抽象能力，使用Java写业务逻辑是一个十分繁琐和痛苦的事情，所以就去找其他能在Android上开发的语言。虽然JVM上的语言很多，但Android上的选择真不多，看了很久，选择了Kotlin，静态、强类型、面向对象还有FP，符合要求。而且有JetBrain一帮大佬开发维护，有良好的Intellij支持，和Java无缝连接，我就想：就是它了。现在用了快一年多了，so let’s talk about Kotlin(Got this catch phrase from <a href="https://www.destroyallsoftware.com/talks/wat" target="_blank" rel="noopener">here</a>)。</p>
+<h2 id="good-parts">Good Parts</h2>
+<h3 id="学习成本">学习成本</h3>
+<ul>
+<li>首先，在Android项目里<a href="https://kotlinlang.org/docs/tutorials/kotlin-android.html" target="_blank" rel="noopener">配置Kotlin</a>很简单，相信如果你在配置环境时耗费了太多精力，那接下来也就没什么兴趣使用它了。</li>
+<li>其次，Kotlin上手很快，不像学院风的Scala全是难懂的概念，Kotlin就像在Java上简单包了一层，写起来就像带花括号的Python。就算你完全没学过，你也能直接拿起来用写Java的方式开写，比如<a href="https://github.com/rarnu/wechat_no_revoke" target="_blank" rel="noopener">这个项目</a>，里面完全是Java风格的Kotlin代码，Intellij自带的“Convert Java File to Kotlin File”功能生成的代码都比这好（具体分析请看<a href="http://luckymerlin.me/posts/Android/2017-01-20-kotlin-the-right-way/" target="_blank" rel="noopener">这篇文章</a>）。</li>
+<li>最后，Kotlin学起来很简单，<a href="https://kotlinlang.org/docs/reference/" target="_blank" rel="noopener">官方文档</a>很详细（还有好心人翻译了<a href="http://kotlindoc.com/" target="_blank" rel="noopener">中文Doc</a>），如果你有Java基础看起来真是很快，认真看的话一天差不多了，如果你有Scala或者其它函数式语言的基础，看看别人Kotlin代码再看看Kotlin特有的写DSL的方法就差不多了。</li>
+</ul>
+<p>下面的文章会偏向官方文档介绍不到的东西，对于官方文档有的我会直接链接到官方文档。</p>
+<a id="more"></a>
+<h3 id="类型系统">类型系统</h3>
+<ul>
+<li>Kotlin是带类型推导的，这意味着不用显示的声明变量类型，这让代码简洁太多了。</li>
+<li>Kotlin不像Java，它不区分原始数据类型和引用数据类型，所有的对象都是类。</li>
+<li>类型区分可Null和不可Null，<a href="https://kotlinlang.org/docs/reference/null-safety.html" target="_blank" rel="noopener">null-safety</a>让我摆脱了很多的NullPointerException，所有不带<code>?</code>的类都是不能为Null的，你要是想在可能为Null的类上直接调用方法是不可能的。</li>
+<li>泛型和子类型也比Java强多了，Kotlin用的是<a href="https://kotlinlang.org/docs/reference/generics.html#declaration-site-variance" target="_blank" rel="noopener">declaration site variance</a>，而不是Java的<a href="https://docs.oracle.com/javase/tutorial/java/generics/bounded.html" target="_blank" rel="noopener">use site variance</a>。</li>
+</ul>
+<p>而这些好处都得益于一样东西–Kotlin简单的类型系统，而官方文档却没有文章介绍它，除非你学习了一部分Kotlin，不然你是看不到整个类型系统的。但是，有人看到了这个问题，写了一篇详细介绍Kotlin类型系统的文章：<a href="http://natpryce.com/articles/000818.html" target="_blank" rel="noopener">A Whirlwind Tour of the Kotlin Type Hierarchy</a> 。</p>
+<h3 id="函数式编程fp">函数式编程（FP）</h3>
+<ul>
+<li>有了FP，再也不用搞一堆Util类来放静态方法了，因为函数是第一公民，可以独立类存在。</li>
+<li>Android不能用Java8的Lambda？（可比跟我说Retrolambda），<a href="https://kotlinlang.org/docs/reference/lambdas.html" target="_blank" rel="noopener">Kotlin有啊</a>。</li>
+<li>而且有了<a href="https://kotlinlang.org/docs/reference/inline-functions.html" target="_blank" rel="noopener">inline function</a>，Lambda不只写起来比Java简单，性能还比Java好。</li>
+</ul>
+<p>而且再说用Java8的stream简直是种煎熬（明明都是些map和fold就能解决的问题（摊手））：</p>
+<ul>
+<li>Java区分原始数据类型和引用数据类型，使得Stream Api变得很复杂</li>
+<li>Lambda中没法抛出Checked exception</li>
+<li>函数没有类型（只有SAM、Function/BiFunction，Predicate/BiPredicate）</li>
+<li>Optional是不能stream的</li>
+<li>stream只能被消费一次，而且没有Streamble&lt;T&gt;这种类似Iterable&lt;T&gt;的这种概念</li>
+</ul>
+<p>下面讲到多态时会详细介绍Kotlin中FP的问题。很多刚接触FP的人觉得有高阶函数有curry化什么的就是函数式了，这是很浅的，这种不带类型的在抽象顶端只能算是<a href="https://en.wikipedia.org/wiki/Lambda_calculus" target="_blank" rel="noopener">untyped lambda calculus</a>，加了类型成为<a href="https://en.wikipedia.org/wiki/Typed_lambda_calculus" target="_blank" rel="noopener">typed lambda calculus</a>后函数式才刚刚开始。不过话说回来，关于函数式编程我实在不想扯太多，坑太深实在扯不完，后面我会写一篇单独的文章详细介绍FP。</p>
+<h3 id="data-class">Data class</h3>
+<p>有了<a href="https://kotlinlang.org/docs/reference/data-classes.html" target="_blank" rel="noopener">data class</a>，也不用写一堆只有getter和setter的Bean类了。而且data class和Gson无缝连接，用Retroft也不用担心序列化的问题。</p>
+<p>唯一的问题在于Android混淆会影响序列化，还好data class是可以加annotation的：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">data</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span></span>(<span class="meta">@SerializedName(<span class="meta-string">"name"</span>)</span> <span class="keyword">val</span> name: String,</div><div class="line">                <span class="meta">@SerializedName(<span class="meta-string">"email"</span>)</span> <span class="keyword">val</span> email: String)</div></pre></td></tr></table></figure>
+<h3 id="扩展方法">扩展方法</h3>
+<p>你可以在已有的类型上写<a href="https://kotlinlang.org/docs/reference/extensions.html" target="_blank" rel="noopener">扩展方法</a>而不污染到类本身，这种扩展方法只是独立函数的语法糖，但却能带来简洁有用的代码：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//在ImageView上直接“添加”方法，而不是用一个`GlideUtils`类里的静态方法</span></div><div class="line"><span class="function"><span class="keyword">fun</span> ImageView.<span class="title">loadImage</span><span class="params">(url: <span class="type">String</span>)</span></span> &#123;</div><div class="line">    Glide.with(context).load(url).into(<span class="keyword">this</span>)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">val</span> image = findViewBy(R.id.your_imageview_id)</div><div class="line">image.loadImage(<span class="string">"http://your_image_url"</span>)  <span class="comment">//直接在image上使用自定义方法</span></div><div class="line"></div><div class="line"><span class="comment">//在Activity上扩展出token字段，这样在所有的Activity都能用User的token啦</span></div><div class="line"><span class="comment">//这个方法其实不是很好，利用代理属性可以有更好的实现方法</span></div><div class="line"><span class="keyword">var</span> Activity.token: String</div><div class="line">    <span class="keyword">get</span>() = prefs.getToken()</div></pre></td></tr></table></figure>
+<p>Kotlin的标准库里就有很多在String和Iterable上的扩展方法，这样就能在Java的类上直接调用扩展出来的方法，而不是在包一层。Imagine the possibilities，这种解耦程度正是我们面对复杂业务需求时需要的东西。</p>
+<h3 id="代理属性">代理属性</h3>
+<p><a href="https://kotlinlang.org/docs/reference/delegated-properties.html" target="_blank" rel="noopener">代理属性</a>如果应用的好的话能大大的简化垃圾代码，官方文档是这样说的：对于那些每次都要用相同套路获取到的属性，我们可以用代理属性一劳永逸的实现它们。为了解释这个概念，我会举个Android实际开发中的例子：用代理属性实现<code>ButterKnife</code>。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> : <span class="type">Activity</span></span>(),... &#123;</div><div class="line">    ......</div><div class="line">    <span class="keyword">private</span> <span class="keyword">var</span> tvVersion: TextView? = <span class="literal">null</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">var</span> tvProj: TextView? = <span class="literal">null</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">var</span> tvRepo1: TextView? = <span class="literal">null</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">var</span> tvRepo2: TextView? = <span class="literal">null</span></div><div class="line">    ......</div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onCreate</span><span class="params">(savedInstanceState: <span class="type">Bundle</span>?)</span></span> &#123;</div><div class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState)</div><div class="line">        setContentView(R.layout.main)</div><div class="line">        tvVersion = findViewById(R.id.tvVersion) <span class="keyword">as</span> TextView?</div><div class="line">        tvProj = findViewById(R.id.tvProj) <span class="keyword">as</span> TextView?</div><div class="line">        tvRepo1 = findViewById(R.id.tvRepo1) <span class="keyword">as</span> TextView?</div><div class="line">        tvRepo2 = findViewById(R.id.tvRepo2) <span class="keyword">as</span> TextView?</div><div class="line">        ......</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这些垃圾代码中的<code>findViewById</code>就是“每次都用相同套路”的很好的例子。当然你可以用<code>ButterKnife</code>帮你简化这些垃圾代码，但<code>Butterknife</code>要在编译期用<code>AnnotationProcessor</code>处理java文件中的annotation，然后利用<code>javapoet</code>生成代码，在生成的代码中<code>findViewById</code>并进行绑定，其中涉及到的apt以及代码生成会影响到性能和编译时间。使用Kotlin我们能有更好的解决办法，不需要annotation，不需要生成代码，用代理属性就好了。首先，最简单的，用官方提供的lazy代理：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">val</span> tvVersion <span class="keyword">by</span> lazy &#123; findViewById(R.id.tvVersion) <span class="keyword">as</span> TextView &#125;</div><div class="line"><span class="comment">//onCreate里就不需要findViewById了</span></div></pre></td></tr></table></figure>
+<p>利用<code>lazy</code>代理，<code>tvVersion</code>只有在第一次被用时才会初始化（懒加载），以前分离的声明与初始化合在的一起，变成只有一行，更加优美，不仅便于理解，而且没有空指针的烦恼：<code>tvVersion</code>既是val（不会变），又是<code>TextView</code>（没有<code>?</code>，不可能是<code>null</code>），更加安全。但是这里还是太复杂了，没有<code>ButterKnife</code>那么简洁，我们需要的毕竟只有id和类型，并不需要关心什么是<code>lazy</code>。更好的办法就要实现自己的代理属性了：一个类似lazy（需要懒加载，不然activity会是<code>null</code>，就崩溃了），但隐藏了<code>findViewById</code>和类型转换的代理。按照我们的思路，先实现一个类似<code>lazy</code>的代理：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//与lazy不同，我们的实现把Activity:`T`和View类型`V`都当泛型传进去了</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Lazy</span>&lt;<span class="type">T, V</span>&gt;</span>(<span class="keyword">private</span> <span class="keyword">val</span> initializer: (T, KProperty&lt;*&gt;) -&gt; V) : ReadOnlyProperty&lt;T, V&gt; &#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">object</span> EMPTY</div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="keyword">var</span> value: Any? = EMPTY</div><div class="line"></div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">getValue</span><span class="params">(thisRef: <span class="type">T</span>, property: <span class="type">KProperty</span>&lt;*&gt;)</span></span>: V &#123;</div><div class="line">        <span class="keyword">if</span> (value == EMPTY) &#123;</div><div class="line">            value = initializer(thisRef, property)</div><div class="line">        &#125;</div><div class="line">        <span class="meta">@Suppress(<span class="meta-string">"UNCHECKED_CAST"</span>)</span></div><div class="line">        <span class="keyword">return</span> value <span class="keyword">as</span> V</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这样再在Activity里，就可以这样用：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">val</span> tvVersion <span class="keyword">by</span> MyLazy&lt;Activity, TextView&gt; &#123; t, p -&gt; t.findViewById(R.id.tvVersion) <span class="keyword">as</span> TextView &#125;</div></pre></td></tr></table></figure>
+<p>怎么越写越多，别急，按照我们的思路接着走，现在还差隐藏<code>findViewById</code>和类型转换，那就写个方法把把它们包起来：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//如果你看了上面关于类型系统的文章，那你就明白这里为什么返回`Nothing`了</span></div><div class="line"><span class="function"><span class="keyword">fun</span> <span class="title">viewNotFound</span><span class="params">(id: <span class="type">Int</span>, desc: <span class="type">KProperty</span>&lt;*&gt;)</span></span>: <span class="built_in">Nothing</span> =</div><div class="line">        <span class="keyword">throw</span> IllegalStateException(<span class="string">"View ID <span class="variable">$id</span> for '<span class="subst">$&#123;desc.name&#125;</span>' not found."</span>)</div><div class="line"></div><div class="line"><span class="meta">@Suppress(<span class="meta-string">"UNCHECKED_CAST"</span>)</span></div><div class="line"><span class="comment">//第一个参数是id，第二个参数是一个给定id返回View的高阶方法（我们的findViewById方法）</span></div><div class="line"><span class="function"><span class="keyword">fun</span> <span class="type">&lt;T, V : View&gt;</span> <span class="title">required</span><span class="params">(id: <span class="type">Int</span>, finder: <span class="type">T</span>.(<span class="type">Int</span>)</span></span> -&gt; View?) =</div><div class="line">        MyLazy &#123; t: T, desc -&gt; t.finder(id) <span class="keyword">as</span> V? ?: viewNotFound(id, desc) &#125;</div></pre></td></tr></table></figure>
+<p>这里第二个参数利用到了<a href="https://kotlinlang.org/docs/reference/lambdas.html#function-literals-with-receiver" target="_blank" rel="noopener">匿名扩展方法</a>，并且处理了找不到id的异常。还记得扩展方法吧，接下来需要两个东西，一个是在Activity上扩展出一个调用required方法的方法，一个是在Activity上扩展出<code>required</code>方法需要的第二个参数：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">fun</span> <span class="type">&lt;V : View&gt;</span> Activity.<span class="title">bindView</span><span class="params">(id: <span class="type">Int</span>)</span></span></div><div class="line">        : ReadOnlyProperty&lt;Activity, V&gt; = required(id, viewFinder)</div><div class="line"></div><div class="line"><span class="keyword">private</span> <span class="keyword">val</span> Activity.viewFinder: Activity.(<span class="built_in">Int</span>) -&gt; View?</div><div class="line">    <span class="keyword">get</span>() = &#123; findViewById(it) &#125;</div></pre></td></tr></table></figure>
+<p>最终的结果：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">val</span> tvVersion <span class="keyword">by</span> bindView&lt;TextView&gt;(R.id.tvVersion)  <span class="comment">//只有类型的id，完美</span></div></pre></td></tr></table></figure>
+<p>利用扩展方法我们只需要实现<code>bindView</code>和<code>viewFinder</code>就可以在自己的类型上实现自己的ButterKnife，比如你的adapter的<code>ViewHolder</code>。</p>
+<p>上面实现来自Jake Wharton，是的，Jake Wharton用<a href="https://github.com/JakeWharton/kotterknife/blob/master/src/main/kotlin/kotterknife/ButterKnife.kt" target="_blank" rel="noopener">一个文件</a>就解决了Butterknife Java版解决的问题。利用这种思路，我们能处理很多的垃圾代码，类似的问题比如SharePreference存取，数据库存取，都可以用代理属性解决。</p>
+<h3 id="运算符重载">运算符重载</h3>
+<p>Kotlin也有一个Java一直没有的功能：<a href="https://kotlinlang.org/docs/reference/operator-overloading.html" target="_blank" rel="noopener">运算符重载</a>。不过不像Scala里那么自由，你只能重载简单的运算符（比如算数、比较运算符），不能重载控制代码流向的运算符（比如逻辑运算符中的短路），而且最重要的是你不能自定义自己的符号。不过这样也好，安全简洁多了，省的看别人一堆奇奇怪怪的符号。</p>
+<h3 id="dsl">DSL</h3>
+<p>利用<a href="https://kotlinlang.org/docs/reference/lambdas.html#function-literals-with-receiver" target="_blank" rel="noopener">匿名扩展方法</a>，可以愉快的写DSL（从Groovy学来的），而且由于Kotlin是强类型的，这些DSL也是强类型的，比Groovy安全多了。JetBrain还专门写了一个面向Android的DSL：<a href="https://github.com/Kotlin/anko" target="_blank" rel="noopener">Anko</a>（Android-Kotlin），Anko借助扩展方法和匿名扩展方法让Android可以直接用代码方便的写出UI，注意这并不是在Android源代码上包了一层，而是扩展了一层。</p>
+<p>利用扩展方法和匿名扩展方法，我们可以写出很有意思的代码：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MConverter</span>&lt;<span class="type">T</span>&gt;</span>(<span class="keyword">var</span> value: T) &#123;</div><div class="line">    <span class="keyword">val</span> old = value</div><div class="line"></div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">toString</span><span class="params">()</span></span>: String = <span class="string">"[<span class="variable">$old</span>] =&gt; [<span class="variable">$value</span>]"</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">fun</span> <span class="type">&lt;T&gt;</span> <span class="title">convert</span><span class="params">(value: <span class="type">T</span>, init: <span class="type">MConverter</span>&lt;<span class="type">T</span>&gt;.()</span></span> -&gt; <span class="built_in">Unit</span>): MConverter&lt;T&gt; &#123;</div><div class="line">    <span class="keyword">val</span> converter = MConverter(value)</div><div class="line">    converter.init()</div><div class="line">    <span class="keyword">return</span> converter</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// convertersString.kt</span></div><div class="line"><span class="function"><span class="keyword">fun</span> MConverter<span class="type">&lt;String&gt;</span>.<span class="title">toLower</span><span class="params">()</span></span> &#123;</div><div class="line">    value = value.toLowerCase()</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">fun</span> MConverter<span class="type">&lt;String&gt;</span>.<span class="title">toUpper</span><span class="params">()</span></span> &#123;</div><div class="line">    value = value.toUpperCase()</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// convertersDouble.kt</span></div><div class="line"><span class="function"><span class="keyword">fun</span> MConverter<span class="type">&lt;Double&gt;</span>.<span class="title">toLower</span><span class="params">()</span></span> &#123;</div><div class="line">    value = Math.floor(value)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>因为强类型，下面只有前两个方法是合法的：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">convert(<span class="string">"ABC"</span>) &#123;</div><div class="line">    toLower()    <span class="comment">//ABC =&gt; abc</span></div><div class="line">    toUpper()    <span class="comment">//abc =&gt; ABC</span></div><div class="line">&#125;</div><div class="line">convert(<span class="number">2.2</span>) &#123;</div><div class="line">    toLower()    <span class="comment">//2.2 =&gt; 2.0</span></div><div class="line">&#125;</div><div class="line">convert(<span class="number">2</span>) &#123;</div><div class="line">    toLower()    <span class="comment">//编译器：没有这个方法</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="frustrations">Frustrations</h2>
+<p>现在说说蛋疼的地方，语法习惯之类的小问题我就不说了，比如，Companion objects（从Scala学的）写起来麻烦；还有函数定义和Lambda不一样：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">val</span> f1 = &#123;i:<span class="built_in">Int</span> -&gt; i+<span class="number">1</span>&#125;</div><div class="line"><span class="function"><span class="keyword">fun</span> <span class="title">f2</span><span class="params">(i:<span class="type">Int</span>)</span></span> = i + <span class="number">1</span></div><div class="line"><span class="keyword">val</span> f2_ = ::f2  <span class="comment">//f2要加`::`</span></div><div class="line"><span class="keyword">val</span> f1_ = f1    <span class="comment">//不像f1能直接引用</span></div></pre></td></tr></table></figure>
+<p>现在我说说最蛋疼的：<strong>残念的多态能力</strong>。如果你学过函数式的语言（比如Haskell），你说不定听过higher-rank、higher-kinded、type class这些概念，对于那些没有的，我们先复习一下什么是多态（Polymorphism）。</p>
+<h3 id="多态">多态</h3>
+<p>同一段代码可以应用不同的类型就叫做多态。多态一般分下面几种类型：</p>
+<ul>
+<li>参数多态（Parametric polymorphism），对一段代码做“笼统的”类型检查，用类型变量代替实际类型做参数，然后在需要使用的时候初始化相应的类型。注意其中参数定义是一致的，所有的代码实例表现都一样。大多数语言都提供这一类型的多态，比如Java的泛型和C++的模板。</li>
+<li>特设多态（Ad-hoc polymorphism），与参数多态一致的表现不同，特设多态允许代码在参数为不同类型时表现出不同的行为，一个常见的例子是重载，一个方法名字根据参数类型的不同可以有多种实现，编译器或者运行时环境会根据参数的类型选取相应合适的函数实现。常见的例子是算数运算，比如<code>+</code>在整数、浮点数上都能使用。</li>
+<li>子类型多态（subtype polymorphism），对某种数据类型能定义其子类型，子类型在某种意义上是父类型的替换，意味着能在父类型上应用的方法在子类型上也能用。如果S是T的子类型，那么在需要T的上下文中也可以用S替换它。子类型的具体实现就和这个程序语言上下文很有关联了。不同的语言一般会设计自己特定的子类型系统。注意subtyping和subclassing是不同的概念，比如Java中的接口也是subtyping的一部分，而不是subclassing的一部分。</li>
+</ul>
+<p>一般大家说的“多态”都是比较笼统的概念，比如，在面向对象语言中，人们说的“多态”一般默认指子类型多态，而其中的参数多态则被叫做泛型；在函数式语言中，“多态”则一般默认指参数多态。一个程序语言可以包含多种类型的多态。一个程序语言所能提供的多态类型的丰富程度很大程度上决定了自身的抽象程度，也就决定了自身的“好坏”。下面就一个个介绍这些多态到底是什么东西，Kotlin到底缺少了什么。</p>
+<h3 id="参数多态">参数多态</h3>
+<p>如果你知道Java中的泛型，那解释起来就简单多了，参数多态就是这类东西的行话。参数多态也是大多数语言所能支持到的多态层级。举个例子，下面是一个随机返回第一个或第二个参数的函数（Kotlin代码）：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//对于只有一个表达式的函数可以直接用=代替&#123;&#125;</span></div><div class="line"><span class="function"><span class="keyword">fun</span> <span class="title">randomString</span><span class="params">(a: <span class="type">String</span>, b: <span class="type">String</span>)</span></span>: String =</div><div class="line">        <span class="keyword">if</span> (Math.random() &lt; <span class="number">0.3</span>) a <span class="keyword">else</span> b</div></pre></td></tr></table></figure>
+<p>有个笑话讲得好，让一个程序员毁灭地球，绝对不会写一个<code>destroyEarth</code>的方法，而是写一个<code>destroyPlanet</code>方法然后把地球当参数传进去。是的，上面的方法只能选字符串，如果让它能选任意类型的话就要用泛型了：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">fun</span> <span class="type">&lt;T&gt;</span> <span class="title">randomValue</span><span class="params">(a: <span class="type">T</span>, b: <span class="type">T</span>)</span></span>: T =</div><div class="line">        <span class="keyword">if</span> (Math.random() &lt; <span class="number">0.3</span>) a <span class="keyword">else</span> b</div></pre></td></tr></table></figure>
+<p>泛型让我们从类型取到了值，无论什么类型这段代码的功能是一定的，这就是参数多态。然而当我们的代码复杂到一定程度时，只有参数多态往往是不够的，我们需要更高级的方法来抽象出更精练的代码。</p>
+<h3 id="higher-rank类型">Higher-rank类型</h3>
+<p>在上面的例子中，<code>randomValue</code>是个多态函数，它接受一个类型参数<code>T</code>（隐式的）、两个类型为<code>T</code>的参数，然后返回一个类型<code>T</code>的值。如果你稍微了解过函数式语言，你肯定知道在这种语言中，函数是第一公民，函数是值，能当参数，能存在变量里，也能当返回值。但是，在Kotlin中（实际上是大多数的静态类型语言），多态函数不是第一公民，意味着你不能把<code>randomValue</code>当参数传给其它函数，也不能把它先存变量里后再初始化类型<code>T</code>，要想用它，你得指明<code>T</code>的类型，也就是把它转化为单态函数。</p>
+<p>Higher-rank类型就是这么来的：和普通单态函数一样，把多态函数当成第一公民。因为Kotlin不支持Higher-rank类型，尽管下面的代码你看起来很合理，但它是通不过编译的：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">fun</span> <span class="type">&lt;T, U&gt;</span> <span class="title">weirdChoice</span><span class="params">(random: (<span class="type">T</span>, T)</span></span> -&gt; T, c1: U, c2: U): U &#123;</div><div class="line">    <span class="keyword">if</span> (random(<span class="literal">true</span>, <span class="literal">false</span>)) &#123;   <span class="comment">//type mismatch</span></div><div class="line">        <span class="keyword">return</span> random(c1, c2)    <span class="comment">//type mismatch</span></div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        <span class="keyword">return</span> random(c2, c1)    <span class="comment">//type mismatch</span></div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">val</span> test = weirdChoice(::randomValue, <span class="string">"emacs"</span>, <span class="string">"vim"</span>)  <span class="comment">//type inference failed</span></div></pre></td></tr></table></figure>
+<p>T在编译时就要确定类型，不能在运行时动态确定类型。扩展方法也是如此，他们是静态绑定的，在编译的时候就要确定类型。为了解决上面的问题，有几种妥协的办法：</p>
+<p>最简单的就是放弃高阶函数，不把random当成参数而是外部独立的方法，也就是直接调用<code>randomValue</code>： <figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">fun</span> <span class="type">&lt;U&gt;</span> <span class="title">weirdChoice</span><span class="params">(c1: <span class="type">U</span>, c2: <span class="type">U</span>)</span></span>: U &#123;</div><div class="line">    <span class="keyword">if</span> (randomValue(<span class="literal">true</span>, <span class="literal">false</span>)) &#123;</div><div class="line">        <span class="keyword">return</span> randomValue(c1, c2)</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        <span class="keyword">return</span> randomValue(c2, c1)</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>上面的方法中<code>weiredChoice</code>和<code>randomValue</code>耦合度很高，不易维护扩展。好一点的方法是把<code>random</code>抽象成接口： <figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">interface</span> <span class="title">BinarySameType</span> </span>&#123;</div><div class="line">    <span class="keyword">operator</span> <span class="function"><span class="keyword">fun</span> <span class="type">&lt;T&gt;</span> <span class="title">invoke</span><span class="params">(a: <span class="type">T</span>, b: <span class="type">T</span>)</span></span>: T</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//这里利用了重载`invoke`方法，使得接口可以像方法一样调用</span></div><div class="line"><span class="function"><span class="keyword">fun</span> <span class="type">&lt;U&gt;</span> <span class="title">weirdChoice</span><span class="params">(random: <span class="type">BinarySameType</span>, c1: <span class="type">U</span>, c2: <span class="type">U</span>)</span></span>: U &#123;</div><div class="line">    <span class="keyword">if</span> (random(<span class="literal">true</span>, <span class="literal">false</span>)) &#123;</div><div class="line">        <span class="keyword">return</span> random(c1, c2)</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        <span class="keyword">return</span> random(c2, c1)</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这样的缺点是要么新建个类实现这个接口，要么在使用的时候新建一个匿名实例：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">val</span> impl = <span class="keyword">object</span> : BinarySameType &#123;</div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="type">&lt;T&gt;</span> <span class="title">invoke</span><span class="params">(a: <span class="type">T</span>, b: <span class="type">T</span>)</span></span>: T &#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">if</span> (Math.random() &lt; <span class="number">0.3</span>) a <span class="keyword">else</span> b</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">weirdChoice(impl, <span class="string">"emacs"</span>, <span class="string">"vim"</span>)</div></pre></td></tr></table></figure>
+<p>OOP真是对我们没什么帮助，我们还要关心什么是<code>BinarySameType</code>，代码越写越多，这可不是我们想要的结果。是时候试试用FP的思路来解决问题了。泛型方法不是不能当高阶函数么，那我们就退一步，把泛型函数抽象成低阶的单态函数，不就可以当高阶函数了吗？回头看看<code>(T, T) -&gt; T</code>类型，他真的能保证给定任意的类型T，都能有返回值吗？控制一切的不还是<code>if</code>语句中的判断条件，我们需要做的就是把这个条件暴露给<code>weirdChoice</code>就可以了，这个条件的类型是什么呢？很简单，一个不需要参数并返回布尔值的方法<code>() -&gt; Boolean</code>，现在能写出下面的半成品了：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">fun</span> <span class="type">&lt;U&gt;</span> <span class="title">weirdChoice</span><span class="params">(random: ()</span></span> -&gt; <span class="built_in">Boolean</span>, c1: U, c2: U): U &#123;</div><div class="line">    <span class="keyword">if</span> (random???(<span class="literal">true</span>, <span class="literal">false</span>)) &#123;</div><div class="line">        <span class="keyword">return</span> random???(c1, c2)</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        <span class="keyword">return</span> random???(c2, c1)</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> choice = weirdChoice(&#123; Math.random() &lt; <span class="number">0.3</span> &#125;, <span class="string">"emacs"</span>, <span class="string">"vim"</span>)</div></pre></td></tr></table></figure>
+<p>看到<code>???</code>了吧，我们只缺少它这么一个神奇的东西了，它能把下面<code>{ Math.random() &lt; 0.3 }</code>“插入”到具体实现的地方并让<code>random</code>和两个参数“作用”后返回其中一个。但是这可能吗？<code>random</code>自己就是个Lambda，它并没有这种功能呀？其实很简单，当说起一个东西没有一个方法的时候，你就应该想起扩展方法了，是的，我们只需要在<code>random</code>上扩展出这个具体实现就行了：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//在类型为() -&gt; Boolean的Lambda上扩展出一个泛型方法--asChoice</span></div><div class="line"><span class="function"><span class="keyword">fun</span> <span class="type">&lt;T&gt;</span> <span class="params">(()</span></span> -&gt; <span class="built_in">Boolean</span>).asChoice(a: T, b: T): T = </div><div class="line">        <span class="keyword">if</span> (<span class="keyword">this</span>()) a <span class="keyword">else</span> b</div><div class="line">        </div><div class="line"><span class="comment">//这里优化了一下参数位置，Kotlin允许在调用时把最后一个参数为Lambda的放在括号外面，好看一点</span></div><div class="line"><span class="function"><span class="keyword">fun</span> <span class="type">&lt;U&gt;</span> <span class="title">weirdChoice</span><span class="params">(c1: <span class="type">U</span>, c2: <span class="type">U</span>, random: ()</span></span> -&gt; <span class="built_in">Boolean</span>): U &#123;</div><div class="line">    <span class="keyword">if</span> (random.asChoice(<span class="literal">true</span>, <span class="literal">false</span>)) &#123;</div><div class="line">        <span class="keyword">return</span> random.asChoice(c1, c2)</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        <span class="keyword">return</span> random.asChoice(c2, c1)</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//没有接口，没有奇怪的类，no bullshit，只是简单的函数调用</span></div><div class="line"><span class="keyword">var</span> choice = weirdChoice(<span class="string">"emacs"</span>, <span class="string">"vim"</span>) &#123;</div><div class="line">    <span class="comment">//这里是多么的自由，你可以写任何代码，只要最后返回布尔值就行了</span></div><div class="line">    print(<span class="string">"freedom at its finest"</span>)</div><div class="line">    Math.random() &lt; <span class="number">0.3</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上面的代码如果用Java实现会变成啥样，想想就很麻烦。总之，虽然Kotlin不支持higher-rank，但我们还是能写出很精练的代码。而且考虑到higher-rank在大多数语言中都没有（因为会让类型推导变得不确定，连Haskell都要加个<a href="https://wiki.haskell.org/Rank-N_types" target="_blank" rel="noopener">language-extention</a>才解决），自然还能接受。higher-rank解决的是对所有类型<code>T</code>的泛型问题，下一节我们看看关于特定范围类型–higher-kinded的泛型问题。</p>
+<p>-&gt; <em>2017.03.02更新，今天Kotlin发布了版本1.1.0，添加了<a href="http://kotlinlang.org/docs/reference/whatsnew11.html#type-aliases" target="_blank" rel="noopener">typealias</a>，类似c语言中的<code>typedef</code>，可以给类型起其它的名字，特别是对含有复杂泛型的类型（比如集合）和函数类型的简化有很好的效果。给<code>()-&gt;Boolean</code>添加方法太突兀了？那就起个其它名字吧：</em></p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">typealias BinarySameType = () -&gt; <span class="built_in">Boolean</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">fun</span> <span class="type">&lt;T&gt;</span> BinarySameType.<span class="title">asChoice</span><span class="params">(a: <span class="type">T</span>, b: <span class="type">T</span>)</span></span>: T = </div><div class="line">        <span class="keyword">if</span> (<span class="keyword">this</span>()) a <span class="keyword">else</span> b</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">fun</span> <span class="type">&lt;U&gt;</span> <span class="title">weirdChoice</span><span class="params">(c1: <span class="type">U</span>, c2: <span class="type">U</span>, random: <span class="type">BinarySameType</span>)</span></span>: U &#123;</div><div class="line">    <span class="keyword">if</span> (random.asChoice(<span class="literal">true</span>, <span class="literal">false</span>)) &#123;</div><div class="line">        <span class="keyword">return</span> random.asChoice(c1, c2)</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        <span class="keyword">return</span> random.asChoice(c2, c1)</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="comment">//调用的用法是一样的，就不写了</span></div></pre></td></tr></table></figure>
+<h3 id="higher-kinded-type">Higher-kinded type</h3>
+<p>看完了参数多态里能把类型变为值的函数（泛型），有没有把类型变为类型的函数呢，当然是有的，这种方法叫做类型运算符（type operator），举个例子，可以把Java里的<code>Stack</code>想象成这种函数：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Stack&lt;String&gt; mStack;</div></pre></td></tr></table></figure>
+<p><code>Stack</code>可以看成一个接受一个类型（<code>String</code>）并返回一个类型的函数（如果在FP里的话）。有了Higher-kinded类型的话，这种类型运算符也是一阶类型，同higher-rank类型一样可以当成第一公民。简单说就是，类型运算符可以当做其它类型运算符的参数（泛型的泛型）。同样，蛋疼的是Java和Kotlin都不支持Higher-kinded类型，是的，下面的代码是肯定通不过编译的：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">GraphSearch</span>&lt;<span class="title">T</span>&gt; </span>&#123;</div><div class="line">  T&lt;Node&gt; nodes;   <span class="comment">//编译器：T能这么用？黑人问号.jpg</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果可以的话，那这里的<code>GraphSearch</code>和它的<code>T</code>都是类型运算符，可以写出下面神奇的类型：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">GraphSearch&lt;Stack&gt; depthFirstSearch;     <span class="comment">//T是Stack</span></div><div class="line">GraphSearch&lt;Queue&gt; breadthFirstSearch;   <span class="comment">//T是Queue</span></div></pre></td></tr></table></figure>
+<p>同样，在Kotlin里是写不出类型的类型的，不仅如此，还不能使用参数化后的泛型参数：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foo</span>&lt;<span class="type">T</span>&gt;</span></div><div class="line"><span class="function"><span class="keyword">fun</span> <span class="type">&lt;T : Foo&gt;</span> <span class="title">bullshit</span><span class="params">(v1: <span class="type">T</span>&lt;<span class="type">String</span>&gt;, v2: <span class="type">T</span>&lt;<span class="type">Int</span>&gt;)</span></span> &#123;</div><div class="line">  <span class="comment">//编译器：你开心就好</span></div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">fun</span> <span class="type">&lt;Foo&gt;</span> <span class="title">nonsense</span><span class="params">(v1: <span class="type">Foo</span>&lt;<span class="type">String</span>&gt;, v2: <span class="type">Foo</span>&lt;<span class="type">Int</span>&gt;)</span></span> &#123;</div><div class="line">  <span class="comment">//编译器：因吹斯听</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这种类型的类型叫做<a href="https://en.wikipedia.org/wiki/Kind_%28type_theory%29" target="_blank" rel="noopener">kind</a>，普通类型通常表示为<code>*</code>，type构造器（类型运算符）的类型是<code>* -&gt; *</code>（为函数，参数为<code>*</code>，返回一个<code>*</code>，比如<code>Stack</code>），<code>GraphSearch</code>的类型为<code>(* -&gt; *) -&gt; *</code>（为高阶函数，参数为前面的type构造器，返回一个<code>*</code>），这里的表示涉及到curry化等其它奇奇怪怪的东西，我会在以后的文章介绍（hope so）。<code>GraphSearch</code>叫做higher-kinded就是因为它是类型层面上的高阶函数，他的类型就是kind。</p>
+<p>与higher-rank不同，higher-kinded类型在函数式语言中还是挺常见的，Haskell里的Functor和Monad就是很好的例子（希望能帮助到你理解Monad）。学院风的Scala当然也是有的（敢问Scala什么没有😭），下面就是一个例子：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">trait</span> <span class="title">Container</span>[<span class="type">M</span>[_]] </span>&#123; </div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">put</span></span>[<span class="type">A</span>](x: <span class="type">A</span>): <span class="type">M</span>[<span class="type">A</span>]</div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">get</span></span>[<span class="type">A</span>](m: <span class="type">M</span>[<span class="type">A</span>]): <span class="type">A</span> </div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">val</span> container = <span class="keyword">new</span> <span class="type">Container</span>[<span class="type">List</span>] &#123; </div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">put</span></span>[<span class="type">A</span>](x: <span class="type">A</span>) = <span class="type">List</span>(x)</div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">get</span></span>[<span class="type">A</span>](m: <span class="type">List</span>[<span class="type">A</span>]) = m.head </div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//注意到下面Container是kind了吧，List是type构造器，*是String和Int等普通类型</span></div><div class="line">container.put(<span class="string">"hey"</span>)    <span class="comment">// =&gt; List[java.lang.String] = List(hey)</span></div><div class="line">container.put(<span class="number">123</span>)      <span class="comment">// =&gt; List[Int] = List(123)</span></div></pre></td></tr></table></figure>
+<p>只可惜Kotlin是没有了（不过有declaration site variance，还是比Java舒服）。</p>
+<h3 id="特设多态">特设多态</h3>
+<p>讲了这么多，其实还有个重要的东西没说：ad-hoc polymorphism，有了前面的基础，理解这个应该很简单了。回忆一下上面关于程序员毁灭地球的笑话，如果你仔细思考，这个笑话里有个重要的问题：</p>
+<pre><code>尽管你抽象出了destroyPlanet方法，但可以想象，这个方法其实是涉及到有个Destroyable接口的，传进去的参数，无论是地球还是哪个星球，你都要先实现这个Destroyable里的destroy方法才能完成自毁。不懂？这么说吧，你没法写一个下面对任意类型都有用的方法：</code></pre>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">fun</span> <span class="type">&lt;T&gt;</span> <span class="title">destroyPlanet</span><span class="params">(planet: <span class="type">T</span>)</span></span> = planet.destroy()</div></pre></td></tr></table></figure>
+<p>“这不是废话吗？”聪明的小明同学立刻抢着说：“Kotlin是静态类型的，你这肯定通不过编译啊，destroy方法都找不到，你要这样写”：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">fun</span> <span class="type">&lt;T : Destroyable&gt;</span> <span class="title">destroyPlanet</span><span class="params">(planet: <span class="type">T</span>)</span></span> = planet.destroy()</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Destroyable</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">destroy</span><span class="params">()</span></span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Earth</span> : <span class="type">Destroyable &#123;</span></span></div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">destroy</span><span class="params">()</span></span> &#123;</div><div class="line">        print(<span class="string">"RUA! Earth Destroyed!"</span>)</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">fun</span> <span class="title">test</span><span class="params">()</span></span> &#123;</div><div class="line">    <span class="keyword">val</span> home = Earth()</div><div class="line">    destroyPlanet(home)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>“小明同学，你OOP学的很好嘛，我先问你个问题，如果再有其它的星球，是不是还要实现你的<code>Destroyable</code>接口呢？” “是…不过就是这样啊，不然泛型就找不到destroy方法了。” “那如果其它星球的destroy方法和地球不一样，是需要参数的呢？” “额…那就只能再在接口加抽象方法再实现一遍了。” “最后一个问题，姑且认为这个<code>Earth</code>是你的，你能写出它的摧毁方法，那如果这是外星人的星球，你不能直接改动它们的星球（不能改动星球的代码，不能实现接口，这种情况经常出现在语言自带类型或其它人的库上），那你要怎么摧毁它们呢？” “……”</p>
+<p>是的，小明同学也是实在没有办法，你没法在不影响原数据类型（Earth）的情况下抽象出一个只在特定类型（星球kind）上作用的泛型函数。就连Kotlin的源代码里也做不到：Kotlin标准库里有很多在不同类型上的扩展方法–forEach、map、flatMap、fold等，虽然你可以方便的使用这些高阶函数操作你的集合，但Kotlin实现里却没有任何类似mappable（可map）、foldable（可fold）等概念，就算有，也没有办法把这些概念添加到已有的数据类型上，并写出作用在特定不相干类型上（kind）的泛型函数（而不是所有类型<code>T</code>），和我们的摧毁星球笑话一个道理呢。特设多态就是这类问题的答案，但是，是的，蛋疼的是Kotlin的FP即没有Higher-kinded类型，更没有特设多态（摊手）。</p>
+<p>举个比较典型的其它语言的特设多态实现，Rust里的Traits：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//Rust 官网关于Traits第一句话就是A trait is a language feature that tells the Rust compiler about functionality a type must provide.（看到a type must provide没(￣へ￣、)</span></div><div class="line"><span class="keyword">use</span> std::ops::Mul;</div><div class="line"><span class="comment">//类似接口</span></div><div class="line"><span class="class"><span class="keyword">trait</span> <span class="title">HasArea</span></span>&lt;T&gt; &#123;</div><div class="line">    <span class="function"><span class="keyword">fn</span> <span class="title">area</span></span>(&amp;<span class="keyword">self</span>) -&gt; T;</div><div class="line">&#125;</div><div class="line"><span class="comment">//纯ADT定义，不涉及接口、方法</span></div><div class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Square</span></span>&lt;T&gt; &#123;</div><div class="line">    x: T,</div><div class="line">    y: T,</div><div class="line">    side: T,</div><div class="line">&#125;</div><div class="line"><span class="comment">//在Square上“扩展”HasArea“接口”</span></div><div class="line"><span class="comment">//注意这里并没有改变Square的定义和类型</span></div><div class="line"><span class="comment">//注意泛型T是怎么约束在一定类型里的</span></div><div class="line"><span class="comment">//注意泛型T是怎么重载了乘法运算符的</span></div><div class="line"><span class="keyword">impl</span>&lt;T&gt; HasArea&lt;T&gt; <span class="keyword">for</span> Square&lt;T&gt;</div><div class="line">        <span class="keyword">where</span> T: Mul&lt;Output=T&gt; + <span class="built_in">Copy</span> &#123;</div><div class="line">    <span class="function"><span class="keyword">fn</span> <span class="title">area</span></span>(&amp;<span class="keyword">self</span>) -&gt; T &#123;</div><div class="line">        <span class="keyword">self</span>.side * <span class="keyword">self</span>.side</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</div><div class="line">    <span class="comment">//定义一个Square</span></div><div class="line">    <span class="keyword">let</span> s = Square &#123;</div><div class="line">        x: <span class="number">0.0f64</span>,</div><div class="line">        y: <span class="number">0.0f64</span>,</div><div class="line">        side: <span class="number">12.0f64</span>,</div><div class="line">    &#125;;</div><div class="line">    <span class="comment">//s的定义只是个数据类型，但现在可以在s上调用area方法</span></div><div class="line">    <span class="built_in">println!</span>(<span class="string">"Area of s: &#123;&#125;"</span>, s.area());</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上面短短的代码展示了：扩展方法、运算符重载、包含type class的参数多态、包含接口的子类型多态。这里最重要的思想就是接口、数据、方法是解耦的、互不影响的，也就是在函数（function）和类型（type）层面进行抽象，而不是在面向对象的类（class）上抽象。</p>
+<h2 id="总结">总结</h2>
+<p>总体来讲，对于Android端的开发，用Kotlin写出的代码要比等同的Java简洁易懂的多。特别是繁多的网络接口回调这种任务，用Lambda和DSL能化简不少冗余的Java代码，也易于维护业务逻辑；在数据方面，有了Kotlin的类型系统和null-safety的保证，真是减少了不少空指针的bug；还有方便的扩展方法，Activity和Context没有这个方法？没关系，加一个就好了。</p>
+<p>其它的具体来讲，这就和代码风格很有关系了：</p>
+<ul>
+<li>如果你像我一样是个重度FP使用者，那Kotlin所能提供的多态系统可能满足不了你一直想抽象代码的心。但对大多数写一写单态函数做高阶函数的应该足够了，更何况比Java要强多了（摊手）。</li>
+<li>如果你对Java这种一堆getter、setter、constructor的Bean文件很烦的话，那Kotlin提供的简洁的定义类的方法会大大帮助你少些垃圾代码，比如<a href="https://kotlinlang.org/docs/reference/delegation.html" target="_blank" rel="noopener">类代理</a>。</li>
+<li>对于每次get、set都有相同套路的属性，可以用<a href="https://kotlinlang.org/docs/reference/delegated-properties.html" target="_blank" rel="noopener">代理属性</a>，比如上面简化findViewById的例子，减少垃圾代码。</li>
+<li>用内部DSL代替外部DSL，代码即是数据，比如Anko用Kotlin代码直接写UI，而不用XML。</li>
+<li>等等……</li>
+</ul>
+<p>上面的代码风格都设计到一个重点，它叫做减少垃圾代码，当我看到任何两坨代码长得差不多，我就会想办法把它们抽象成一坨（比如OOP层面用子类型多态、FP层面用高阶函数和参数多态、有macro系统就用macro生成代码），而这用Java很难做到，如果你和我一样坚信<a href="https://en.wikipedia.org/wiki/Don%27t_repeat_yourself" target="_blank" rel="noopener">DRY</a>原则，那选一个抽象能力更强的语言总是没错的。I mean, who want’s to write the same shit again and again, right?</p>
+<p>P.S 还不满足？语言官方的<a href="http://jetbrains.github.io/kotlin-spec/" target="_blank" rel="noopener">specification</a>在这。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/学习一个/" rel="tag">#学习一个</a>
+          
+            <a href="/tags/Kotlin/" rel="tag">#Kotlin</a>
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/计算的本质/2017-01-24-introduction-to-computation-part-1/" rel="next" title="计算的本质 Part 1">
+                <i class="fa fa-chevron-left"></i> 计算的本质 Part 1
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/posts/uncategorized/2017-03-23-kotlin-presentation/" rel="prev" title="Kotlin: A Brief Introduction">
+                Kotlin: A Brief Introduction <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/haskell.png"
+               alt="Merlin" />
+          <p class="site-author-name" itemprop="name">Merlin</p>
+          <p class="site-description motion-element" itemprop="description">Denn man hat in der Welt nicht viel mehr, als die Wahl zwischen Einsamkeit und Gemeinheit.</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">14</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/ACEMerlin/" target="_blank" title="GitHub" rel="external nofollow">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#good-parts"><span class="nav-number">2.</span> <span class="nav-text">Good Parts</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#学习成本"><span class="nav-number">2.1.</span> <span class="nav-text">学习成本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类型系统"><span class="nav-number">2.2.</span> <span class="nav-text">类型系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#函数式编程fp"><span class="nav-number">2.3.</span> <span class="nav-text">函数式编程（FP）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#data-class"><span class="nav-number">2.4.</span> <span class="nav-text">Data class</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#扩展方法"><span class="nav-number">2.5.</span> <span class="nav-text">扩展方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代理属性"><span class="nav-number">2.6.</span> <span class="nav-text">代理属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#运算符重载"><span class="nav-number">2.7.</span> <span class="nav-text">运算符重载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dsl"><span class="nav-number">2.8.</span> <span class="nav-text">DSL</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#frustrations"><span class="nav-number">3.</span> <span class="nav-text">Frustrations</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#多态"><span class="nav-number">3.1.</span> <span class="nav-text">多态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参数多态"><span class="nav-number">3.2.</span> <span class="nav-text">参数多态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#higher-rank类型"><span class="nav-number">3.3.</span> <span class="nav-text">Higher-rank类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#higher-kinded-type"><span class="nav-number">3.4.</span> <span class="nav-text">Higher-kinded type</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#特设多态"><span class="nav-number">3.5.</span> <span class="nav-text">特设多态</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Merlin</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io" rel="external nofollow">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" rel="external nofollow">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+
+  
+<script type="text/javascript" async src="//push.zhanzhang.baidu.com/push.js">
+</script>
+
+</body>
+</html>

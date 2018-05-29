@@ -1,0 +1,691 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Emacs,Dvorak,RSI," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="2012年大一的时候我还不会正经的打字，只会一指禅，当时下决心好好学习打字，Google了一下，被一篇大意是“Get rid of RSI with dvorak keyboard layout”的毒文毒到了，心想反正Qwerty和Dvorak都不会那就随便学一个呗，喜欢折腾的我就选择了Dvorak，眨眼都过去五年了，">
+<meta name="keywords" content="Emacs,Dvorak,RSI">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Dvorak五年有感">
+<meta property="og:url" content="https://acemerlin.github.io/posts/杂谈/2018-03-02-dvorak/index.html">
+<meta property="og:site_name" content="fmap happier $ Life me">
+<meta property="og:description" content="2012年大一的时候我还不会正经的打字，只会一指禅，当时下决心好好学习打字，Google了一下，被一篇大意是“Get rid of RSI with dvorak keyboard layout”的毒文毒到了，心想反正Qwerty和Dvorak都不会那就随便学一个呗，喜欢折腾的我就选择了Dvorak，眨眼都过去五年了，说说感受吧。">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://acemerlin.github.io/images/gtypist.jpg">
+<meta property="og:image" content="https://acemerlin.github.io/images/but-why.gif">
+<meta property="og:image" content="https://acemerlin.github.io/images/typing-speed.jpg">
+<meta property="og:image" content="https://acemerlin.github.io/images/poker2.png">
+<meta property="og:updated_time" content="2018-03-02T10:30:10.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Dvorak五年有感">
+<meta name="twitter:description" content="2012年大一的时候我还不会正经的打字，只会一指禅，当时下决心好好学习打字，Google了一下，被一篇大意是“Get rid of RSI with dvorak keyboard layout”的毒文毒到了，心想反正Qwerty和Dvorak都不会那就随便学一个呗，喜欢折腾的我就选择了Dvorak，眨眼都过去五年了，说说感受吧。">
+<meta name="twitter:image" content="https://acemerlin.github.io/images/gtypist.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://acemerlin.github.io/posts/杂谈/2018-03-02-dvorak/"/>
+
+  <title> Dvorak五年有感 | fmap happier $ Life me </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-55892506-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">fmap happier $ Life me</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">All about CS</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            四零四
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Dvorak五年有感
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2018-03-02T14:12:21+08:00" content="2018-03-02">
+              2018-03-02
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/杂谈/" itemprop="url" rel="index">
+                    <span itemprop="name">杂谈</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>2012年大一的时候我还不会正经的打字，只会一指禅，当时下决心好好学习打字，Google了一下，被一篇大意是“Get rid of RSI with dvorak keyboard layout”的毒文毒到了，心想反正Qwerty和Dvorak都不会那就随便学一个呗，喜欢折腾的我就选择了Dvorak，眨眼都过去五年了，说说感受吧。</p>
+<a id="more"></a>
+<p>首先最开始学习的过程对我来说是很轻松愉快的，我用的是GNU的一个学习打字的软件：<code>gtypist</code>，当时用的是Ubuntu：<code>sudo apt-get install gtypist</code>，现在用的是Mac，发现homebrew也有。<code>gtypist</code>界面非常简洁：</p>
+<div class="figure">
+<img src="/images/gtypist.jpg">
+
+</div>
+<p>课程也非常简单，一排一排练习，最后是三排一起，在学习Dvorak之前我也不是完全不会Qwerty，我感觉换键盘键位并不是想象的那么困难，现在如果我想的话，还是能用Qwerty打字的，只不过慢很多就是了(30WPM左右)，掌握两个键位并不会很冲突。学起来费劲不应该是你不学它的理由。</p>
+<p>那你的理由应该是啥呢，你的理由应该是用Dvorak会遇到好多蛋疼的问题，233，而且都是随之时间发展慢慢呈现出来的。当时我就有个很严重的问题，就是换键位那玩游戏咋办，LOL还能玩？但神奇的是大部分的游戏都已经适配好Dvorak键位了，我玩LOL都不用改建，还是Qwerty键位原来的位置。游戏没适配的话只能手动自己改了，我CSGO就是手动改的，麻烦是麻烦了点，不过还是能克服。</p>
+<p>用Dvorak最大的困难，差点让我放弃它的困难，就是用Vim和Emacs的键位全™乱了，学习成本还多了改建以及适应新键位，中间有段时间全用的IntelliJ IDEA，不过最后还是被我克服了…Spacemac有个layer叫做<code>keyboard-layout</code>，里面提供了Dvorak的改建，把Vim的<code>hjkl</code>映射到了<code>htns</code>，虽然此layer已经改了好多package的键位，但是还是不全，还好我会Lisp，大不了自己写就是了，于是我把Spacemacs怎么写layer，<code>keyboard-layout</code>源码都整明白了…，<a href="https://github.com/ACEMerlin/.spacemacs.d" target="_blank" rel="noopener">这</a>是我的配置。</p>
+<p>但为啥这么折腾呢？</p>
+<div class="figure">
+<img src="/images/but-why.gif">
+
+</div>
+<p>几个感受：</p>
+<ul>
+<li>Dvorak更轻松，常用的都在home row，手指移动幅度更小，减轻RSI</li>
+<li>我个人打字速度有提升：</li>
+</ul>
+<div class="figure">
+<img src="/images/typing-speed.jpg">
+
+</div>
+<p>当然这也不是很快，有用Qwerty打的比我快得多的，只是我比以前快了。</p>
+<p>你可以在<a href="https://typing-speed-test.aoeu.eu" target="_blank" rel="noopener">这里</a>测一下速度：</p>
+<iframe src="https://typing-speed-test.aoeu.eu/?iframe=1;lang=en" width="700" height="300" style="border: 0;">
+</iframe>
+<p>另外我的键盘都是无刻的，省的学的时候忍不住低头看：</p>
+<div class="figure">
+<img src="/images/poker2.png">
+
+</div>
+<p>总的来说如果你想试试新键位，Dvorak和Colemak都试试吧，人生苦短，我不用Qwerty。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Emacs/" rel="tag">#Emacs</a>
+          
+            <a href="/tags/Dvorak/" rel="tag">#Dvorak</a>
+          
+            <a href="/tags/RSI/" rel="tag">#RSI</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/Haskell/2018-02-09-fibonacci-and-catamorphism/" rel="next" title="Fibonacci and Catamorphism">
+                <i class="fa fa-chevron-left"></i> Fibonacci and Catamorphism
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/posts/杂谈/2018-04-09-windows-10-bash-wsl-spacemacs-setup/" rel="prev" title="Windows 10 Bash & Linux Subsystem & Spacemacs Setup">
+                Windows 10 Bash & Linux Subsystem & Spacemacs Setup <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/haskell.png"
+               alt="Merlin" />
+          <p class="site-author-name" itemprop="name">Merlin</p>
+          <p class="site-description motion-element" itemprop="description">Denn man hat in der Welt nicht viel mehr, als die Wahl zwischen Einsamkeit und Gemeinheit.</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">14</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/ACEMerlin/" target="_blank" title="GitHub" rel="external nofollow">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <p class="post-toc-empty">This post does not have a Table of Contents</p>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Merlin</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io" rel="external nofollow">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" rel="external nofollow">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+
+  
+<script type="text/javascript" async src="//push.zhanzhang.baidu.com/push.js">
+</script>
+
+</body>
+</html>

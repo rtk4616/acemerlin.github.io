@@ -1,0 +1,705 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Emacs,LLVM,Haskell,批判一番," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="前段时间想练手写个简单的编译器，后端用LLVM，因为自己非常想用个函数式语言来写，选LLVM binding选了好久，基本就在Ocaml和Haskell之间徘徊：  Ocaml有lexer和menhir，写前端好方便啊；但是Emacs上开发Ocaml有点蛋疼，配置不好merlin和ocamlbuild，又没有称心的ID">
+<meta name="keywords" content="Emacs,LLVM,Haskell,批判一番">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Emacs、Haskell、LLVM">
+<meta property="og:url" content="https://acemerlin.github.io/posts/LLVM/2017-04-11-emacs-haskell-llvm-together/index.html">
+<meta property="og:site_name" content="fmap happier $ Life me">
+<meta property="og:description" content="前段时间想练手写个简单的编译器，后端用LLVM，因为自己非常想用个函数式语言来写，选LLVM binding选了好久，基本就在Ocaml和Haskell之间徘徊：  Ocaml有lexer和menhir，写前端好方便啊；但是Emacs上开发Ocaml有点蛋疼，配置不好merlin和ocamlbuild，又没有称心的IDE，还是用Haskell吧。 Haskell有stack和intero，在Ema">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://acemerlin.github.io/images/emacs.png">
+<meta property="og:image" content="https://acemerlin.github.io/images/feels-good-man.jpeg">
+<meta property="og:updated_time" content="2017-04-11T00:46:20.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Emacs、Haskell、LLVM">
+<meta name="twitter:description" content="前段时间想练手写个简单的编译器，后端用LLVM，因为自己非常想用个函数式语言来写，选LLVM binding选了好久，基本就在Ocaml和Haskell之间徘徊：  Ocaml有lexer和menhir，写前端好方便啊；但是Emacs上开发Ocaml有点蛋疼，配置不好merlin和ocamlbuild，又没有称心的IDE，还是用Haskell吧。 Haskell有stack和intero，在Ema">
+<meta name="twitter:image" content="https://acemerlin.github.io/images/emacs.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://acemerlin.github.io/posts/LLVM/2017-04-11-emacs-haskell-llvm-together/"/>
+
+  <title> Emacs、Haskell、LLVM | fmap happier $ Life me </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-55892506-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">fmap happier $ Life me</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">All about CS</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            四零四
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Emacs、Haskell、LLVM
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2017-04-11T08:11:51+08:00" content="2017-04-11">
+              2017-04-11
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/LLVM/" itemprop="url" rel="index">
+                    <span itemprop="name">LLVM</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>前段时间想练手写个简单的编译器，后端用LLVM，因为自己非常想用个函数式语言来写，选LLVM binding选了好久，基本就在Ocaml和Haskell之间徘徊：</p>
+<ul>
+<li>Ocaml有lexer和menhir，写前端好方便啊；但是Emacs上开发Ocaml有点蛋疼，配置不好merlin和ocamlbuild，又没有称心的IDE，还是用Haskell吧。</li>
+<li>Haskell有stack和intero，在Emacs上开发好舒心；但是学习成本好高啊，我对Haskell又不是很熟，还是用Ocaml吧；</li>
+</ul>
+<a id="more"></a>
+<p>直到看到<a href="http://www.stephendiehl.com/llvm/" target="_blank" rel="noopener">一篇教程</a>，就抛弃Ocaml投奔Haskell了，本以为可以开始搞事了，却发生痛苦才刚刚开始：</p>
+<p><strong>我TM在Mac上怎么都配置不好开发环境</strong></p>
+<p>遇到的问题实在是太多了，Github Issues都翻烂了，例如：</p>
+<ul>
+<li>在Mac Sierra上<a href="https://github.com/commercialhaskell/stack/issues/2577" target="_blank" rel="noopener">GHC Panic</a></li>
+<li>在Mac上，<code>DYLD_LIBRARY_PATH</code>是<a href="https://github.com/commercialhaskell/stack/issues/1826" target="_blank" rel="noopener">不会传给GHC</a>的</li>
+<li>Emacs上的<a href="https://github.com/commercialhaskell/intero/issues/122" target="_blank" rel="noopener">Intero莫名出错</a></li>
+<li>brew安装llvm不同版本同mac自带的llvm维护复杂</li>
+</ul>
+<p>GHC疯狂搞事，简直把我做宝搞，加之LLVM的Haskell binding–<code>llvm-general</code>维护也不是很勤，这些都是无解的事，搞了一个星期我都想放弃了。绝望中突然发现写教程的大哥自己拉了个新repo–<a href="https://github.com/llvm-hs/llvm-hs" target="_blank" rel="noopener"><code>llvm-hs</code></a>，还自己写了<a href="https://github.com/llvm-hs/homebrew-llvm" target="_blank" rel="noopener">brew formula</a>，估计是他自己也受不鸟了ㄟ( ▔, ▔ )ㄏ，干脆撸起袖子自己干。但是GHC有问题是无解的，Mac上还是不行，算了，虚拟机大法好，搞了个parallel desktop，装了个Ubuntu，20分钟不到我就配置好了：</p>
+<div class="figure">
+<img src="/images/emacs.png" alt="Emacs with Intero">
+<p class="caption">Emacs with Intero</p>
+</div>
+<div class="figure">
+<img src="/images/feels-good-man.jpeg">
+
+</div>
+<p>具体过程：</p>
+<h2 id="llvm7"><a href="http://apt.llvm.org/" target="_blank" rel="noopener">llvm</a></h2>
+<p>别忘了更新<code>/etc/apt/sources.list</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ wget -O - http://apt.llvm.org/llvm-snapshot.gpg.key|sudo apt-key add -</div><div class="line">$ sudo apt update &amp; sudo apt install llvm-4.0</div></pre></td></tr></table></figure>
+<h2 id="emacsprelude8intero9">emacs、<a href="https://github.com/bbatsov/prelude" target="_blank" rel="noopener">prelude</a>、<a href="https://github.com/commercialhaskell/intero" target="_blank" rel="noopener">intero</a></h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ sudo apt install emacs</div><div class="line">$ curl -L https://git.io/epre | sh</div></pre></td></tr></table></figure>
+<p>修改<code>~/emacs.d/prelude-modules.el</code>把haskell模块的注释去掉，下一步是安装<code>intero</code>，在<code>~/emacs.d/personal/</code>下新建一个<code>example.el</code>，我的配置如下：</p>
+<figure class="highlight lisp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">;; 基础配置</span></div><div class="line">(<span class="name">setq</span> company-idle-delay <span class="number">0</span>)</div><div class="line">(<span class="name">scroll-bar-mode</span> <span class="number">-1</span>)</div><div class="line">(<span class="name">setq</span> prelude-flyspell <span class="literal">nil</span>)</div><div class="line">(<span class="name">setq</span> initial-scratch-message <span class="literal">nil</span>)</div><div class="line"><span class="comment">;; 配置intero</span></div><div class="line">(<span class="name">prelude-require-package</span> 'intero)</div><div class="line">(<span class="name">add-hook</span> 'haskell-mode-hook 'intero-mode)</div><div class="line">(<span class="name">provide</span> 'merlin)</div><div class="line"><span class="comment">;;; merlin.el ends here</span></div></pre></td></tr></table></figure>
+<h2 id="stack10"><a href="https://docs.haskellstack.org/en/stable/install_and_upgrade/#linux" target="_blank" rel="noopener">stack</a></h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ wget -qO- https://get.haskellstack.org/ | sh</div><div class="line">$ stack new llvm-example simple &amp; cd llvm-example</div></pre></td></tr></table></figure>
+<p>添加llvm依赖，修改<code>stack.yaml</code>：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="attr">resolver:</span> <span class="string">lts-8.8</span></div><div class="line"></div><div class="line"><span class="attr">packages:</span></div><div class="line"><span class="bullet">-</span> <span class="string">'.'</span></div><div class="line"><span class="attr">- location:</span></div><div class="line"><span class="attr">    git:</span>    <span class="attr">https://github.com/llvm-hs/llvm-hs.git</span></div><div class="line"><span class="attr">    commit:</span> <span class="number">71</span><span class="string">bddce6cb82fc73606fc154c7826d4c202e9542</span></div><div class="line"><span class="attr">  extra-dep:</span> <span class="literal">true</span></div><div class="line"><span class="attr">  subdirs:</span></div><div class="line"><span class="bullet">    -</span> <span class="string">'llvm-hs'</span></div><div class="line"><span class="bullet">    -</span> <span class="string">'llvm-hs-pure'</span></div><div class="line"></div><div class="line"><span class="attr">flags:</span></div><div class="line"><span class="attr">  llvm-hs:</span></div><div class="line"><span class="attr">    shared-llvm:</span> <span class="literal">true</span></div><div class="line"></div><div class="line"><span class="attr">extra-package-dbs:</span> <span class="string">[]</span></div></pre></td></tr></table></figure>
+<p>修改<code>llvm-example.cabal</code>中的<code>executable</code>部分：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">executable llvm-example</div><div class="line">  hs-source-dirs:      src</div><div class="line">  main-is:             Main.hs</div><div class="line">  default-language:    Haskell2010</div><div class="line">  build-depends:       </div><div class="line">    base         &gt;= 4.7,</div><div class="line">    mtl          &gt;= 2.2,</div><div class="line">    containers   &gt;= 0.5,</div><div class="line">    llvm-hs      &gt;= 4.0,</div><div class="line">    llvm-hs-pure &gt;= 4.0</div></pre></td></tr></table></figure>
+<p>然后初始化stack环境</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ stack setup &amp; stack build</div></pre></td></tr></table></figure>
+<p>如果没报错的话，就可以打开Emacs愉快的开发了。</p>
+<pre><code>Linux大法好，退Mac保平安
+诚心诚念Linux好，Linux大法保平安
+众生都为Linux来，现世险恶忘前缘
+Linux教徒说真相，教你脱险莫拒绝
+早日摆脱Mac，早日获得新生
+上网搜索 九评Mac OS 有真相
+（笑）</code></pre>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Emacs/" rel="tag">#Emacs</a>
+          
+            <a href="/tags/LLVM/" rel="tag">#LLVM</a>
+          
+            <a href="/tags/Haskell/" rel="tag">#Haskell</a>
+          
+            <a href="/tags/批判一番/" rel="tag">#批判一番</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/计算的本质/2017-04-10-introduction-to-computation-part-2/" rel="next" title="计算的本质 Part 2">
+                <i class="fa fa-chevron-left"></i> 计算的本质 Part 2
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/posts/Life/2017-07-03-how-much-of-a-life-do-I-not-have/" rel="prev" title="How much of a life do I not have?">
+                How much of a life do I not have? <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/haskell.png"
+               alt="Merlin" />
+          <p class="site-author-name" itemprop="name">Merlin</p>
+          <p class="site-description motion-element" itemprop="description">Denn man hat in der Welt nicht viel mehr, als die Wahl zwischen Einsamkeit und Gemeinheit.</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">14</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/ACEMerlin/" target="_blank" title="GitHub" rel="external nofollow">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#llvm7"><span class="nav-number">1.</span> <span class="nav-text">llvm</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#emacsprelude8intero9"><span class="nav-number">2.</span> <span class="nav-text">emacs、prelude、intero</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#stack10"><span class="nav-number">3.</span> <span class="nav-text">stack</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Merlin</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io" rel="external nofollow">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" rel="external nofollow">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+
+  
+<script type="text/javascript" async src="//push.zhanzhang.baidu.com/push.js">
+</script>
+
+</body>
+</html>

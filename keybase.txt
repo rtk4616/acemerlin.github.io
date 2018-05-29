@@ -1,0 +1,55 @@
+==================================================================
+https://keybase.io/luckymerlin
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of https://acemerlin.github.io
+  * I am luckymerlin (https://keybase.io/luckymerlin) on keybase.
+  * I have a public key ASD1-ruEhn0Xj7jMwtWH3Dd3tgL-PgCy47miZ4-bL8sdego
+
+To do so, I am signing this object:
+
+{
+  "body": {
+    "key": {
+      "eldest_kid": "0120f5fabb84867d178fb8ccc2d587dc3777b602fe3e00b2e3b9a2678f9b2fcb1d7a0a",
+      "host": "keybase.io",
+      "kid": "0120f5fabb84867d178fb8ccc2d587dc3777b602fe3e00b2e3b9a2678f9b2fcb1d7a0a",
+      "uid": "dbfd6ac91749c6e27d29c966ee7efc19",
+      "username": "luckymerlin"
+    },
+    "merkle_root": {
+      "ctime": 1512723643,
+      "hash": "2c902594ebe6b6c18a07e0ab6f4e584917bcb01d952d6e46a5762cba7f79d8e56e6691b067bb2259cdb041b2cb2fe419b1bd5425662a908d51a4a52c83d5f065",
+      "hash_meta": "abb6d71b03a2384e0d6aa076feaf61dfdeef34bfae6ae0638a51a558283279f8",
+      "seqno": 1790707
+    },
+    "service": {
+      "hostname": "acemerlin.github.io",
+      "protocol": "https:"
+    },
+    "type": "web_service_binding",
+    "version": 1
+  },
+  "client": {
+    "name": "keybase.io go client",
+    "version": "1.0.36"
+  },
+  "ctime": 1512723682,
+  "expire_in": 504576000,
+  "prev": "42d7d6bbef35987bc340f783ae836f59d5944cf7f98ce23a3503fccace93bdb8",
+  "seqno": 7,
+  "tag": "signature"
+}
+
+which yields the signature:
+
+hKRib2R5hqhkZXRhY2hlZMOpaGFzaF90eXBlCqNrZXnEIwEg9fq7hIZ9F4+4zMLVh9w3d7YC/j4AsuO5omePmy/LHXoKp3BheWxvYWTFA057ImJvZHkiOnsia2V5Ijp7ImVsZGVzdF9raWQiOiIwMTIwZjVmYWJiODQ4NjdkMTc4ZmI4Y2NjMmQ1ODdkYzM3NzdiNjAyZmUzZTAwYjJlM2I5YTI2NzhmOWIyZmNiMWQ3YTBhIiwiaG9zdCI6ImtleWJhc2UuaW8iLCJraWQiOiIwMTIwZjVmYWJiODQ4NjdkMTc4ZmI4Y2NjMmQ1ODdkYzM3NzdiNjAyZmUzZTAwYjJlM2I5YTI2NzhmOWIyZmNiMWQ3YTBhIiwidWlkIjoiZGJmZDZhYzkxNzQ5YzZlMjdkMjljOTY2ZWU3ZWZjMTkiLCJ1c2VybmFtZSI6Imx1Y2t5bWVybGluIn0sIm1lcmtsZV9yb290Ijp7ImN0aW1lIjoxNTEyNzIzNjQzLCJoYXNoIjoiMmM5MDI1OTRlYmU2YjZjMThhMDdlMGFiNmY0ZTU4NDkxN2JjYjAxZDk1MmQ2ZTQ2YTU3NjJjYmE3Zjc5ZDhlNTZlNjY5MWIwNjdiYjIyNTljZGIwNDFiMmNiMmZlNDE5YjFiZDU0MjU2NjJhOTA4ZDUxYTRhNTJjODNkNWYwNjUiLCJoYXNoX21ldGEiOiJhYmI2ZDcxYjAzYTIzODRlMGQ2YWEwNzZmZWFmNjFkZmRlZWYzNGJmYWU2YWUwNjM4YTUxYTU1ODI4MzI3OWY4Iiwic2Vxbm8iOjE3OTA3MDd9LCJzZXJ2aWNlIjp7Imhvc3RuYW1lIjoiYWNlbWVybGluLmdpdGh1Yi5pbyIsInByb3RvY29sIjoiaHR0cHM6In0sInR5cGUiOiJ3ZWJfc2VydmljZV9iaW5kaW5nIiwidmVyc2lvbiI6MX0sImNsaWVudCI6eyJuYW1lIjoia2V5YmFzZS5pbyBnbyBjbGllbnQiLCJ2ZXJzaW9uIjoiMS4wLjM2In0sImN0aW1lIjoxNTEyNzIzNjgyLCJleHBpcmVfaW4iOjUwNDU3NjAwMCwicHJldiI6IjQyZDdkNmJiZWYzNTk4N2JjMzQwZjc4M2FlODM2ZjU5ZDU5NDRjZjdmOThjZTIzYTM1MDNmY2NhY2U5M2JkYjgiLCJzZXFubyI6NywidGFnIjoic2lnbmF0dXJlIn2jc2lnxEDBjtPjkGwifilpmZUZhqJ4TjKnhXA0uA+Km7LMXaL+s7M9OvD7Z2cxKi+gA7m32PZ35MadGw1s8TGMai7CvA8HqHNpZ190eXBlIKRoYXNogqR0eXBlCKV2YWx1ZcQg7luTWs9GgUAQJRu0eLpgNluv412zeuSFGwIMndg/ejWjdGFnzQICp3ZlcnNpb24B
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/luckymerlin
+
+==================================================================

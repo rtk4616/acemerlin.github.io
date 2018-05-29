@@ -1,0 +1,748 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="学习一个,Haskell,Category Theroy,Catamorphism," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="没想到吧，Fibonacci还能编出Part2。实际上这个Part2跟Fibonacci没啥大关系，千错万错我不该去看什么Category Theroy，又费解又没用，现在满脑子都是Recursion Scheme，我真是闲。">
+<meta name="keywords" content="学习一个,Haskell,Category Theroy,Catamorphism">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Fibonacci and Catamorphism">
+<meta property="og:url" content="https://acemerlin.github.io/posts/Haskell/2018-02-09-fibonacci-and-catamorphism/index.html">
+<meta property="og:site_name" content="fmap happier $ Life me">
+<meta property="og:description" content="没想到吧，Fibonacci还能编出Part2。实际上这个Part2跟Fibonacci没啥大关系，千错万错我不该去看什么Category Theroy，又费解又没用，现在满脑子都是Recursion Scheme，我真是闲。">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2018-03-02T08:14:12.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Fibonacci and Catamorphism">
+<meta name="twitter:description" content="没想到吧，Fibonacci还能编出Part2。实际上这个Part2跟Fibonacci没啥大关系，千错万错我不该去看什么Category Theroy，又费解又没用，现在满脑子都是Recursion Scheme，我真是闲。">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://acemerlin.github.io/posts/Haskell/2018-02-09-fibonacci-and-catamorphism/"/>
+
+  <title> Fibonacci and Catamorphism | fmap happier $ Life me </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-55892506-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">fmap happier $ Life me</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">All about CS</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            四零四
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Fibonacci and Catamorphism
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2018-02-09T21:01:22+08:00" content="2018-02-09">
+              2018-02-09
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Haskell/" itemprop="url" rel="index">
+                    <span itemprop="name">Haskell</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>没想到吧，Fibonacci还能编出Part2。实际上这个Part2跟Fibonacci没啥大关系，千错万错我不该去看什么Category Theroy，又费解又没用，现在满脑子都是Recursion Scheme，我真是闲。</p>
+<a id="more"></a>
+<p>首先看大佬们的文章吧：</p>
+<ul>
+<li><a href="https://bartoszmilewski.com/2014/10/28/category-theory-for-programmers-the-preface/" target="_blank" rel="noopener">Category Theory for Programmers</a></li>
+<li><a href="http://blog.sumtypeofway.com/" target="_blank" rel="noopener">Recursion Schemes</a></li>
+<li><a href="https://www.schoolofhaskell.com/user/bartosz/understanding-algebras" target="_blank" rel="noopener">Understanding F-Algebras</a></li>
+</ul>
+<p>看完这些还是半懂不懂，当时看的时候有段时间一直想不明白Category Theroy和Haskell里的类型到底有啥对应关系，总结一下比较关键的东西：</p>
+<ul>
+<li>Category里的object对应着Haskell类型，morphism对应函数。</li>
+<li>给定一个category C，C的一个object‘长啥样’取决于它跟其它所有C的object的关系，比如你在族谱里是谁就取决于你跟其它人的关系。族谱有个functor是映射族谱里的名字到真人，这个functor既要映射名字（object），也要映射族谱里的关系（morphism）。</li>
+<li>Functor是categories之间的morphism，可以把functor想象成容器，fmap改容器里的东西，但保留结构（preserve structure）。</li>
+<li>Natural transformation是functor之间的morphism，它改变容器，不动内容。</li>
+<li>Haskell里所有的functor都是endofunctor（？）。</li>
+<li>在Haskell里，没人喜欢谈论bottom。</li>
+<li>Kind是<code>* -&gt; *</code>的要么是covariant functor，要么是contravariant functor（Thanks ADT）。</li>
+<li>因为ADT的product和coproduct都是functor，GHC利用这一点提供了<code>DeriveFunctor</code>给你自动实现covariant functor的fmap。</li>
+<li>Monad的<code>return :: a -&gt; m a</code>和<code>join :: m m a -&gt; m a</code>都是natural transformation，前者是因为有<code>Identity</code> functor： <code>return :: Identity a -&gt; m a</code>。</li>
+<li>因为有参数多态的存在，Category Theroy里的那些law在Haskell里都是白拿的，theorem for free。</li>
+</ul>
+<p>Haskell里类型的不动点我感觉和数学里的不大一样。数学里满足<span class="math inline">\(f(x)=x\)</span>的x是不动点；在程序语言里，不动点意味着不停的自我应用，举个例子，我们有这个类型<code>NatF</code>：</p>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">data</span> <span class="type">NatF</span> a  = <span class="type">ZeroF</span> | <span class="type">SuccF</span> a <span class="keyword">deriving</span> <span class="type">Functor</span></span></div></pre></td></tr></table></figure>
+<p>明眼人已经看出来这就是<code>Maybe</code>。这里的<code>a</code>我可以选任何类型，当然这个任何包括<code>NatF</code>自己：</p>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="title">one</span> = <span class="type">SuccF</span> <span class="type">ZeroF</span></div></pre></td></tr></table></figure>
+<p>这只是自我应用了一层，当然你可以有很多层：</p>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="title">five</span> = <span class="type">SuccF</span> (<span class="type">SuccF</span> (<span class="type">SuccF</span> (<span class="type">SuccF</span> (<span class="type">SuccF</span> <span class="type">ZeroF</span>))))</div></pre></td></tr></table></figure>
+<p>明眼人又看出来了，这不就是丘奇数嘛。<code>NatF</code>中的F是为了指出这是个Functor，我们取这个Functor的不动点，这个不动点于下面的类型同构：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">data Nat = Zero | Succ Nat</div></pre></td></tr></table></figure>
+<p>感觉这种对Functor应用自己的套路就是Functor的不动点，<code>Maybe</code>的不动点就是自然数。再举个例子比如<code>data Pair a b = Pair a b</code>（就是个Product）的Functor<code>Pair a</code>的不动点其实跟List同构。<code>Nat</code>就是个丘奇数，各种运算可以定义起来了：</p>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="title">plus</span> m <span class="type">Zero</span> = m</div><div class="line"><span class="title">plus</span> m (<span class="type">Succ</span> n) = <span class="type">Succ</span> $ plus m n</div><div class="line"></div><div class="line"><span class="title">minus</span> m <span class="type">Zero</span> = m</div><div class="line"><span class="title">minus</span> (<span class="type">Succ</span> m) (<span class="type">Succ</span> n) = minus m n</div><div class="line"></div><div class="line"><span class="title">mult</span> m <span class="type">Zero</span> = <span class="type">Zero</span></div><div class="line"><span class="title">mult</span> m (<span class="type">Succ</span> n) = plus m $ mult m n</div><div class="line"></div><div class="line"><span class="comment">-- 其实这个时候我们就能定义Fibonacci了</span></div><div class="line"><span class="title">fib</span> <span class="type">Zero</span> = <span class="type">Zero</span></div><div class="line"><span class="title">fib</span> (<span class="type">Succ</span> <span class="type">Zero</span>) = <span class="type">Succ</span> <span class="type">Zero</span></div><div class="line"><span class="title">fib</span> (<span class="type">Succ</span> (<span class="type">Succ</span> n)) = plus (fib (<span class="type">Succ</span> n)) (fib n)</div></pre></td></tr></table></figure>
+<p>另一种方法是对自然数进行结构归纳（structural recursion），记得数学归纳法嘛，如果<code>n=1</code>时<code>P(n)</code>成立，并且有<code>n=k,P(k) =&gt; n=k+1,P(k+1)</code>那么P对所有的自然数都成立。这里就要感谢Curry和Howard了，程序即证明，structural induction对应到程序里是fold，数学归纳对应到程序里是在自然数上fold。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">-- f 0 = c</div><div class="line">-- f 1 = h c</div><div class="line">-- f (n+1) = h (f n) = h ....... h c</div><div class="line">--                     |___n+1___|</div><div class="line">-- Haskell定义如下</div><div class="line">foldn c _ Zero = c</div><div class="line">foldn c h (Succ n) = h $ foldn c h n</div></pre></td></tr></table></figure>
+<p>利用Curring，可以重新实现上面的运算：</p>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="title">plus'</span> m = foldn m <span class="type">Succ</span></div><div class="line"><span class="title">mult'</span> m = foldn <span class="type">Zero</span> $ plus' m</div></pre></td></tr></table></figure>
+<p>有一种理解foldn的方法，把丘奇数x的Succ换成h，Zero换成c，结果就是<code>foldn c h x</code>，比如<code>mult (Succ Zero) (Succ (Succ Zero))</code>就是把第二个参数的所有Succ换成<code>plus (Succ Zero)</code>（Zero没变），于是就是加了两次<code>Succ Zero</code>，得到<code>Succ (Succ Zero)</code>(2)。</p>
+<p>为了方便，我们可以把它实现成<code>Num</code>的实例：</p>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">instance</span> <span class="type">Num</span> <span class="type">Nat</span> <span class="keyword">where</span></span></div><div class="line">  (+) = plus</div><div class="line">  (-) = minus</div><div class="line">  (*) = mult</div><div class="line">  fromInteger n = <span class="keyword">case</span> n <span class="keyword">of</span></div><div class="line">                    <span class="number">0</span> -&gt; <span class="type">Zero</span></div><div class="line">                    n -&gt; <span class="type">Succ</span> (fromInteger (n - <span class="number">1</span>))</div><div class="line">  abs = undefined</div><div class="line">  signum = undefined</div></pre></td></tr></table></figure>
+<p>这样就可以直接写阿拉伯数字，而不是复杂的类型：</p>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="title">foldn</span> c _ <span class="number">0</span> = c</div><div class="line"><span class="title">foldn</span> c h n = h $ foldn c h (n<span class="number">-1</span>)</div><div class="line"></div><div class="line"><span class="title">plus'</span> m = foldn m (+<span class="number">1</span>)</div><div class="line"><span class="title">mult'</span> m = foldn <span class="number">0</span> $ plus' m</div><div class="line"></div><div class="line"><span class="comment">-- mult' 2 3 =&gt; 6</span></div></pre></td></tr></table></figure>
+<p>利用foldn可以实现Fibonnaci，基本和上节的动态规划一样了：</p>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="title">fib</span> = fst . foldn (<span class="number">0</span>, <span class="number">1</span>) f</div><div class="line">  <span class="keyword">where</span> f (m, n) = (n, m + n)</div></pre></td></tr></table></figure>
+<p>话说回来这个Nat是个递归数据类型，想搞个<code>Functor</code>都没有。回头看<code>NatF</code>，你是<code>* -&gt; *</code>，要是能用你就好了，这样<code>Functor</code>，<code>Traversable</code>，<code>Foldable</code>啥的就都有了，就是有个问题，每次在<code>NatF</code>应用自己它类型都会变，需要给个类型表示‘NatF的不动点’，参考<code>f(x)=x</code>：</p>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">newtype</span> <span class="type">Fix</span> f = <span class="type">Fix</span> (<span class="title">f</span> (<span class="type">Fix</span> <span class="title">f</span>))</span></div></pre></td></tr></table></figure>
+<p>x是Fix f，f就是f，这样Nat就是：</p>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">type</span> <span class="type">Nat</span> = <span class="type">Fix</span> <span class="type">NatF</span></span></div><div class="line"></div><div class="line"><span class="title">example1</span> :: <span class="type">Nat</span></div><div class="line"><span class="title">example1</span> = <span class="type">Fix</span> (<span class="type">SuccF</span> (<span class="type">Fix</span> (<span class="type">SuccF</span> (<span class="type">Fix</span> <span class="type">ZeroF</span>))))  <span class="comment">-- =&gt; 2</span></div></pre></td></tr></table></figure>
+<p>为了方便，把Fix换个写法：</p>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">newtype</span> <span class="type">Fix</span> f = <span class="type">Fix</span> &#123; <span class="title">unFix</span> :: <span class="title">f</span> (<span class="type">Fix</span> <span class="title">f</span>) &#125;</span></div><div class="line"></div><div class="line"><span class="comment">-- 相当于两个方法</span></div><div class="line"><span class="comment">-- Fix加一层  :    Fix :: f (Fix f) -&gt; Fix f</span></div><div class="line"><span class="comment">-- unFix剥一层:  unFix :: Fix f -&gt; f (Fix f)</span></div></pre></td></tr></table></figure>
+<p>接下来我们定义一个方法，如果它知道如何把<code>NatF a</code>简化成<code>a</code>，那它就知道怎么把<code>Nat</code>简化成a：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cata :: (NatF a -&gt; a) -&gt; (Nat -&gt; a)</div></pre></td></tr></table></figure>
+<p>对于形如<code>F a -&gt; a</code>的函数类型，我们称之为F-algebra，把箭头反过来<code>a -&gt; F a</code>就是F-coalgebra，具体为啥看<a href="https://stackoverflow.com/questions/16015020/what-does-coalgebra-mean-in-the-context-of-programming" target="_blank" rel="noopener">这里</a>。</p>
+<p>在实现cata之前，先看下面这个东西：</p>
+<span class="math inline">\(\require{AMScd}\)</span>
+<span class="math display">\[\begin{CD}
+    F\;a @&gt;fmap\,g&gt;&gt; F\;b\\
+    @V alga VV @VV algb V\\
+    a @&gt;&gt;g&gt; b
+\end{CD}\]</span>
+<p>非常直观，有两个Algebra：alga和algb，举个例子：</p>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="title">alga</span> :: <span class="type">Maybe</span> <span class="type">Int</span> -&gt; <span class="type">Int</span></div><div class="line"><span class="title">alga</span> (<span class="type">Just</span> x) = x</div><div class="line"><span class="title">alga</span> <span class="type">Nothing</span> = <span class="number">0</span></div><div class="line"></div><div class="line"><span class="title">algb</span> :: <span class="type">Maybe</span> <span class="type">Char</span> -&gt; <span class="type">Char</span></div><div class="line"><span class="title">algb</span> (<span class="type">Just</span> c) = c</div><div class="line"><span class="title">algb</span> <span class="type">Nothing</span> = '<span class="number">0</span>'</div><div class="line"></div><div class="line"><span class="title">g</span> :: <span class="type">Int</span> -&gt; <span class="type">Char</span></div><div class="line"><span class="title">g</span> = intToDigit</div></pre></td></tr></table></figure>
+<p>这个图应该满足：先拆包装然后改内容(path2)，和先fmap改内容然后拆包装(path1)应该是一样的：</p>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="title">path1</span> = algb . fmap g</div><div class="line"><span class="title">path2</span> = g . alga</div><div class="line"></div><div class="line"><span class="comment">-- path1 ~ path2 : path1 is isomorphic to path2</span></div></pre></td></tr></table></figure>
+<p>要是这个alga能反过来多好，这样我们就能用3条边定义g了：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">m&apos; = algb . fmap g . alga_inv</div></pre></td></tr></table></figure>
+<p>你可以强行写出来一个，不过并不是所以的方法都能反过来的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">alga_inv :: Int -&gt; Maybe Int</div><div class="line">alga_inv 0 = Nothing</div><div class="line">alga_inv x = Just x</div></pre></td></tr></table></figure>
+<p>下一步，该想想cata咋实现了。我们把这个图里的a用<code>Fix F</code>替代：</p>
+<span class="math inline">\(\require{AMScd}\)</span>
+<span class="math display">\[\begin{CD}
+    F\;(Fix\;F) @&gt;fmap\,g&gt;&gt; F\;a\\
+    @VFixVV  @VValgV\\
+    Fix\;F @&gt;&gt;g&gt; a
+\end{CD}\]</span>
+<p>看看cata的函数类型，<code>(NatF a -&gt; a)</code>不就是右边的alg吗，<code>Nat -&gt; a</code>不就是<code>Fix F -&gt; a</code>吗，这个图就差一个东西了，就是<code>Fix F -&gt; F (Fix F)</code>，要是有这个东西，三条边整一起不就能递归定义g了，回头看Fix的定义，这玩意就是<code>unFix</code>啊！</p>
+<span class="math inline">\(\require{AMScd}\)</span>
+<span class="math display">\[\begin{CD}
+    F\;(Fix\;F) @&gt;fmap\,g&gt;&gt; F\;a\\
+    @AunFixAA  @VValgV\\
+    Fix\;F @&gt;&gt;g&gt; a
+\end{CD}\]</span>
+<p>这种<code>F(Fix F)</code>和<code>Fix F</code>同构的叫做initail algebra。这个图满足：</p>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="title">g</span> = alg . fmap g . unFix</div></pre></td></tr></table></figure>
+<p>Nice，翻译成Haskell：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">type Algebra f a = f a -&gt; a</div><div class="line"></div><div class="line">cata :: (Functor f) =&gt; Algebra f a -&gt; Fix f -&gt; a</div><div class="line">cata alg = alg . fmap (cata alg) . unFix</div></pre></td></tr></table></figure>
+<p>Catamorphism和fold干的事情是一样的，但是更general，对所有Functor都能用，我是这么理解的：Catamorphism就像AST的一个个解释器，AST的结点是Functor，解释器的意义由alg定义，fmap会遍历求值每个子结点，有点像面向对象里的Visitor模式，最后AST会坍塌成一个结果。比如你想美化打印AST，最后会得到一个字符串，再比如有个四则运算的AST，你想求值运算的结果，最后会得到一个数字。首先unFix拆开得到Functor，fmap进到Functor里递归的eval，最后自底向上一层层alg的结果上来把Functor树坍塌成一个结果。</p>
+<p>理解了这些，是时候搞点事了：</p>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="comment">-- 求值成Int（这里的Nat是Fix NatF）</span></div><div class="line"><span class="title">eval_int</span> :: <span class="type">Nat</span> -&gt; <span class="type">Int</span></div><div class="line"><span class="title">eval_int</span> = cata phi <span class="keyword">where</span></div><div class="line">  phi <span class="type">ZeroF</span> = <span class="number">0</span></div><div class="line">  phi (<span class="type">SuccF</span> x) = x + <span class="number">1</span></div><div class="line"></div><div class="line"><span class="comment">-- eval_int (Fix (SuccF (Fix (SuccF (Fix (SuccF (Fix (SuccF (Fix ZeroF)))))))))</span></div><div class="line"><span class="comment">-- =&gt; 4</span></div><div class="line"></div><div class="line"><span class="comment">-- 加法</span></div><div class="line"><span class="title">plus</span> :: <span class="type">Nat</span> -&gt; <span class="type">Nat</span> -&gt; <span class="type">Nat</span></div><div class="line"><span class="title">plus</span> n = cata phi <span class="keyword">where</span></div><div class="line">  phi <span class="type">ZeroF</span> = n</div><div class="line">  phi (<span class="type">SuccF</span> m) = <span class="type">Fix</span> $ <span class="type">SuccF</span> m</div><div class="line"></div><div class="line"><span class="comment">-- eval_int $ plus (Fix (SuccF (Fix (SuccF (Fix ZeroF))))) (Fix (SuccF (Fix ZeroF)))</span></div><div class="line"><span class="comment">-- =&gt; 3</span></div><div class="line"></div><div class="line"><span class="comment">-- Pretty Print</span></div><div class="line"><span class="keyword">import</span> Text.PrettyPrint (<span class="type">Doc</span>, <span class="title">render</span>)</div><div class="line"><span class="keyword">import</span> <span class="keyword">qualified</span> Text.PrettyPrint <span class="keyword">as</span> P</div><div class="line"></div><div class="line"><span class="title">pretty</span> :: <span class="type">NatF</span> <span class="type">Doc</span> -&gt; <span class="type">Doc</span></div><div class="line"><span class="title">pretty</span> <span class="type">ZeroF</span> = <span class="type">P</span>.text <span class="string">"0"</span></div><div class="line"><span class="title">pretty</span> (<span class="type">SuccF</span> x) = <span class="type">P</span>.parens (<span class="type">P</span>.cat [<span class="type">P</span>.text <span class="string">"+ 1 "</span>, x])</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">instance</span> <span class="type">Show</span> <span class="type">Nat</span> <span class="keyword">where</span></span></div><div class="line">  show = render . cata pretty</div><div class="line"></div><div class="line"><span class="comment">-- show $ plus (Fix (SuccF (Fix (SuccF (Fix ZeroF))))) (Fix (SuccF (Fix ZeroF)))</span></div><div class="line"><span class="comment">-- =&gt; "(+ 1 (+ 1 (+ 1 0)))"</span></div></pre></td></tr></table></figure>
+<p>如果我们把图里的箭头都反过来，我们可以得到一个叫Anamorphism的东西，Catamorphism把复杂的东西简化，Anamorphism从简单的东西搭建出复杂的类型：</p>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">type</span> <span class="type">CoAlgebra</span> f a = a -&gt; f a</span></div><div class="line"></div><div class="line"><span class="title">ana</span> :: <span class="type">Functor</span> f =&gt; <span class="type">CoAlgebra</span> f a -&gt; a -&gt; <span class="type">Fix</span> f</div><div class="line"><span class="title">ana</span> coalg = <span class="type">Fix</span> . fmap (ana coalg) . coalg</div></pre></td></tr></table></figure>
+<p>举个例子，我们可以从Int反向造出一个<code>Nat</code>来：</p>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="title">toNatF</span> :: <span class="type">Int</span> -&gt; <span class="type">Nat</span></div><div class="line"><span class="title">toNatF</span> = ana phi <span class="keyword">where</span></div><div class="line">  phi <span class="number">0</span> = <span class="type">ZeroF</span></div><div class="line">  phi n = <span class="type">SuccF</span> (n<span class="number">-1</span>)</div><div class="line">  </div><div class="line"><span class="comment">-- toNatF 3</span></div><div class="line"><span class="comment">-- =&gt; (Fix (SuccF (Fix (SuccF (Fix (SuccF (Fix ZeroF)))))))</span></div></pre></td></tr></table></figure>
+<p>最后试试Fibonacci：</p>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="title">fib_cata</span> = fst . cata phi <span class="keyword">where</span></div><div class="line">  phi <span class="type">ZeroF</span> = (<span class="number">0</span>, <span class="number">1</span>)</div><div class="line">  phi (<span class="type">SuccF</span> (a, b)) = (b, a+b)</div><div class="line">  </div><div class="line"><span class="comment">-- fib_cata $ toNatF 20</span></div><div class="line"><span class="comment">-- 6765</span></div></pre></td></tr></table></figure>
+<p>嗯，Catamorphism就这么多了，以后说不定会编个Part 3出来，Fusion，Histomorphism啥的。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/学习一个/" rel="tag">#学习一个</a>
+          
+            <a href="/tags/Haskell/" rel="tag">#Haskell</a>
+          
+            <a href="/tags/Category-Theroy/" rel="tag">#Category Theroy</a>
+          
+            <a href="/tags/Catamorphism/" rel="tag">#Catamorphism</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/Haskell/2017-11-30-fibonacci/" rel="next" title="Fibonacci in Haskell">
+                <i class="fa fa-chevron-left"></i> Fibonacci in Haskell
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/posts/杂谈/2018-03-02-dvorak/" rel="prev" title="Dvorak五年有感">
+                Dvorak五年有感 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/haskell.png"
+               alt="Merlin" />
+          <p class="site-author-name" itemprop="name">Merlin</p>
+          <p class="site-description motion-element" itemprop="description">Denn man hat in der Welt nicht viel mehr, als die Wahl zwischen Einsamkeit und Gemeinheit.</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">14</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/ACEMerlin/" target="_blank" title="GitHub" rel="external nofollow">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <p class="post-toc-empty">This post does not have a Table of Contents</p>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Merlin</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io" rel="external nofollow">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" rel="external nofollow">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+
+  
+<script type="text/javascript" async src="//push.zhanzhang.baidu.com/push.js">
+</script>
+
+</body>
+</html>

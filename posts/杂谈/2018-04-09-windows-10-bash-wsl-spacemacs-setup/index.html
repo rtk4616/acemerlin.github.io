@@ -1,0 +1,704 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Emacs,Windows,WSL," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="I’ve always been using Mac for programming since my first job. I don’t actually own one myself because the company always give me one. But I just quit my last j">
+<meta name="keywords" content="Emacs,Windows,WSL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Windows 10 Bash &amp; Linux Subsystem &amp; Spacemacs Setup">
+<meta property="og:url" content="https://acemerlin.github.io/posts/杂谈/2018-04-09-windows-10-bash-wsl-spacemacs-setup/index.html">
+<meta property="og:site_name" content="fmap happier $ Life me">
+<meta property="og:description" content="I’ve always been using Mac for programming since my first job. I don’t actually own one myself because the company always give me one. But I just quit my last job and I’m broken af. So back to my old">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://acemerlin.github.io/images/emacs-wsl.png">
+<meta property="og:updated_time" content="2018-05-29T10:39:13.070Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Windows 10 Bash &amp; Linux Subsystem &amp; Spacemacs Setup">
+<meta name="twitter:description" content="I’ve always been using Mac for programming since my first job. I don’t actually own one myself because the company always give me one. But I just quit my last job and I’m broken af. So back to my old">
+<meta name="twitter:image" content="https://acemerlin.github.io/images/emacs-wsl.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://acemerlin.github.io/posts/杂谈/2018-04-09-windows-10-bash-wsl-spacemacs-setup/"/>
+
+  <title> Windows 10 Bash & Linux Subsystem & Spacemacs Setup | fmap happier $ Life me </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-55892506-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">fmap happier $ Life me</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">All about CS</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            四零四
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Windows 10 Bash & Linux Subsystem & Spacemacs Setup
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2018-04-09T19:43:21+08:00" content="2018-04-09">
+              2018-04-09
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/杂谈/" itemprop="url" rel="index">
+                    <span itemprop="name">杂谈</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>I’ve always been using Mac for programming since my first job. I don’t actually own one myself because the company always give me one. But I just quit my last job and I’m broken af. So back to my old friend windows I guess! Anyway here are the steps:</p>
+<a id="more"></a>
+<h2 id="wslwindows-subsystem-for-linux-hyper-a-fancy-terminal">WSL(Windows Subsystem for Linux) &amp; Hyper (a fancy terminal)</h2>
+<ul>
+<li>Install WSL, You can <a href="https://www.youtube.com/watch?v=Cvrqmq9A3tA" target="_blank" rel="noopener">watch this youtube video</a></li>
+<li><p>Install <a href="https://chocolatey.org/install#install-with-cmdexe" target="_blank" rel="noopener">choco</a> <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">@<span class="string">"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe"</span> -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command <span class="string">"iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))"</span> &amp;&amp; SET <span class="string">"PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin"</span></div></pre></td></tr></table></figure></p></li>
+<li><p>Install <a href="https://github.com/zeit/hyper" target="_blank" rel="noopener">hyper</a> <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">choco install hyper</div></pre></td></tr></table></figure></p></li>
+</ul>
+<p>After this, you may want to use zsh and switch hyper’s default shell to zsh</p>
+<h2 id="zsh">Zsh</h2>
+<ul>
+<li>Install zsh &amp; oh-my-zsh</li>
+<li>Set zsh as default shell in WSL (<a href="https://medium.com/@vinhpz/set-and-use-zsh-as-default-shell-in-wsl-on-windows-10-the-right-way-4f30ed9592dc" target="_blank" rel="noopener">link</a>)</li>
+</ul>
+<p>You may want to know where the hyper configuration file is: <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">C:\Users\$&#123;USER&#125;\.hyper.js</div></pre></td></tr></table></figure></p>
+<h2 id="shadowsocks-proxychains">Shadowsocks &amp; Proxychains</h2>
+<p>For people like me in China, we all need this one more step…</p>
+<ul>
+<li>Get yourself a shadowsocks server</li>
+<li><p>Install shadowsocks client on ubuntu <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install python-pip</div><div class="line">sudo pip install shadowsocks</div><div class="line">sslocal -s server-here -p server-port-here -k password-here -l <span class="built_in">local</span>-port-here -t timeout-time-here -m encryption-method-here</div></pre></td></tr></table></figure></p></li>
+<li><p>Install and use proxychains (<a href="https://github.com/shadowsocks/shadowsocks/wiki/Using-Shadowsocks-with-Command-Line-Tools" target="_blank" rel="noopener">link</a>) <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install proxychains</div></pre></td></tr></table></figure></p></li>
+</ul>
+<h2 id="emacs25-vcxsrv">Emacs25 &amp; VcXsrv</h2>
+<ul>
+<li>Install emacs 25 on ubuntu (<a href="http://ubuntuhandbook.org/index.php/2017/04/install-emacs-25-ppa-ubuntu-16-04-14-04/" target="_blank" rel="noopener">link</a>)</li>
+<li>Install spacemacs</li>
+<li>If you use magit and on ubuntu 14.04, you need to upgrade git (<a href="https://askubuntu.com/questions/579589/upgrade-git-version-on-ubuntu-14-04" target="_blank" rel="noopener">link</a>)</li>
+<li>Install <a href="https://sourceforge.net/projects/vcxsrv" target="_blank" rel="noopener">VcXsrv</a> unless you just use emacs inside the terminal. As for me, I need GUI for Nyan cat</li>
+<li>I like <a href="https://github.com/tonsky/FiraCode/wiki/Linux-instructions" target="_blank" rel="noopener">Firacode</a> font, so I also installed it</li>
+<li>Open XLauncher on windows with display number being 0</li>
+<li>Set this inside WSL: <code>export DISPLAY=localhost:0.0</code></li>
+<li>And launch emacs</li>
+</ul>
+<p>It’s not perfect. It’s slow af. The text is blurry and Chinese characters are a mess. But I think I can take it after all this trouble.</p>
+<p>Update 1:</p>
+<blockquote>
+<p>I can’t visit my local hexo server through <code>127.0.0.1:4000</code>. After searching for a while, It turns out that it’s wegame’s fault (<a href="https://github.com/Microsoft/WSL/issues/1554" target="_blank" rel="noopener">link</a>). To solve this, you need to delete <code>%systemroot%\system32\drivers\QMTgpNetflow764.sys</code> and restart your computer. Or just uninstall wegame.</p>
+</blockquote>
+<p>Update 2:</p>
+<blockquote>
+<p>To install rtags on ubuntu 14.04: <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install clang-3.9 llvm-3.9 libclang-3.9-dev \</div><div class="line">&amp; sudo update-alternatives --install /usr/bin/cc cc /usr/bin/clang-3.9 100 \</div><div class="line">&amp; sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-3.9 100 \</div><div class="line">&amp; git <span class="built_in">clone</span> --recursive https://github.com/Andersbakken/rtags.git \</div><div class="line">&amp; <span class="built_in">cd</span> rtags \</div><div class="line">&amp; cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1 . \</div><div class="line">&amp; make</div></pre></td></tr></table></figure></p>
+</blockquote>
+<p>Update 3:</p>
+<blockquote>
+<p>Ubuntu 18.04 is out: <a href="https://www.microsoft.com/en-us/store/p/ubuntu-1804/9n9tngvndl3q" target="_blank" rel="noopener">link</a></p>
+</blockquote>
+<p>Update 4:</p>
+<blockquote>
+<p>I get rid of hyper and use <a href="https://github.com/goreliu/wsl-terminal" target="_blank" rel="noopener">this</a> terminal now. Since it supports 24bits color, I only use emacs in terminal mode now. NO MORE X11 SERVER AND SHIT. Here is the result:</p>
+</blockquote>
+<div class="figure">
+<img src="/images/emacs-wsl.png">
+
+</div>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Emacs/" rel="tag">#Emacs</a>
+          
+            <a href="/tags/Windows/" rel="tag">#Windows</a>
+          
+            <a href="/tags/WSL/" rel="tag">#WSL</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/杂谈/2018-03-02-dvorak/" rel="next" title="Dvorak五年有感">
+                <i class="fa fa-chevron-left"></i> Dvorak五年有感
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/haskell.png"
+               alt="Merlin" />
+          <p class="site-author-name" itemprop="name">Merlin</p>
+          <p class="site-description motion-element" itemprop="description">Denn man hat in der Welt nicht viel mehr, als die Wahl zwischen Einsamkeit und Gemeinheit.</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">14</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/ACEMerlin/" target="_blank" title="GitHub" rel="external nofollow">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#wslwindows-subsystem-for-linux-hyper-a-fancy-terminal"><span class="nav-number">1.</span> <span class="nav-text">WSL(Windows Subsystem for Linux) & Hyper (a fancy terminal)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#zsh"><span class="nav-number">2.</span> <span class="nav-text">Zsh</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#shadowsocks-proxychains"><span class="nav-number">3.</span> <span class="nav-text">Shadowsocks & Proxychains</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#emacs25-vcxsrv"><span class="nav-number">4.</span> <span class="nav-text">Emacs25 & VcXsrv</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Merlin</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io" rel="external nofollow">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" rel="external nofollow">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+
+  
+<script type="text/javascript" async src="//push.zhanzhang.baidu.com/push.js">
+</script>
+
+</body>
+</html>

@@ -1,0 +1,747 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="学习一个,Haskell," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="Fibonacci，想试试用Haskell写，没想到有很多有很多有意思的东西。一步一步来，首先是定义： 定义：Fibonacci数列是这样0,1,1,2,3,5,8...一串满足F(0)=0,F(1)=1并且当n&amp;gt;=2时有F(n)=F(n-1)+F(n-2)的数列。能算出F(n)的算法有很多，但速度却差别">
+<meta name="keywords" content="学习一个,Haskell">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Fibonacci in Haskell">
+<meta property="og:url" content="https://acemerlin.github.io/posts/Haskell/2017-11-30-fibonacci/index.html">
+<meta property="og:site_name" content="fmap happier $ Life me">
+<meta property="og:description" content="Fibonacci，想试试用Haskell写，没想到有很多有很多有意思的东西。一步一步来，首先是定义： 定义：Fibonacci数列是这样0,1,1,2,3,5,8...一串满足F(0)=0,F(1)=1并且当n&amp;gt;=2时有F(n)=F(n-1)+F(n-2)的数列。能算出F(n)的算法有很多，但速度却差别很大：">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://acemerlin.github.io/images/iterate.jpg">
+<meta property="og:image" content="https://acemerlin.github.io/images/come-on.gif">
+<meta property="og:updated_time" content="2018-03-02T09:41:40.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Fibonacci in Haskell">
+<meta name="twitter:description" content="Fibonacci，想试试用Haskell写，没想到有很多有很多有意思的东西。一步一步来，首先是定义： 定义：Fibonacci数列是这样0,1,1,2,3,5,8...一串满足F(0)=0,F(1)=1并且当n&amp;gt;=2时有F(n)=F(n-1)+F(n-2)的数列。能算出F(n)的算法有很多，但速度却差别很大：">
+<meta name="twitter:image" content="https://acemerlin.github.io/images/iterate.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://acemerlin.github.io/posts/Haskell/2017-11-30-fibonacci/"/>
+
+  <title> Fibonacci in Haskell | fmap happier $ Life me </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-55892506-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">fmap happier $ Life me</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">All about CS</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            四零四
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Fibonacci in Haskell
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2017-11-30T20:34:51+08:00" content="2017-11-30">
+              2017-11-30
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Haskell/" itemprop="url" rel="index">
+                    <span itemprop="name">Haskell</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Fibonacci，想试试用Haskell写，没想到<a href="https://wiki.haskell.org/The_Fibonacci_sequence" target="_blank" rel="noopener">有很多</a>有很多有意思的东西。一步一步来，首先是定义：</p>
+<p>定义：Fibonacci数列是这样<code>0,1,1,2,3,5,8...</code>一串满足<code>F(0)=0</code>,<code>F(1)=1</code>并且当<code>n&gt;=2</code>时有<code>F(n)=F(n-1)+F(n-2)</code>的数列。能算出<code>F(n)</code>的算法有很多，但速度却差别很大：</p>
+<a id="more"></a>
+<h2 id="最慢的递归">最慢的递归</h2>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="title">fibs</span> <span class="number">0</span> = <span class="number">0</span></div><div class="line"><span class="title">fibs</span> <span class="number">1</span> = <span class="number">1</span></div><div class="line"><span class="title">fibs</span> n = fib (n<span class="number">-1</span>) + fib (n<span class="number">-2</span>)</div></pre></td></tr></table></figure>
+<p>想象一下展开的树，自顶向下有很多重复的分支，我试了一下，算<code>fibs 40</code>都有明显的迟钝了。空间复杂度为<span class="math inline">\(\Theta(n)\)</span>，时间复杂度为<span class="math inline">\(\Theta(\phi^n)\)</span>，其中<span class="math inline">\(\phi = \frac{\sqrt{5}+1}{2}\)</span>，呈指数型增长。</p>
+<h2 id="快一点的迭代">快一点的迭代</h2>
+<p>搞过ACM的上来肯定上了想到的就是动态规划（DP）了。DP我感觉就是带memorization的iteration，如果已经有<code>F(k-2)</code>和<code>F(k-1)</code>，那么直接加一起就是<code>F(k)</code>，然后重复此过程把<code>F(k-1)</code>和<code>F(k)</code>加一起得到<code>F(k+1)</code>直到<code>k=n</code>：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">fib</span><span class="params">(<span class="keyword">int</span> n)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">  <span class="keyword">int</span> a = <span class="number">0</span>;</div><div class="line">  <span class="keyword">int</span> b = <span class="number">1</span>;</div><div class="line">  <span class="keyword">while</span> (n-- &gt; <span class="number">1</span>) &#123;</div><div class="line">    <span class="keyword">int</span> t = a;</div><div class="line">    a = b;</div><div class="line">    b += t;</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> b;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>自底向上，没有重复的计算，没有膨胀的堆栈，空间、时间复杂度分别为<span class="math inline">\(\Theta(1)\)</span>，<span class="math inline">\(\Theta(n)\)</span>。这个在Haskell中借助<code>iterate</code>有个很hacky的实现。首先要知道Haskell是惰性求值的，比如有个product，<code>(2 + 3, 4)</code>在其他语言中存在内存里一般就是<code>(5, 4)</code>, 而在Haskell里不会计算<code>2 + 3</code>，只有访问product的第一个元素的时候（实际是pattern matching的时候）才会计算，可以把product的第一个元素想象成一个没有参数的lambda，在访问的时候才会求值：<code>(&lt;thunk 2 + 3&gt;, 4)</code>。借助<code>iterate</code>我们能生成一个存有所有Fibonacci数的List，用的时候拿就行了。</p>
+<p>回头看上面c程序，每次循环会算出下一对<code>a</code>和<code>b</code>，类比成下面的过程，<code>x</code>就是<code>a</code>和<code>b</code>的<code>product</code>，<code>f</code>负责算出下一个<code>product</code>：</p>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="title">x</span>           = (<span class="number">0</span>, <span class="number">1</span>)</div><div class="line"><span class="title">f</span> x         = (<span class="number">1</span>, <span class="number">1</span>)</div><div class="line"><span class="title">f</span> $ f x     = (<span class="number">1</span>, <span class="number">2</span>)</div><div class="line"><span class="title">f</span> $ f $ f x = (<span class="number">2</span>, <span class="number">3</span>)</div><div class="line">...</div><div class="line"><span class="comment">-- f 就是一个简单的lambda：</span></div><div class="line"><span class="title">f</span> = \(a, b) -&gt; (b, a + b)</div></pre></td></tr></table></figure>
+<p>这是Haskell中的iterate：</p>
+<div class="figure">
+<img src="/images/iterate.jpg">
+
+</div>
+<p>借助iterate就能算出所有的product：</p>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="title">iterate</span> (\(a, b) -&gt; (b, a + b)) (<span class="number">0</span>, <span class="number">1</span>)</div><div class="line"><span class="comment">-- ==&gt; [(0,1),(1,1),(1,2),(2,3),(3,5),...]</span></div></pre></td></tr></table></figure>
+<p>最后就简单了，只要把每个product的一个元素拿出来就是所有的Fibonacci数了：</p>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="title">fibs</span> = map fst $ iterate f x</div></pre></td></tr></table></figure>
+<p>看起来很正常，为什么说它hacky呢？可以<a href="https://www.reddit.com/r/haskell/comments/6dp9iw/is_haskell_doing_some_magic_with_iterate/" target="_blank" rel="noopener">看这里</a>，总结下来就是Full Laziness会用更多内存，并带来性能问题，这也就是问什么<a href="https://wiki.haskell.org/The_Fibonacci_sequence" target="_blank" rel="noopener">wiki</a>里尾递归版本使用了<a href="https://ocharles.org.uk/blog/posts/2014-12-05-bang-patterns.html" target="_blank" rel="noopener">Bang Patterns</a>，而<code>iterate</code>借助fold/build避免了构建list和pattern matching所带来的性能消耗。</p>
+<p>按照这个思路，我试着用ruby实现了一下：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">iterate = -&gt; (x, &amp;block) <span class="keyword">do</span></div><div class="line">  Enumerator.new <span class="keyword">do</span> <span class="params">|yielder|</span></div><div class="line">    loop <span class="keyword">do</span></div><div class="line">      yielder &lt;&lt; x</div><div class="line">      x = block.call(x)</div><div class="line">    <span class="keyword">end</span></div><div class="line">  <span class="keyword">end</span>.lazy</div><div class="line"><span class="keyword">end</span></div><div class="line"></div><div class="line">x = [<span class="number">0</span>, <span class="number">1</span>]</div><div class="line">f = -&gt;(ab) &#123; [ab[<span class="number">1</span>], ab[<span class="number">0</span>]+ab[<span class="number">1</span>]] &#125;</div><div class="line"></div><div class="line">fibs = iterate.call(x, &amp;f).map(&amp;<span class="symbol">:first</span>)</div><div class="line"><span class="comment"># 但很快就stack too big了...</span></div></pre></td></tr></table></figure>
+<p>实际上<code>f</code>可以很灵活，比如：</p>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="title">f</span> = \(a, b) -&gt; (a + b, a + <span class="number">2</span> * b)</div></pre></td></tr></table></figure>
+<p>这样product列表就是这样<code>[(1,1),(2,3),(5,8),...]</code>(从1开始)，正是所有的Fibonacci数，接下来flatmap就行了。</p>
+<p>还有一个很fancy的方法是这个：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">fibs = 0 : 1 : zipWith (+) fibs (tail fibs)</div></pre></td></tr></table></figure>
+<p>Stackoverflow上有两个答案解释的比较清楚：</p>
+<ul>
+<li><a href="https://stackoverflow.com/a/31675593" target="_blank" rel="noopener">Understanding concatMap recursion</a></li>
+<li><a href="https://stackoverflow.com/a/6274016" target="_blank" rel="noopener">Understanding a recursively defined list (fibs in terms of zipWith)</a></li>
+</ul>
+<p>当你把它塞到<a href="http://pointfree.io/" target="_blank" rel="noopener">point free converter</a>里，得到的是这坨WTF的东西：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">fib = fix ((0 :) . (1 :) . ap (zipWith (+)) tail)</div></pre></td></tr></table></figure>
+<div class="figure">
+<img src="/images/come-on.gif">
+
+</div>
+<p>首先<code>ap (zipWith (+)) tail</code>其实是<code>\xs -&gt;  zipWith (+) xs (tail xs)</code>（可以看<a href="https://stackoverflow.com/questions/19181917/how-does-the-expression-ap-zip-tail-work" target="_blank" rel="noopener">这里</a>）。ok，这个fix看名字应该是不动点，根据不动点的定义应该是这样的<code>fix f = f (fix f)</code>，但Haskell实际是这么实现的<code>fix f = let x = f x in x</code>。<a href="https://stackoverflow.com/questions/37366222/why-is-this-version-of-fix-more-efficient-in-haskell" target="_blank" rel="noopener">查了一下</a>，这样写会快一些。让我奇怪的不是这个，而是：</p>
+<ul>
+<li>并不是所以的<code>fix f</code>都是收敛的，但似乎Haskell通过bottom类型hack了这个问题。</li>
+<li>fix怎么能生成无穷数列，像tail这种函数为什么能用在无穷数列上。</li>
+</ul>
+<p>我知道你又要说惰性求值，但是似乎无论用<code>iterate</code>还是<code>zipWith</code>，无论用Haskell还是Ruby，我感觉这些好像都有某种内在的联系，某种无穷数据类型和递归直接的联系。以前看SICP时没深究，只知道<a href="https://github.com/ACEMerlin/hackerrank-fp-answers/blob/5602130f741e23707cba9d68ef6869f40bb54f42/recursion/fibonacci.lisp#L10" target="_blank" rel="noopener">迭代</a>需要多加点变量来记录计算的状态。现在看了<a href="http://blog.sigfpe.com/2007/07/data-and-codata.html" target="_blank" rel="noopener">这篇文章</a>，才知道它们都是Corecursion。</p>
+<p>有关Corecursion的东西可以看<a href="https://en.wikipedia.org/wiki/Corecursion" target="_blank" rel="noopener">Wikipedia</a>，我没大看懂，不过圈一下重点：</p>
+<ul>
+<li>递归自顶向下拆数据，递归不一定终止，但structural recursion可以终止，利用归纳推理可以证明。</li>
+<li>Corecursion自底向上生成数据，这个过程不一定有限，所以在严格规约下不会终止，所以一般和惰性求值配合使用。生成的数据可以有限或者无限。</li>
+<li>Corecursion在FP语言里很重要，因为可以用来处理无穷数据结构，比如网络流什么的。</li>
+<li>在命令式语言里，Corecursion一般用<a href="https://en.wikipedia.org/wiki/Generator_%28computer_programming%29" target="_blank" rel="noopener">Generator</a>实现。正好对应着上面Ruby版本里的Enumerator。</li>
+</ul>
+<p>往下好像涉及到范畴论，F-algebra、F-coalgebra什么的，真是让人头大，有时间再看吧。</p>
+<p>搞了这么多都是迭代，时间复杂度还是<span class="math inline">\(\Theta(n)\)</span>，算第1000000个会很久。想更快就要用数学了。</p>
+<h2 id="faster">Faster!!</h2>
+<p><span class="math display">\[
+\begin{align*}
+F(n+1) &amp;= 1\,F(n) + 1\,F(n-1)\\
+F(n) &amp;= 1\,F(n) + 0\,F(n-1)\\
+\\
+\begin{bmatrix} F(n+1) \\ F(n) \end{bmatrix} &amp;= \begin{bmatrix} 1 &amp; 1 \\ 1 &amp; 0 \end{bmatrix} \begin{bmatrix} F(n) \\ F(n - 1) \end{bmatrix} \\
+\begin{bmatrix} F(n+1) \\ F(n) \end{bmatrix} &amp;= \begin{bmatrix} 1 &amp; 1 \\ 1 &amp; 0 \end{bmatrix}^n \begin{bmatrix} F(1) \\ F(0) \end{bmatrix} \\
+\\
+\text{并且} \\
+\begin{bmatrix} F(n) \\ F(n-1) \end{bmatrix} &amp;= \begin{bmatrix} 1 &amp; 1 \\ 1 &amp; 0 \end{bmatrix}^n \begin{bmatrix} F(0) \\ F(-1) \end{bmatrix} \\
+\\
+\text{于是得到}\\
+\begin{bmatrix} F(n+1) &amp; F(n) \\ F(n) &amp; F(n-1) \end{bmatrix} &amp;= \begin{bmatrix} 1 &amp; 1 \\ 1 &amp; 0 \end{bmatrix}^n \begin{bmatrix} F(1) &amp; F(0) \\ F(0) &amp; F(-1) \end{bmatrix} \\
+\\
+\text{其中} \\
+F(1) &amp;= 1 \\
+F(0) &amp;= 0 \\
+F(-1) &amp;= 1
+\end{align*}
+\]</span></p>
+<p>右边的矩阵是个单位矩阵，于是就得出结论啦：</p>
+<p><span class="math display">\[
+\begin{pmatrix}
+1 &amp; 1\\
+1 &amp; 0
+\end{pmatrix}^n
+= 
+\begin{pmatrix}
+F_{n+1} &amp; F_n\\
+F_{n} &amp; F_{n-1}
+\end{pmatrix}
+\]</span></p>
+<p>于是算第n个Fibonacci数的问题就简化成了求矩阵n次方的问题，注意这里要用矩阵快速幂算法才能达到<span class="math inline">\(\Theta(logN)\)</span>（可参考TAOCP卷二4.63节），不然就会退化成动态规划。</p>
+<p>Haskell的实现利用Num的特性，只需实现<code>*</code>就行了：</p>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">newtype</span> <span class="type">Mat</span> a =</span></div><div class="line">  <span class="type">Mat</span> [[a]]</div><div class="line">  <span class="keyword">deriving</span> (<span class="type">Eq</span>, <span class="type">Show</span>)</div><div class="line"> </div><div class="line"><span class="class"><span class="keyword">instance</span> <span class="type">Num</span> a =&gt;</span></div><div class="line"><span class="class">         <span class="type">Num</span> (<span class="type">Mat</span> <span class="title">a</span>) <span class="keyword">where</span></span></div><div class="line">  <span class="type">Mat</span> x * <span class="type">Mat</span> y =</div><div class="line">    <span class="type">Mat</span></div><div class="line">      [ [ sum $ zipWith (*) xs ys</div><div class="line">        | ys &lt;- transpose y ]</div><div class="line">      | xs &lt;- x ]</div><div class="line">  negate = undefined</div><div class="line">  (+) = undefined</div><div class="line">  abs = undefined</div><div class="line">  fromInteger _ = undefined</div><div class="line">  signum = undefined</div><div class="line"></div><div class="line"><span class="title">fib_matrix</span> <span class="number">0</span> = <span class="number">0</span></div><div class="line"><span class="title">fib_matrix</span> n = l $ <span class="type">Mat</span> [[<span class="number">1</span>, <span class="number">1</span>], [<span class="number">1</span>, <span class="number">0</span>]] ^ n</div><div class="line">  <span class="keyword">where</span> l (<span class="type">Mat</span> a) = head a !! <span class="number">1</span></div></pre></td></tr></table></figure>
+<p><a href="https://www.nayuki.io/page/fast-fibonacci-algorithms" target="_blank" rel="noopener">这里</a>还有个据说更快的方法Fast doubling，利用上面的矩阵能推导出来，时间复杂度同样是<span class="math inline">\(\Theta(logN)\)</span>，似乎快那么一点。</p>
+<p>嗯，Fibonacci就这样了，茴香豆的茴字有很多种写法。</p>
+<p>有空还是要看看范畴论，不然总感觉缺了点啥。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/学习一个/" rel="tag">#学习一个</a>
+          
+            <a href="/tags/Haskell/" rel="tag">#Haskell</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/Life/2017-07-05-thats-it-for-my-first-job/" rel="next" title="That's it for my first job">
+                <i class="fa fa-chevron-left"></i> That's it for my first job
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/posts/Haskell/2018-02-09-fibonacci-and-catamorphism/" rel="prev" title="Fibonacci and Catamorphism">
+                Fibonacci and Catamorphism <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/haskell.png"
+               alt="Merlin" />
+          <p class="site-author-name" itemprop="name">Merlin</p>
+          <p class="site-description motion-element" itemprop="description">Denn man hat in der Welt nicht viel mehr, als die Wahl zwischen Einsamkeit und Gemeinheit.</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">14</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/ACEMerlin/" target="_blank" title="GitHub" rel="external nofollow">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#最慢的递归"><span class="nav-number">1.</span> <span class="nav-text">最慢的递归</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#快一点的迭代"><span class="nav-number">2.</span> <span class="nav-text">快一点的迭代</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#faster"><span class="nav-number">3.</span> <span class="nav-text">Faster!!</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Merlin</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io" rel="external nofollow">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" rel="external nofollow">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+
+  
+<script type="text/javascript" async src="//push.zhanzhang.baidu.com/push.js">
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1368 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="PLT,学习一个,Programming Languages," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="前言 （这是“计算的本质”系列文章的第一部分） Why 程序语言在程序员手里就像画家手里的画笔和颜料，重点本应该是用画笔和颜料创造出来的作品，但随着现在程序语言大爆炸，好多‘新’的概念都涌现了出来，大家的重点都移向了这些新语言和概念的学习，很多人因为对这些东西没有一个整体的认知，很容易迷失方向，更可怕的是出现了很多宗教">
+<meta name="keywords" content="PLT,学习一个,Programming Languages">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算的本质 Part 1">
+<meta property="og:url" content="https://acemerlin.github.io/posts/计算的本质/2017-01-24-introduction-to-computation-part-1/index.html">
+<meta property="og:site_name" content="fmap happier $ Life me">
+<meta property="og:description" content="前言 （这是“计算的本质”系列文章的第一部分） Why 程序语言在程序员手里就像画家手里的画笔和颜料，重点本应该是用画笔和颜料创造出来的作品，但随着现在程序语言大爆炸，好多‘新’的概念都涌现了出来，大家的重点都移向了这些新语言和概念的学习，很多人因为对这些东西没有一个整体的认知，很容易迷失方向，更可怕的是出现了很多宗教一样的崇拜，觉得用这个语言自己就很优越了，真是够了。我把学习分为三个层次：  看">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://acemerlin.github.io/images/mountain.png">
+<meta property="og:image" content="https://acemerlin.github.io/images/string.png">
+<meta property="og:image" content="https://acemerlin.github.io/images/tokens.png">
+<meta property="og:image" content="https://acemerlin.github.io/images/ast.png">
+<meta property="og:updated_time" content="2017-01-25T19:34:14.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="计算的本质 Part 1">
+<meta name="twitter:description" content="前言 （这是“计算的本质”系列文章的第一部分） Why 程序语言在程序员手里就像画家手里的画笔和颜料，重点本应该是用画笔和颜料创造出来的作品，但随着现在程序语言大爆炸，好多‘新’的概念都涌现了出来，大家的重点都移向了这些新语言和概念的学习，很多人因为对这些东西没有一个整体的认知，很容易迷失方向，更可怕的是出现了很多宗教一样的崇拜，觉得用这个语言自己就很优越了，真是够了。我把学习分为三个层次：  看">
+<meta name="twitter:image" content="https://acemerlin.github.io/images/mountain.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://acemerlin.github.io/posts/计算的本质/2017-01-24-introduction-to-computation-part-1/"/>
+
+  <title> 计算的本质 Part 1 | fmap happier $ Life me </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-55892506-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">fmap happier $ Life me</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">All about CS</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            四零四
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                计算的本质 Part 1
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2017-01-24T16:43:00+08:00" content="2017-01-24">
+              2017-01-24
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/计算的本质/" itemprop="url" rel="index">
+                    <span itemprop="name">计算的本质</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言">前言</h2>
+<p>（<em>这是“计算的本质”系列文章的第一部分</em>）</p>
+<h3 id="why">Why</h3>
+<p>程序语言在程序员手里就像画家手里的画笔和颜料，重点本应该是用画笔和颜料创造出来的作品，但随着现在程序语言大爆炸，好多‘新’的概念都涌现了出来，大家的重点都移向了这些新语言和概念的学习，很多人因为对这些东西没有一个整体的认知，很容易迷失方向，更可怕的是出现了很多宗教一样的崇拜，觉得用这个语言自己就很优越了，真是够了。我把学习分为三个层次：</p>
+<ul>
+<li>看山是山：一开始，你接触一个新语言，其中的特性都很神奇、诱人，刷新了你对程序语言的认知，你毫不犹豫的接受了它；</li>
+<li>看山不是山：后来，你学了足够多的程序语言了，自己也尝试过实现自己的语言，你再看一个语言，就会下意识的考虑：这是编译运行的还是解释运行的还是两者都有？这是静态语言还是动态语言？这里的类型系统强大吗？能像Haskell和Ocaml一样在编译期就发现足够丰富的错误吗？是强类型的还是弱类型的？是静态类型检查还是动态类型检查？支持Duck typing吗？这是FP还是OOP还是FP+OOP？这里的OOP是Single Dispatch还是Multiple Dispatch还是Dynamic Dispatch？这里是哪种polymorphism，是Ad hoc polymorphism还是参数polymorphism（Java中的泛型、C++中的模板）还是子类型系统？推崇的是不可变数据类型还是可变数据类型？这里的并发模型是内存共享还是Actor模型还是类似Go的Channel？支持传值调用、传名调用、惰性求值等求值方式吗？有闭包吗？支持First-class continuations吗？支持Pattern Matching吗？能简单的扩展本身的语法吗？支持Lisp一样的宏系统吗？能简单的编写DSL吗？</li>
+<li>看山还是山：最后，给你个程序语言，你看到的就是一个程序语言，各种特性都很方便，你就想打开Emacs开始愉快的编写。为什么你不会再情不自禁的考虑了呢？因为其一，你已经自信到了不必用这种方式来下意识的自我证明“我是懂程序语言的”，你深知自己随时可以判断一门语言的好坏之后，就没有这心思了；其二，你确实也已经用过很多程序语言，所以你会对世上语言的诸多不如意处不加介怀，而去专心感受语言那具有共性的美妙部分，至于别的，fuck it。</li>
+</ul>
+<p>这里的程序语言可以替换成其他许多词，思考的道理是一样的。比如yinwang，一开始是Unix的迷弟，一篇“完全用Linux工作”忽悠了好多人去学Linux，后来深入的学习了Unix，发现什么Unix哲学也是不对的，最后我相信他再用Unix的时候也不会去想什么Unix哲学，因为它已经放下了，一是放过了操作系统，二是放过了自己——当然前提是，他确实懂了，而且知道自己懂了。</p>
+<p>这篇文章的目的就是让读者对程序语言有个全局的理解，从看山是山的境界更上一层楼。</p>
+<a id="more"></a>
+<p>And FYI, part of the reason i wrote this article is that I’m so tired of this “what’s the best programming language” bullshit, there is no such thing, at least for now. The best plan so far is to develop a language that can grow, as explained <a href="http://www.cs.virginia.edu/~evans/cs655/readings/steele.pdf" target="_blank" rel="noopener">here</a>, and the best way to grow a language as i see is by using DSL. And by far the most suitable one to write DSL effortlessly, IMHO, is Lisp (Recently I stumble upon a language called Kotlin which also provide a nice way to write DSL. I’ll talk more about it later). 后面有一章专门讲DSL。</p>
+<h3 id="what-and-how">What and How</h3>
+<p>编写程序的过程在很大程度上就是抽象的过程，编写程序的能力很大程度上取决于程序员的抽象能力。举个例子，当你介绍给别人什么是矩阵的时候，要介绍什么？绝不是甩给别人一个<span class="math inline">\(\begin{vmatrix} 1 &amp; 2 \\ 3 &amp; 4 \\ \end{vmatrix}\)</span>然后告诉他这就是矩阵；决定一个数据结构的不是它的样子，而是数据结构的特定运算、组合、使用的方法，比如矩阵的相乘、相加、求逆、特征值等等很多属性才决定了什么是矩阵。</p>
+<p>现在思考一个问题，当你要介绍给别人一个程序语言的时候，要介绍什么？恩，是的，绝不是甩给别人一段程序告诉他这就是这个语言，决定一个语言的不是它奇怪的数据类型或者语法；那要介绍什么呢，什么决定了一个程序语言？程序语言之间有什么相通点？什么使得这个语言比较特别？</p>
+<p>要回答这些问题，要从18世纪一个人说起，他的名字叫Leibniz，大家都知道他是个数学家，因创造微积分而闻名，其实Leibniz是个全才，他曾提出一个宏伟的想法：</p>
+<ul>
+<li>Create a ‘universal language’ in which all possible problems can be stated. 建立一门“通用语言”，以便表述所有的问题。</li>
+<li>Find a decision method to solve all the problems stated in the universal language. 找到一种判定方法，以便解决所有上面用通用语言陈述的问题。</li>
+</ul>
+<p>经过Frege和Russell等数学家的努力，想法一从数学角度已经可以用类似集合论的理论用一阶逻辑来表述。于是后来想法二成了一个重要的哲学问题：“人能解决所有用通用语言表述的问题吗？”，答案似乎是否定地，但又不知道如何证明，这就是著名的Entscheidungsproblem（德语“判定问题”）。1936年，Alonzo Church和Alan Turing各自独立的给出了判定问题的否定答案。为了解释此问题，就需要“判定”，或者说“可计算”的正规定义，于是他俩分别给出了各自的计算模型：</p>
+<ul>
+<li>Church发明了一套叫做lambda演算的系统，并借此系统定义了可计算函数的概念。</li>
+<li>Turing发明了一种机器（后来被叫做图灵机）并借此机器定义了可计算函数的概念。</li>
+</ul>
+<p>这两种模型都可以用来清晰地定义什么是一个可计算函数，同年，Turing又证明了两种模型是一样的健壮，因为他们定义了相同的可计算函数。后来基于图灵机的概念，出现了冯诺伊曼计算机，其本质就是有着随机访问寄存器的图灵机。命令式语言，如Fortran、Pascal、Java、C，还有汇编语言，都是基于图灵机的基本构造–命令；而与图灵机的抽象倾向于硬件不同，丘齐的lambda算子理论是从数学的角度进行抽象，不关心运算的过程而只关心运算的抽象性质，只用最简洁的几条公理便建立起了与图灵机完全等价的计算模型，于是诞生了像Haskell、ML、F#、Clojure等函数式语言，较早的例子则有Lisp语言。总而言之，几乎所有的程序语言，所有的编程概念、方法都是从这两个模型出发而得到的。</p>
+<p>是的，答案其实很简单，<strong>程序语言背后的计算模型才是决定语言最基本的要素。这个系列的目的就是讲清楚各种程序语言其背后的计算原理</strong>。目前的程序语言主要包含两种，Imperative（命令式）和Functional（函数式），这两者的不同，就是抽象程度、方式的不同，文章会主要介绍这两者。但是注意，这篇文章并不会就某种程序语言开始讲数据类型、关键字和语法，也不会教你怎么写算法、软件。而是从用程序描述并解决数学问题（计算模型）的原始需求出发，逐步讲述编程语言应该提供什么样的特性。<strong>只要抓住这些具有普遍性的关键需求，在学习任何一种新的语言时，就能规避其繁琐的语言特性，从解决问题的角度出发，利用推理能力和抽象思考的能力，快速学习。同时，在设计任何程序、开发框架，或新的语言时，也可以从这些计算过程的基本要素上去展开思考，从而有章可循</strong>。你可以把各种程序语言想象成各种武功秘籍，那我们要学的就是内功心法，没有深厚的内功，没有评判的能力，怕你只会走火入魔，迷失自我。</p>
+<p>总之，这篇文章会帮助读者了解程序语言背后的思想。比如，程序语言和数学的关系是什么？为什么语言要这么设计？什么是求值策略（比如传值调用、传名调用、Lazy求值）？什么是<span class="math inline">\(Lambda\;caculus\)</span>？什么是函数式编程？什么样的语言能称得上一门好的程序语言？或者你只是想写一个简单的语言，这篇文章都能帮助你。文章会很长，不过如果你坚持读完，这一切都是值得的。</p>
+<p>章节分布：</p>
+<p>Part 1:</p>
+<ul>
+<li><p>Mathematical Preliminaries讲的是一些必要的数学知识，对数学不是很了解的可以先看这本书<a href="https://www.amazon.com/Introduction-Mathematical-Thinking-Keith-Devlin/dp/0615653634" target="_blank" rel="noopener">Introduction to Mathematical Thinking</a>，这本书面向的是高中生，非常的易懂，讲了如何用数学的方法描述和证明问题。</p></li>
+<li><p>Language Implementation Preliminaries 讲的是实现一门程序语言必要的知识，让读者对词法分析、语法分析、编译器、解释器、VM、bytecode等概念有一个整体的认识。</p></li>
+<li><p>Programming Languages and Logic讲的是程序语言和逻辑之间的关系，包含了描述程序语义的方法，以及，论证其相应程序属性的方法，并利用操作语义的large-step语义实现了一个简单的命令式语言IMP。</p></li>
+</ul>
+<p>Part 2:</p>
+<ul>
+<li><p>Functional Programming and Lambda Caculus讲得是函数式编程以及<span class="math inline">\(Lambda\;caculas\)</span>，并实现了一个简单的untyped lambda calculus和一个typed lambad calculus。</p></li>
+<li><p>剩下的还在建设中……</p></li>
+</ul>
+<h2 id="mathematical-preliminaries">Mathematical Preliminaries</h2>
+<p>这一章主要介绍一些数学概念，它们在后面的证明程序属性的时候会用到，有些概念不必深究，要不然研究集合论、序论都搞不完了，这些在可以用到的时候再回头看。</p>
+<h3 id="数学归纳法">数学归纳法</h3>
+<p>首先让我们回忆一下数学归纳法，数学归纳法是一种数学证明方法，通常被用于证明某个给定命题在整个（或者局部）自然数范围内成立，最简单和常见的数学归纳法是证明当n等于任意一个自然数时某命题成立。证明分下面两步：</p>
+<ul>
+<li>证明当n = 1时命题成立。</li>
+<li>证明如果在n = m时命题成立，那么可以推导出在n=m+1时命题也成立。（m代表任意自然数）</li>
+</ul>
+<p>举个例子，假设我们要证明下面这个公式（命题P）：<span class="math display">\[1+2+3+\cdots+n=\frac{n(n+1)}{2}\text{,其中n为任意自然数}\]</span></p>
+<ul>
+<li><strong>Case</strong> n = 1：左边=1，而右边=<span class="math inline">\(\frac{1(1+1)}{2}=1\)</span>，所以这个公式在n=1时成立。</li>
+<li><strong>Case</strong> n = m：我们先假设n=m时公式成立：<span class="math display">\[1+2+3+\cdots+m=\frac{m(m+1)}{2}\text{(等式1)}\]</span>然后在等式等号两边分别加上m+1得到：<span class="math display">\[1+2+3+\cdots+m+(m+1)=\frac{m(m+1)}{2}+(m+1)\text{(等式2)}\]</span>规约等式2右边：<span class="math display">\[\frac{m(m+1)}{2}+(m+1)=\frac{(m+1)[(m+1)+1]}{2}\text{(等式3)}\]</span>由等式2和3可得：<span class="math display">\[1+2+3+\cdots+(m+1)=\frac{(m+1)[(m+1)+1]}{2}\]</span>所以，从P(m)成立可以推导出P(m+1)也成立。证明至此完成，结论：对于任意自然数n，P(n)均成立。</li>
+</ul>
+<p>这种证明方法可以向广义延伸，这种广义的数学归纳法应用于数学逻辑和计算机科学领域，称作结构归纳法。</p>
+<h3 id="结构归纳法">结构归纳法</h3>
+<h4 id="逻辑蕴含">逻辑蕴含</h4>
+<p>首先复习一下逻辑蕴含，满足if P, then Q，则称P蕴含Q，用<span class="math inline">\(P \implies Q\)</span>表示，逻辑蕴含的真值表为：</p>
+<table>
+<thead>
+<tr class="header">
+<th align="right">P</th>
+<th align="center">Q</th>
+<th align="center"><span class="math inline">\(P \implies Q\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">T</td>
+<td align="center">T</td>
+<td align="center">T</td>
+</tr>
+<tr class="even">
+<td align="right">T</td>
+<td align="center">F</td>
+<td align="center">F</td>
+</tr>
+<tr class="odd">
+<td align="right">F</td>
+<td align="center">T</td>
+<td align="center">T</td>
+</tr>
+<tr class="even">
+<td align="right">F</td>
+<td align="center">F</td>
+<td align="center">T</td>
+</tr>
+</tbody>
+</table>
+<p>从上面的真值表，可以得到一些结论：</p>
+<ul>
+<li>一个假的前提，可以推出任何东西。比如，如果猪能飞，那我也能飞。这是逻辑真的，因为猪不能飞，后面的就无所谓了。</li>
+<li><span class="math inline">\(P \implies Q\)</span> 为假当且仅当P为真，Q为假。所以：<span class="math inline">\(P \implies Q \iff \neg P \lor Q\)</span></li>
+</ul>
+<h4 id="归纳法">归纳法</h4>
+<p>良基集合：当一个偏序集合没有无穷降链的时候，就说这个偏序集合是良基的。也就是说，集合S中没有一个无穷链s1, s2, s3, …，其中<span class="math inline">\(s_{i+1}\)</span> &lt; <span class="math inline">\(s_i\)</span>。</p>
+<p>良基归纳法：给定一个良基集合S和一个S元素上的断言P。如果<span class="math inline">\(\forall s, s&#39; \in S \land s&#39; &lt; s, P(s&#39;) \implies P(s)\)</span>，则<span class="math inline">\(\forall s \in S, P(s)\)</span>成立。</p>
+<p>自然数上的归纳法（数学归纳法）：给定一个自然数上的断言P，如果<span class="math inline">\(\forall m,i \in N \land i &lt; m, P(i) \implies P(m)\)</span>，则<span class="math inline">\(\forall n \in N, P(n)\)</span>成立。</p>
+<p>结构归纳法给我们提供了证明某定理在某集合上是否成立的方法，程序在某种程度上就是一个集合，而某定理就是我们想让程序满足的属性，于是结构归纳法就提供了证明程序属性的方法。下面的Programming Languages and Logic一章就会讲如何用集合描述程序，以及我们想让程序满足哪些属性，以及如何证明这些属性。</p>
+<h2 id="language-implementation-preliminaries">Language Implementation Preliminaries</h2>
+<p>这一章介绍的是实现程序语言会用到的技术，更精确一点，这一章会帮助你了解编译原理。注意，这里并不会像龙书一样细致，只是点到为止，好让读者对词法分析、语法分析、编译器、解释器、VM、bytecode等概念有一个整体的认识，因为我们的重点在程序语言的语义和计算模型上。</p>
+<h3 id="the-mountain-of-language-implementation">The Mountain of Language Implementation</h3>
+<p>在接触更深层次的知识之前，先让我们看看一个程序语言是怎么从毫无意义的字符到能在机器上运行的。虽然今天的计算机比以前的要快上100万倍，但在实现程序语言上却几乎没怎么变。虽然每个语言设计的大都不同，但实现过程都差不多，如下图：</p>
+<div class="figure">
+<img src="/images/mountain.png" alt="mountain">
+<p class="caption">mountain</p>
+</div>
+<p>从左边山脚开始，只有一段代表程序的字符串（用户输入的程序），一步一步向山顶爬，每一步都分析程序并转化为语义上更丰富的高层次代码，直到山顶，得到了程序的整体表示，这时我们就已经知道用户的代码要表达什么了。接下来，我们开始下山，把高层次的代码一步一步转化成机器CPU能理解运行的底层代码。</p>
+<p>我们来一步步解释这些过程都干了什么，假设有下面一串代表代码的字符串：</p>
+<div class="figure">
+<img src="/images/string.png" alt="string">
+<p class="caption">string</p>
+</div>
+<h4 id="scanning">Scanning</h4>
+<p>第一步叫做scannnig，或者专业点叫做词法分析，scanner接受字符输入，输出一个个类似词一样的东西。在程序语言中，这些词称作token，比如单字符的(和=，多字符的比如123代表数字、“hi”代表字符串、var代表标识符。原本的字符输入中有很多的字符是没有意义的，比如空白、换行、制表等字符，这些都被scanner忽略，经过scanner后只留有一串整洁有意义的token（这时只是知道token是什么，程序并没有语法）：</p>
+<div class="figure">
+<img src="/images/tokens.png" alt="tokens">
+<p class="caption">tokens</p>
+</div>
+<h4 id="parsing">Parsing</h4>
+<p>下一步是parsing，专业点叫做语法分析，这一步过后我们的程序就有了语法。parser接受上一步产出的token，输出一个代表程序语法的token树，这就是大家常说的ASTs（syntax trees）–抽象语法树：</p>
+<div class="figure">
+<img src="/images/ast.png" alt="ast">
+<p class="caption">ast</p>
+</div>
+<p>词法分析和人工智能在历史上有很亲密的关系，现在好多词法分析的技术都是当年那帮研究人工的家伙为了分析人类语言好让计算机跟人交流所研究出来的，那帮人发现人类语言很复杂，但实现程序语言所需要的语法却不是那么复杂，正好就把技术利用到parser上了。另外，parser还有工作一个就是指出我们文法上的错误。</p>
+<h4 id="static-analysis">Static analysis</h4>
+<p>前两个步骤在所有的程序语言实现上都差不多，前两步过后我们已经知道代码的语法结构，比如运算符的优先级什么的，但对于<code>a + b</code>这样的表达式，我们只知道把a和b相加，并不知道a、b指向哪里，它们是局部变量还是全局变量？它们是在哪定义的？这就是这步静态分析做的事了。</p>
+<p>首先大部分语言都会做binding（绑定，或者resolution），对所有的标识符，找到其定义的地方，并把两者联系起来。这就是scope（作用域）–在特定作用域里的某一名字可以关联到某一定义。</p>
+<p>如果这是个静态类型的语言，那接下来就是类型检查，当我们知道了<code>a</code>和<code>b</code>是在哪定义的，那我们也知道了它们是什么类型，当它们的类型不支持相加，就报类型错误。</p>
+<p>这时，我们就到达了山的顶点，可以看到用户程序的全部景象，并且我们需要把这些‘景象’全部存起来，以便以后使用，一般有下面几种方法：</p>
+<ul>
+<li>通常，直接当作属性存在抽象语法树里–树的节点有多的字段，在语法分析时这些字段都还没有初始化，静态分析过后就把这些字段填满了；</li>
+<li>也有单独存在表里的，比如表的key是标识符，这种表叫做符号表，key对应的值告诉了我们标识符指向哪里；</li>
+<li>最先进的方法是把抽象语法树转换成能更好表示程序语言的全新数据结构，下一步讲的就是这个。</li>
+</ul>
+<p>到这里为止，讲的全是编译器前端（front end）的东西，要是你觉得剩下的全是后端（back end）的话，那你就错了，早期造编译器还简单的时候是只有前端和后端，不过随着时代发展、技术进步，又出现了中端技术（middle end）。</p>
+<h4 id="intermediate-representations">Intermediate representations</h4>
+<p>你可以把编译器想象成管道，每步的工作就是产出下一步更好处理的代码。管道前端用来处理用户输入的源代码，后端用来处理能在机器上运行的最终结构。而在中间，代码就可能存储在intermediate representation（IR）了，IR即不是源码，也不是最终运行在机器上的代码，IR是两者的中间表示。</p>
+<p>这样的好处是多平台支持变得简单多了，对不同的语言，前端把他们全部转为相同的IR，再用支持这个IR的后端转为机器码，不用对每个语言，每个平台，都写一个单独的编译器。现在有很多成熟的IR，比如“control flow graph”, “static single-assignment”, “continuation-passing style”, “three-address code”。</p>
+<h4 id="optimization">Optimization</h4>
+<p>一旦我们知道用户的代码是什么意思，我们就可以优化它了：用相同的语法但更快的代码替换现有的代码。一个简单的例子是常数折叠（Constant folding），如果一个表达式永远求值到一个相同的值，那么就在编译的时候用这个值替换掉它：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pennyArea = 3.14159 * (0.75 / 2) * (0.75 / 2);</div></pre></td></tr></table></figure>
+<p>我们可以在编译的时候把算术表达式计算好，把代码换成：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pennyArea = 0.4417860938;</div></pre></td></tr></table></figure>
+<p>编译器优化是程序语言的大头，好多人花了一辈子搞这个事情，如果你对这部分有兴趣，下面是一些关键字：“constant propagation”, “common subexpression elimination”, “loop invariant code motion”, “global value numbering”, “strength reduction”, “scalar replacement of aggregates”, “dead code elimination”, “loop unrolling”。</p>
+<p>需要一提的是，好多成功的语言并没有在编译期优化上花很多的功夫，比如Lua和CPython，它们把精力更多的放在了运行时优化上了。</p>
+<h4 id="code-generation">Code generation</h4>
+<p>在优化完编译器后，最后一步就是生成机器能运行的代码了，这里的机器代码不是给人看的，而是类似汇编一样的底层语言。到这一步，我们终于到了编译器后端，开始从山顶下山了。下山时有两种选择，一种是生成CPU直接能加载运行的代码，另一种是生成运行在虚拟机（VM）上的代码。前者生成的代码虽然很快，但是由于有很多的指令集和架构，要全部兼容是个头疼的事情，比如你在x86上生成的代码在ARM上就不能运行。为了解决这个问题，Martin Richards and Niklaus Wirth提出了“p-code”的概念，不是面向特定芯片生成代码，而是面向假想的理想化机器生成代码，如今这种东西通常叫做字节码（bytecode），因为这种代码的一个指令一般一个只有一字节（byte）长。</p>
+<p>可以把这种人造指令看成语言底层操作的一种编码，它是语言语法和机器指令间的一个桥梁。</p>
+<h4 id="virtual-machine">Virtual machine</h4>
+<p>如果你生成的是bytecode，那你的工作还没完，因为显然没有能运行你bytecode的芯片。同样，这里你又有两个选择，一种是写一个从bytecode到每个架构的机器码的小编译器，这种方法bytecode更像一种中间表示。这种方法会很麻烦。</p>
+<p>另外一种方法是写个VM，一个支持你虚拟架构、虚拟芯片的运行时环境。在VM中运行bytecode要比把bytecode编译成机器码运行的要慢，因为每条指令在每次运行时都要虚拟出来，作为回报，你的编译器更简洁、更通用。比如用c实现一个VM，那你的语言就能在任何有c编译器的机器上运行。</p>
+<h4 id="runtime">Runtime</h4>
+<p>终于到了能运行代码的时候了，如果你是编译成机器码，那么就告诉操作系统加载可执行文件并运行，如果你是编译成字节码，那么就开启VM然后加载bytecode。</p>
+<p>无论哪种情况，都需要在程序运行时提供一些基础服务。比如如果我们的语言支持垃圾回收，那么就需要一个GC服务用来回收没用的内存；如果支持检查对象的类型，那么就需要一个系统来记录所有的对象类型。这些服务都是运行时做的，所以我们把它叫做runtime。在完全编译运行的语言里，runtime直接被塞到了程序的可执行文件里。比如Go语言，每个编译好的程序都包含自己的runtime。在解释运行的语言和有VM的语言里，runtime直接就在解释器和VM里。大部分语言都是这样：Java、Python、JavaScript。</p>
+<h3 id="type-of-different-languagues">Type of Different Languagues</h3>
+<p>上面的山涵盖了实现语言时所有可能遇到的阶段，但很显然并不是每个语言都完全如此，有些语言就抄了近道，下面是一些常见的实现路径：</p>
+<h4 id="single-pass-compilers">Single-pass compilers</h4>
+<p>这种编译器直接在语法分析时就分析程序并生成代码，也没有任何AST和IR，这种编译器严格限制了语言的成长。没有程序整个“景象”的表示，也不访问parser处理过的代码，也就是说每当编译器看到一个表达式的时候就完整的知道如何处理它。</p>
+<p>Pascal和C都属于这种方式。它们编译时的内存能精确到都放不下一个源代码文件，更不用说整个程序。这就是为什么Pascal要求你在block最开始声明类型；也就是为什么在C里你不能在一个函数声明之前调用它，除非你有个向前声明（forward declaration）告诉编译器该怎么做。</p>
+<h4 id="tree-walk-interpreters">Tree-walk interpreters</h4>
+<p>这种编译器在得到AST后就直接运行代码了（可能有一点静态分析）：遍历树上的每个节点，一步一步求值。这种就是一般学生交作业会写的解释器，会很慢。然而你想不到的是，Ruby在1.9之前都是Tree-walk的解释器，之后就用bytecode VM替换掉了。</p>
+<h4 id="transpilers">Transpilers</h4>
+<p>这种编译器在下山时，不生成底层代码，而是生成其它高级语言的代码，然后再用这个高级语言的代码现成的编译器去运行生成的代码。这样你就不用折腾IR，不用折腾bytecode，不用折腾机器码，感觉就像从山顶直接跳伞下来了。Transpiler在浏览器上尤为常见，因为浏览器脚本只有JavaScript，你要想自己的语言能在浏览器上运行，就必须写个编译到JavaScript的编译器，几乎所有的语言都支持编译到JavaScript，看<a href="https://github.com/jashkenas/coffeescript/wiki/list-of-languages-that-compile-to-js" target="_blank" rel="noopener">这里</a>。</p>
+<h4 id="just-in-time-compilation">Just-in-time compilation</h4>
+<p>这种编译器可不是下山的捷径，而是给更专业的人准备的。最快的代码是机器码，但是你又不知道用户的机器是什么架构，该怎么办呢？</p>
+<p>答案就是JIT，就像JVM、CLR、V8一样，要么加载源码（JS），要么加载平台无关的bytecode（JVM和CLR），然后再根据他们的平台架构生成相应的机器码。不止如此，高端的JIT编译器都会在生成的代码中插入特殊的代码，用来检测哪里性能比较差，然后用复杂的优化手段重新编译生成更快的代码，比如JVM的HotSpot就是这样，还有V8的大部分代码做的就是这个。</p>
+<h3 id="so-which-path-should-i-chose">So Which Path Should I Chose</h3>
+<p>那么多的实现方式，该用哪个好呢？这就取决于你对速度的要求了，下面是从慢到快（大概）的排序：</p>
+<ul>
+<li>Tree-walk interpreters: 你编译原理大作业就是这么写的。Ruby 1.8.7之前都是这种。</li>
+<li>Bytecode interpreters: Cpython、Ruby 1.9之后、Lua、早期的JavaScript VM都是这种。</li>
+<li>JIT上的动态类型语言: 现在的JavaScript VM、LuaJIT、PyPy和一些Lisp/Scheme实现都是这种。</li>
+<li>静态类型语言: C、C++、Java、C#、Haskell都是这种。</li>
+</ul>
+<p>第一阶梯一般很慢，不会用在生产上（服务器端是个例外，你可以堆硬件）；第二阶梯的应付大多数情况已经够快了（有的快到在客户端也能使用，比如Lua）；第三阶梯的已经很快了，都可以和静态类型语言相媲美了，但是，这种编译器的复杂程度已经不是一般人能实现的了。</p>
+<p>所以如果你要实现一个对性能要求不是那么苛刻的动态语言，那第二种最符合要求；如果你只是想写一个小玩具，那第一种是最快最简单的方式。</p>
+<p>这一章到这里就结束了，吹水到此为止，下面就开始动真格的了（笑）。</p>
+<h2 id="programming-languages-and-logic">Programming Languages and Logic</h2>
+<h3 id="什么是语义">什么是语义</h3>
+<p>什么是程序？当我们编写程序的时候，写下的只是一串串的字符而已，这些字符只是特定的语法，并不能告诉我们程序到底在干什么，于是我们就通过编译器或解释器运行程序，以此来定义程序。但是在这个过程中也会出现问题，比如编译器如果有bug，就会影响我们对程序功能的判断。</p>
+<p>一个更好的定义程序的办法是：给程序语言的语义建立一个形式的数学定义。这种方法不仅更清晰，精确，更重要的是给严谨的形式证明提供了入口。这种方法唯一的缺点是：语义本身会非常的复杂，特别是当你想为成熟的现代语言建模的时候。</p>
+<p>有三种传统的定义语言语义的方法：</p>
+<ul>
+<li><strong>操作语义</strong> 在抽象机器层面定义；</li>
+<li><strong>指称语义</strong> 在数学对象（比如函数）层面定义；</li>
+<li><strong>公理语义</strong> 在数理逻辑层面定义；</li>
+</ul>
+<p>这三种方法在数学复杂度上各有利弊，有的好证明，有的容易实现解释器或者编译器。下面就对三种方法逐个分析；</p>
+<h4 id="一个简单的语言算术表达式">一个简单的语言：算术表达式</h4>
+<p>为了理解语义，首先让我们构思一个特别简单的语言，这个语言只包含整数的加、乘运算和赋值操作。用这个语言写的程序是一个表达式；运行这个程序就是对表达式求值。我们用下面的变量来描述语法结构：<span class="math display">\[\begin{align*} x, y, z &amp; \in Var \\ n, m &amp; \in Int \\ e &amp; \in Exp \end{align*}\]</span> <em>Var</em> 是程序变量的集合；<em>Int</em> 是整数集合；<em>Exp</em>是表达式定义域，我们用下面的BNF语法表示<em>Exp</em>：<span class="math display">\[\begin{align*} e ::= &amp; x \\ | &amp; n \\ | &amp; e_1 + e_2 \\ | &amp; e_1 * e_2 \\ | &amp; x:=e_1;e_2 \end{align*}\]</span> <span class="math inline">\(x:=e_1;e_2\)</span>的意思是，在求<span class="math inline">\(e_2\)</span>值之前把<span class="math inline">\(e_1\)</span>的值赋给x，整个表达式的值就是求值<span class="math inline">\(e_2\)</span>的结果。</p>
+<p>文法（grammar）决定了语言的语法（syntax），很显然上面的文法很模糊，比如<span class="math inline">\(1+2*3\)</span>，既可以是<span class="math inline">\((1+2)*3\)</span>，也可以是<span class="math inline">\(1+(2*3)\)</span>。有很多种办法可以解决这个问题，我们可以重写一个不模糊的文法，但这样文法会变得复杂难懂；我们也可以把现有的文法进行一点小小的改动：<span class="math display">\[\begin{align*} e ::= &amp; x \\ | &amp; n \\ | &amp; (e_1 + e_2) \\ | &amp; (e_1 * e_2) \\ | &amp; x:=e_1;e_2 \end{align*}\]</span> 但这样文法又显得冗杂；这里，我们把语音“具体语法”和“抽象语法”分开，前者指的是怎么不模糊的把字符解析成程序语句，后者则描述了，可能模糊的程序结构，下面的文章，为了方便，使用了后者，所有的抽象语法树结构都将用带括号的表达式代替，但是注意括号本身并不是语言的一部分。</p>
+<h4 id="操作语义">操作语义</h4>
+<p>我们对表达式都有直观的感觉，比如，<span class="math inline">\(7+(4*2)\)</span>的值是15，<span class="math inline">\(i:=6+1;2*3*i\)</span>的值是42。下面，我们就把这种直觉给精确的表示出来。</p>
+<p>操作语义描述了程序在抽象机器上是怎么运行的。操作语义包含small-step和large-step两种，我们先讲small-step。small-step操作语义描述了程序是怎么逐步规约的，表达式会逐步规约直到一个特定的值为止。我们称抽象机器的一个状态为配置（configuration），对于我们的语言，一个配置必须包含下面两条信息：</p>
+<ul>
+<li><em>store</em>：又叫做环境或状态，包含了整数和变量的映射。当程序运行时，我们会从store中找出与变量相对应的整数；有时也会更新store，比如，添加新变量，修改现有变量的映射。</li>
+<li><em>expression</em>：要规约的表达式。</li>
+</ul>
+<p>我们用从<em>Var</em>到<em>Int</em>和映射表示store；用一对store和expression表示配置： <span class="math display">\[
+\begin{align*}
+Store&amp;\triangleq{Var}\rightharpoonup{Int}\\
+Config&amp;\triangleq{Store}\times{Exp}
+\end{align*}
+\]</span></p>
+<p>我们用’<span class="math inline">\(\langle\)</span>’和’<span class="math inline">\(\rangle\)</span>’符号表示配置，比如，<span class="math inline">\(\langle\sigma,(foo+2)*(bar+2)\rangle\)</span>就是一个配置，其中<span class="math inline">\(\sigma\)</span>是store，<span class="math inline">\((foo+2)*(bar+2)\)</span>是包含两个变量foo和bar的表达式。small-step操作语义在其中就是个描述从一个配置变为另一个配置的关系运算（relation）：<span class="math inline">\(\rightarrow \subseteq Config \times Config\)</span>。关系<span class="math inline">\(\rightarrow\)</span>描述了程序如何逐步规约，我们下面用中缀法表示关系<span class="math inline">\(\rightarrow\)</span>：给定配置<span class="math inline">\(\langle\sigma_1,e_1\rangle\)</span>和配置<span class="math inline">\(\langle\sigma_2,e_2\rangle\)</span>，如果<span class="math inline">\((\langle\sigma_1,e_1\rangle,\langle\sigma_2,e_2\rangle)\)</span>在关系<span class="math inline">\(\rightarrow\)</span>中，我们就写成<span class="math inline">\(\langle\sigma_1,e_1\rangle \rightarrow\langle\sigma_2,e_2\rangle\)</span>。比如<span class="math inline">\(\langle\sigma,(4+2)*y\rangle \rightarrow \langle\sigma,6*y\rangle\)</span>意思就是我们可以单步规约前者到后者。</p>
+<p>用这种方法，定义语言语义的问题就化简成了定义关系<span class="math inline">\(\rightarrow\)</span>。</p>
+<p>很显然，整数有无数个，表达式有无数个，于是配置也有无数个，配置之间的单步规约也有无数个，我们需要用有限的方式来描述无限的东西。利用推导规则，我们能简介的定义<span class="math inline">\(\rightarrow\)</span>： <span class="math display">\[
+\frac{n=\sigma(x)}{\langle\sigma,x\rangle\rightarrow\langle\sigma,n\rangle} {\bf{V}}\scriptsize AR
+\]</span></p>
+<p><span class="math display">\[
+\frac{\langle\sigma,e_1\rangle\rightarrow\langle\sigma&#39;,e_1&#39;\rangle}{\langle\sigma,e_1+e_2\rangle\rightarrow\langle\sigma&#39;,e_1&#39;+e_2\rangle}
+{\bf{LA}\scriptsize DD}\quad \frac{\langle\sigma,e_2\rangle\rightarrow\langle\sigma&#39;,e_2&#39;\rangle}{\langle\sigma,n+e_2\rangle\rightarrow\langle\sigma&#39;,n+e_2&#39;\rangle}
+{\bf{RA}\scriptsize DD}\quad
+\frac{p=m+n}{\langle\sigma,n+m\rangle\rightarrow\langle\sigma,p\rangle}
+{\bf{A}\scriptsize DD}
+\]</span></p>
+<p><span class="math display">\[
+\frac{\langle\sigma,e_1\rangle\rightarrow\langle\sigma&#39;,e_1&#39;\rangle}{\langle\sigma,e_1*e_2\rangle\rightarrow\langle\sigma&#39;,e_1&#39;*e_2\rangle}
+{\bf{LM}\scriptsize UL}\quad \frac{\langle\sigma,e_2\rangle\rightarrow\langle\sigma&#39;,e_2&#39;\rangle}{\langle\sigma,n*e_2\rangle\rightarrow\langle\sigma&#39;,n*e_2&#39;\rangle}
+{\bf{RM}\scriptsize UL}\quad \frac{p=m*n}{\langle\sigma,n*m\rangle\rightarrow\langle\sigma,p\rangle}
+{\bf{M}\scriptsize UL}
+\]</span></p>
+<p><span class="math display">\[
+\frac{\langle\sigma,e_1\rangle\rightarrow\langle\sigma&#39;,e_1&#39;\rangle}{\langle\sigma,x:=e1;e2\rangle\rightarrow\langle\sigma&#39;,x:=e_1&#39;;e2\rangle}
+{\bf{A}\scriptsize SSGN1}\quad \frac{\sigma&#39;=\sigma[x\mapsto{n}]}{\langle\sigma,x:=n;e_2\rangle\rightarrow\langle\sigma&#39;,e_2\rangle}
+{\bf{A}\scriptsize SSGN}
+\]</span></p>
+<p>推导规则的意思就是如果分子成立，那么分母也成立。分子叫做前提，分母叫做结论；<span class="math inline">\(\sigma[x\mapsto{n}]\)</span>意思是给store <span class="math inline">\(\sigma\)</span>添加一个x到n的映射： <span class="math display">\[f(y)= \begin{cases} n, &amp; \text {if $y$=$n$} \\ \sigma(y) &amp; \text{otherwise}\end{cases}\]</span>那么怎么使用这些推导规则呢，我们举个例子，如果要求表达式<span class="math inline">\(\langle\sigma,(foo+2)*(bar+1)\rangle\)</span>的值，其中<span class="math inline">\(\sigma{(foo)}=4\)</span>，<span class="math inline">\(\sigma{(bar)}=3\)</span>：</p>
+<p><span class="math display">\[
+\begin{align*}
+\langle\sigma,(foo+2)*(bar+1)\rangle&amp;\rightarrow\langle\sigma,(4+2)*(bar+1)\rangle\quad&amp;
+{\bf{V}\scriptsize AR},{\bf{LA}\scriptsize DD},{\bf{LM}\scriptsize UL}\\
+&amp;\rightarrow\langle\sigma,6*(bar+1)\rangle&amp;
+{\bf{A}\scriptsize DD},{\bf{LM}\scriptsize UL}\\
+&amp;\rightarrow\langle\sigma,6*(3+1)\rangle&amp;
+{\bf{V}\scriptsize AR},{\bf{LA}\scriptsize DD},{\bf{RM}\scriptsize UL}\\
+&amp;\rightarrow\langle\sigma,6*4\rangle&amp;
+{\bf{A}\scriptsize DD},{\bf{RM}\scriptsize UL}\\
+&amp;\rightarrow\langle\sigma,24\rangle&amp;
+{\bf{M}\scriptsize UL} \end{align*}
+\]</span></p>
+<p>最终计算的结果是24，当机器规约结束，只有一个含有最终结果的配置，对于上文的表达式，最终配置的样式是<span class="math inline">\(\langle\sigma,n\rangle\)</span>。另外，<span class="math inline">\(\rightarrow\)</span>关系的自反、传递版本是<span class="math inline">\(\rightarrow^*\)</span>，也就是说，如果能直接或多步的从<span class="math inline">\(\langle\sigma,e\rangle\)</span>规约到<span class="math inline">\(\langle\sigma&#39;,e&#39;\rangle\)</span>，我们就写成<span class="math inline">\(\langle\sigma,e\rangle\rightarrow^*\langle\sigma&#39;,e&#39;\rangle\)</span>，所以：<span class="math display">\[\langle\sigma,(foo+2)*(bar+1)\rangle\rightarrow^*\langle\sigma,24\rangle\]</span></p>
+<h3 id="归纳定义与归纳证明">归纳定义与归纳证明</h3>
+<h4 id="程序属性">程序属性</h4>
+<p>我们继续使用我们简单的语言：<span class="math inline">\(e::=x\,|\,n\,|\,e_1+e_2\,|\,e_1*e_2\,|\,x:=e_1;e_2\)</span>，用它描述一些程序特有的属性，并用归纳法证明这些属性（还记得上面的归纳法吗）。</p>
+<p>对于一个程序语言，我们能问好多有意思的问题，比如：它是确定（deterministic）的吗？有没有无法终止的程序？求值的时候会出现哪些错误？有了前面操作语义的定义，就能准确的描述出这些问题了：</p>
+<ul>
+<li>确定性（Determinism）：求值是确定、明确的，<span class="math display">\[\forall{e}\in{Exp}.\forall{\sigma,\sigma&#39;,\sigma&#39;&#39;}\in{Store}.\forall{e&#39;,e&#39;&#39;}\in{Exp}\\if\langle\sigma,e\rangle\rightarrow\langle\sigma&#39;,e&#39;\rangle\,and\,\langle\sigma,e\rangle\rightarrow\langle\sigma&#39;&#39;,e&#39;&#39;\rangle\,then\,e&#39;=e&#39;&#39;\,and\;\sigma&#39;=\sigma&#39;&#39;.\]</span></li>
+<li>终止性（Termination）：每个对表达式的求值都能终止，<span class="math display">\[\forall{e}\in{Exp}.\forall{\sigma}\in{Store}.\exists{\sigma&#39;}\in{Store}.\exists{e&#39;}\in{Exp}.\langle\sigma,e\rangle\rightarrow^*\langle\sigma&#39;,e&#39;\rangle\,and\,\langle\sigma&#39;,e&#39;\rangle\nrightarrow,\\where\,\langle\sigma&#39;,e&#39;\rangle\nrightarrow\,is\,shorthand\,for\,\neg(\exists\sigma&#39;&#39;\in{Store}.\exists{e&#39;&#39;}\in{Exp}.\langle\sigma&#39;,e&#39;\rangle\rightarrow\langle\sigma&#39;&#39;,e&#39;&#39;\rangle).\]</span></li>
+<li>完备性（Soundness）：对每个表达式求值的结果是个整数，<span class="math display">\[\forall{e}\in{Exp}.\forall\sigma\in{Store}.\exists\sigma&#39;\in{Store}.\exists{n&#39;}\in{Int}.\langle\sigma,e\rangle\rightarrow^*\langle\sigma&#39;,n&#39;\rangle. \]</span></li>
+</ul>
+<p>悲催的是，完备性在我们的语言中不成立。比如给定一个完全没有定义过的<span class="math inline">\(\sigma\)</span>和表达式<span class="math inline">\(i+j\)</span>，配置<span class="math inline">\(\langle\sigma,i+j\rangle\)</span>就卡住了。问题出现在i和j都是自由变量，而<span class="math inline">\(\sigma\)</span>中却没有相应的映射。</p>
+<p>为了解决这个问题，我们定义个新的概念：良构的配置；当<span class="math inline">\(\sigma\)</span>至少由<span class="math inline">\(e\)</span>中的自由变量定义的时候，就称配置<span class="math inline">\(\langle\sigma,e\rangle\)</span>是良构的，下面就是表达式中自由变量集合的定义： <span class="math display">\[
+\begin{align*}
+fvs(x)&amp;\triangleq{\{x\}}\\
+fvs(n)&amp;\triangleq\{\}\\
+fvs(e_1+e_2)&amp;\triangleq{fvs(e_1)\cup{fvs(e_2)}}\\
+fvs(e_1*e_2)&amp;\triangleq{fvs(e_1)\cup{fvs(e_2)}}\\
+fvs(x:=e_1;e_2)&amp;\triangleq{fvs(e_1)\cup{(fvs(e_2)\setminus\{x\})}}
+\end{align*}
+\]</span> 于是利用新的概念，我们重新阐述完备性：</p>
+<ul>
+<li>Progress：给定表达式e和store<span class="math inline">\(\,\sigma\)</span>，其中e的自由变量都包含在<span class="math inline">\(\sigma\)</span>的定义域中，e要么是个整数，要么还能往下推，<span class="math display">\[\forall{e}\in{Exp}.\forall{\sigma}\in{Store}.\\fvs(e)\subseteq{dom(\sigma)}\implies{e\in{Int}\lor(\exists{e&#39;}\in{Exp}.\exists\sigma&#39;\in{Store}.\langle\sigma,e\rangle\to\langle\sigma&#39;,e&#39;\rangle)} \]</span></li>
+<li>Preservation：良构的配置，单步求值后还是良构的，<span class="math display">\[\forall{e,e&#39;}\in{Exp}.\forall{\sigma,\sigma&#39;}\in{Store}.\\fvs(e)\subseteq{dom(\sigma)}\land{\langle\sigma,e\rangle\to\langle\sigma&#39;,e&#39;\rangle}\implies{fvs(e&#39;)\subseteq{dom(\sigma&#39;)}}\]</span></li>
+</ul>
+<h4 id="归纳集">归纳集</h4>
+<p>归纳法在PLT中是个重要的概念。归纳定义集是由有限的公理和归纳规则组成的。其中，公理的结构：<span class="math inline">\(\frac{}{a\in{A}}\)</span>，表明了a在A集合中；归纳规则的结构：<span class="math inline">\(\frac{a_1\in{A}\quad...\quad a_n\in{A}}{a\in{A}}\)</span>，表明了如果<span class="math inline">\(a_1,...,a_n\)</span>是A的元素，那a也是A的元素。集合A是由所有能从公理和归纳规则推导出的推论组成的，换句话说，对于A的每个元素a，一定能构建一个有限的证明树证明<span class="math inline">\(a\in{A}\)</span>。举个归纳集的例子，下面是自然数的归纳定义：<span class="math display">\[\frac{}{0\in{N}}\quad\frac{n\in{N}}{succ(n)\in{N}}\]</span> 文法所描述的集合就是归纳集。比如用我们简单的语言：<span class="math inline">\(e::=x\,|\,n\,|\,e_1+e_2\,|\,e_1*e_2\,|\,x:=e_1;e_2\)</span>就可以用下面的归纳集定义，此归纳集包含了2个公理和3个归纳规则：<span class="math display">\[\frac{}{x\in{Exp}}\qquad\qquad\frac{}{n\in Exp}\\\frac{e_1\in Exp\quad e_2\in Exp}{e_1+e_2\in Exp}\quad\frac{e_1\in Exp\quad e_2\in Exp}{e_1*e_2\in Exp}\quad\frac{e_1\in Exp\quad e_2\in Exp}{x:=e_1;e_2\in Exp}\]</span></p>
+<h4 id="progress的归纳证明">Progress的归纳证明</h4>
+<p>还记得上面讲得结构归纳法吗，现在就用这种方法证明Soundness的Progress属性：</p>
+<p><em>Proof</em>. e为一个表达式，需要通过对e进行结构归纳证明：<span class="math display">\[\forall{\sigma}\in{Store}.fvs(e)\subseteq{dom(\sigma)}\implies{e\in{Int}\lor(\exists{e&#39;}.\exists\sigma&#39;\in.\langle\sigma,e\rangle\to\langle\sigma&#39;,e&#39;\rangle)} \]</span></p>
+<ul>
+<li>Case <span class="math inline">\(e=x\)</span>：由fvs的定义，<span class="math inline">\(\therefore{fvs(x)=\{x\}}\)</span>，<span class="math inline">\(\because{fvs(e)\subseteq{dom(\sigma)}}\)</span>，<span class="math inline">\(\therefore{\{x\}\subseteq{dom(\sigma)}}\)</span>，<span class="math inline">\(\therefore{x\subseteq{dom(\sigma)}}\)</span>，设<span class="math inline">\(n=\sigma(x)\)</span>。由<em>Var</em>公理可得<span class="math inline">\(\langle\sigma,x\rangle\rightarrow\langle\sigma,n\rangle\)</span>。Case finished;</li>
+<li>Case <span class="math inline">\(e=n\)</span>：直接有<span class="math inline">\(e\in{Int}\)</span>。Case finished;</li>
+<li><p>Case <span class="math inline">\(e=e_1+e_2\)</span>：首先设<span class="math inline">\(P(e_1),P(e_2)\)</span>如下，<span class="math display">\[P(e_1)=\forall{\sigma}\in{Store}.fvs(e_1)\subseteq{dom(\sigma)}\implies{e_1\in{Int}\lor(\exists{e&#39;}.\exists\sigma&#39;.\langle\sigma,e_1\rangle\to\langle\sigma&#39;,e&#39;\rangle)}\\P(e_2)=\forall{\sigma}\in{Store}.fvs(e_2)\subseteq{dom(\sigma)}\implies{e_2\in{Int}\lor(\exists{e&#39;}.\exists\sigma&#39;.\langle\sigma,e_2\rangle\to\langle\sigma&#39;,e&#39;\rangle)}\]</span> 然后只需证明<span class="math display">\[P(e_1+e_2)=\forall{\sigma}\in{Store}.fvs(e_1+e_2)\subseteq{dom(\sigma)}\implies{e_1+e_2\in{Int}\lor(\exists{e&#39;}.\exists\sigma&#39;.\langle\sigma,e_1+e_2\rangle\to\langle\sigma&#39;,e&#39;\rangle)}\]</span>即可:</p>
+<ul>
+<li>Subcase <span class="math inline">\(e_1=n_1\land e_2=n_2\)</span>：由<em>ADD</em>公理，即可得到<span class="math inline">\(\langle\sigma,n_1+n_2\rangle\rightarrow\langle\sigma,p\rangle\)</span>，其中<span class="math inline">\(p=n_1+n_2\)</span>。</li>
+<li>Subcase <span class="math inline">\(e1\notin Int\)</span>：由fvs的定义可得，<span class="math inline">\(\therefore{fvs(e_1)\subseteq{fvs*(e_1+e_2)}\subseteq{dom(\sigma)}}\)</span>，又<span class="math inline">\(\because{P(e_1)}\)</span>，<span class="math inline">\(\therefore{\langle\sigma,e_1\rangle\to\langle\sigma&#39;,e&#39;\rangle}\)</span>，由<em>LADD</em>公理可得<span class="math inline">\(\langle\sigma,e_1+e_2\rangle\to\langle\sigma&#39;,e&#39;+e_2\rangle\)</span>。</li>
+<li>Subcase <span class="math inline">\(e_1=n1\land{e_2\notin{Int}}\)</span>：由fvs的定义可得，<span class="math inline">\(\therefore{fvs(e_2)\subseteq{fvs*(e_1+e_2)}\subseteq{dom(\sigma)}}\)</span>，又<span class="math inline">\(\because{P(e_2)}\)</span>，<span class="math inline">\(\therefore{\langle\sigma,e_2\rangle\to\langle\sigma&#39;,e&#39;\rangle}\)</span>，由<em>LADD</em>公理可得<span class="math inline">\(\langle\sigma,e_1+e_2\rangle\to\langle\sigma&#39;,e_1+e&#39;\rangle\)</span>。Case finished;</li>
+</ul></li>
+<li>Case <span class="math inline">\(e=e_1*e_2\)</span>：同上个Case证明方法大致相同；</li>
+<li>Case <span class="math inline">\(e=x:=e_1;e2\)</span>：同样，我们先假设<span class="math inline">\(P(e_1),P(e_2)\)</span>如下，<span class="math display">\[P(e_1)=\forall{\sigma}\in{Store}.fvs(e_1)\subseteq{dom(\sigma)}\implies{e_1\in{Int}\lor(\exists{e&#39;}.\exists\sigma&#39;.\langle\sigma,e_1\rangle\to\langle\sigma&#39;,e&#39;\rangle)}\\P(e_2)=\forall{\sigma}\in{Store}.fvs(e_2)\subseteq{dom(\sigma)}\implies{e_2\in{Int}\lor(\exists{e&#39;}.\exists\sigma&#39;.\langle\sigma,e_2\rangle\to\langle\sigma&#39;,e&#39;\rangle)}\]</span> 然后只需证明<span class="math display">\[P(e=x:=e_1;e2)=x:=e_1;e_2\in{Int}{\lor(\exists{e&#39;}.\exists\sigma&#39;.\langle\sigma,x:=e_1;e_2\rangle\to\langle\sigma&#39;,e&#39;\rangle)}\]</span>即可:
+<ul>
+<li>Subcase <span class="math inline">\(e_1=n_1\)</span>：由<em>ASSGN</em>公理可得，<span class="math inline">\(\langle\sigma,x:=n_1;e_2\rangle \to \langle\sigma&#39;,e_2\rangle\)</span>， 其中<span class="math inline">\(\sigma&#39;=\sigma[x\mapsto{n_1}]\)</span>。</li>
+<li>Subcase <span class="math inline">\(e_1\notin{Int}\)</span>：由fvs的定义可得，<span class="math inline">\(\therefore{fvs(e_1)\subseteq{fvs(x:=e_1;e_2)}\subseteq{dom(\sigma)}}\)</span>，<span class="math inline">\(\because{\langle\sigma,e_1\rangle\to\langle\sigma&#39;,e&#39;\rangle}\)</span>，<span class="math inline">\(\therefore{\langle\sigma,x:=e_1;e_2\rangle\to\langle\sigma&#39;,x:=e_1&#39;;e_2\rangle}\)</span>。Case finished。证明完毕。</li>
+</ul></li>
+</ul>
+<h3 id="large-step-操作语义">Large-step 操作语义</h3>
+<p>我们已经用求值关系<span class="math inline">\(\rightarrow\subseteq{Config}\times{Config}\)</span>定义了small-step操作语义，现在我们就讲讲另外一个操作语义–Large-step操作语义。不同于small-step语义，large-step直接输出对表达式求值的最终结果。我们用关系<span class="math inline">\(\Downarrow\)</span>来定义large-step语义：<span class="math display">\[\Downarrow\subseteq(Store\times{Exp})\times(Store\times{Int})\]</span> 我们用<span class="math inline">\(\langle\sigma,e\rangle\Downarrow\langle\sigma&#39;,n\rangle\)</span>来表示<span class="math inline">\(((\sigma,e),(\sigma&#39;,n))\in\Downarrow\)</span>，换句话说就是，表达式e和store<span class="math inline">\(\,\sigma\)</span>一步求值到最终store<span class="math inline">\(\,\sigma&#39;\)</span>和整数n。同样，large-step语义也能用归纳集表示： <span class="math display">\[
+\frac{}{\langle\sigma,n\rangle\Downarrow\langle\sigma,n\rangle}
+{\bf{I}\scriptsize{NT}}\qquad
+\frac{n=\sigma(x)}{\langle\sigma,x\rangle\Downarrow\langle\sigma,n\rangle}
+{\bf{V}\scriptsize{AR}}
+\]</span></p>
+<p><span class="math display">\[
+\frac{\langle\sigma,e_1\rangle\Downarrow\langle\sigma&#39;,n_1\rangle\quad\langle\sigma&#39;,e_2\rangle\Downarrow\langle\sigma&#39;&#39;,n_2\rangle\quad{n=n_1+n_2}}{\langle\sigma,e_1+e_2\rangle\Downarrow\langle\sigma&#39;&#39;,n\rangle}
+{\bf{A}\scriptsize{DD}}
+\]</span></p>
+<p><span class="math display">\[
+\frac{\langle\sigma,e_1\rangle\Downarrow\langle\sigma&#39;,n_1\rangle\quad\langle\sigma&#39;,e_2\rangle\Downarrow\langle\sigma&#39;&#39;,n_2\rangle\quad{n=n_1\times{n_2}}}{\langle\sigma,e_1*e_2\rangle\Downarrow\langle\sigma&#39;&#39;,n\rangle}
+{\bf{M}\scriptsize{UL}}
+\]</span></p>
+<p><span class="math display">\[
+\frac{\langle\sigma,e_1\rangle\Downarrow\langle\sigma&#39;,n_1\rangle\quad\langle\sigma&#39;[x\mapsto{n_1}],e_2\rangle\Downarrow\langle\sigma&#39;&#39;,n_2\rangle}{\langle\sigma,x:=e_1;e_2\rangle\Downarrow\langle\sigma&#39;&#39;,n_2\rangle}
+{\bf{A}\scriptsize{SSGN}}
+\]</span></p>
+<p>下面的证明树显示的是<span class="math inline">\(\langle\sigma,foo:=3;foo*bar\rangle\)</span>的求值过程，其中<span class="math inline">\(\sigma(bar)=7,\sigma&#39;=sigma[foo\mapsto3]\)</span>，21是最后的结果： <span class="math display">\[
+\cfrac{\cfrac{}{\langle\sigma,3\rangle\Downarrow\langle\sigma,3\rangle}{\bf{I}\scriptsize{NT}}\quad\cfrac{\cfrac{}{\langle\sigma&#39;,foo\rangle\Downarrow\langle\sigma&#39;,3\rangle}{\bf{V}\scriptsize{AR}}\quad\cfrac{}{\langle\sigma&#39;,bar\rangle\Downarrow\langle\sigma&#39;,7\rangle}{\bf{V}\scriptsize{AR}}}{\langle\sigma&#39;,foo*bar\rangle\Downarrow\langle\sigma&#39;,21\rangle}{\bf{M}\scriptsize{UL}}}{\langle\sigma,foo:=3;foo*bar\rangle\Downarrow\langle\sigma&#39;,21\rangle}{\bf{A}\scriptsize{SSGN}}
+\]</span></p>
+<p>从这棵树可以看出，对large-step证明树进行深度优先遍历的一个结果就是small-step中的一串一小步求值过程。</p>
+<p>那么small-step和large-step语义是否是等价的呢，答案是肯定的：</p>
+<p><span class="math display">\[Theorem(文法等价).对所有的表达式e，store\,\sigma和\,\sigma&#39;，还有整数n\\
+都有：\langle\sigma,e\rangle\Downarrow\langle\sigma&#39;,n\rangle\iff\langle\sigma,e\rangle\to^*\langle\sigma&#39;,n\rangle\]</span></p>
+<p>具体证明不是很复杂，同样用到了结构归纳，有兴趣的读者可以尝试一下。</p>
+<h3 id="一个简单的指令式语言imp">一个简单的指令式语言：IMP</h3>
+<h4 id="imp语言a-simple-imperative-language">IMP语言（A simple imperative language）</h4>
+<p>显然上面的算术表达式语言有点过于简单，现在我们就要考虑定义一个更加真实的程序语言，一个有if和while控制结构的语言，这个简单的指令式语言–IMP的语法如下： <span class="math display">\[
+\begin{align*}
+arithmetic\;expressions\quad&amp;a\in{Aexp}\quad{a::=\,x\,|\,n\,|\,a_1+a_2\,|\,a_1\times{a_2}}\\
+boolean\;expressions\quad&amp;b\in{Bexp}\quad{b::=\,true\,|\,false\,|\,a_1&lt;a_2}\\
+commands\quad&amp;c\in{Com}\quad{c::=\,skip\,|\,x:=a\,|\,c_1;c_2\,|if\;b\;then\,c_1\,else\,c_2\,|\,while\;b\;do\;c}
+\end{align*}
+\]</span></p>
+<h4 id="imp的small-step操作语义">IMP的small-step操作语义</h4>
+<p>我们先给出IMP的small-step操作语义。这个语言的配置：<span class="math inline">\(\langle{c},\sigma\rangle\)</span>，<span class="math inline">\(\langle\sigma,b\rangle\)</span>，<span class="math inline">\(\langle\sigma,a\rangle\)</span>；求值后的最终配置：<span class="math inline">\(\langle\sigma,skip\rangle,\langle\sigma,true\rangle\)</span>，<span class="math inline">\(\langle\sigma,false\rangle\)</span>，<span class="math inline">\(\langle\sigma,n\rangle\)</span>。分别对应算术表达式、布尔表达式和命令，我们定义三种不同的small-step操作关系： <span class="math display">\[
+\begin{align*}
+\to_{Com}&amp;\subseteq{Com\times{Store}\times{Com}\times{Store}}\\
+\to_{Bexp}&amp;\subseteq{Bexp\times{Store}\times{Bexp}\times{Store}}\\
+\to_{Aexp}&amp;\subseteq{Aexp\times{Store}\times{Aexp}\times{Store}}
+\end{align*}
+\]</span>为了简介，这三个关系统一用<span class="math inline">\(\to\)</span>表示；注意其中算术表达式没有赋值操作了，算术表达式和布尔表达式不会更新store。</p>
+<p><strong>Arithmetic expressions</strong> <span class="math display">\[\frac{n=\sigma(x)}{\langle\sigma,x\rangle\to\langle\sigma,n\rangle}\]</span></p>
+<p><span class="math display">\[
+\frac{\langle\sigma,a_1\rangle\to\langle\sigma,a_1&#39;\rangle}{\langle\sigma,a_1+a_2\rangle\to\langle\sigma,a_1&#39;+a_2\rangle}\quad
+\frac{\langle\sigma,a_2\rangle\to\langle\sigma,a_2&#39;\rangle}{\langle\sigma,n+a_2\rangle\to\langle\sigma,n+a_2&#39;\rangle}\quad
+\frac{p=n+m}{\langle\sigma,n+m\rangle\to\langle\sigma,p\rangle}
+\]</span></p>
+<p><span class="math display">\[
+\frac{\langle\sigma,a_1\rangle\to\langle\sigma,a_1&#39;\rangle}{\langle\sigma,a_1\times{a_2}\rangle\to\langle\sigma,a_1&#39;\times{a_2}\rangle}\quad
+\frac{\langle\sigma,a_2\rangle\to\langle\sigma,a_2&#39;\rangle}{\langle\sigma,n\times{a_2}\rangle\to\langle\sigma,n\times{a_2&#39;}\rangle}\quad
+\frac{p=n\times{m}}{\langle\sigma,n\times{m}\rangle\to\langle\sigma,p\rangle}
+\]</span></p>
+<p><strong>Boolean expressions</strong> <span class="math display">\[
+\frac{\langle\sigma,a_1\rangle\to\langle\sigma,a_1&#39;\rangle}{\langle\sigma,a_1&lt;a_2\rangle\to\langle\sigma,a_1&#39;&lt;a_2\rangle}\qquad
+\frac{\langle\sigma,a_2\rangle\to\langle\sigma,a_2&#39;\rangle}{\langle\sigma,n&lt;{a_2}\rangle\to\langle\sigma,n&lt;a_2&#39;\rangle}
+\]</span></p>
+<p><span class="math display">\[
+\frac{n&lt;{m}}{\langle\sigma,n&lt;{m}\rangle\to\langle\sigma,true\rangle}\qquad
+\frac{n\ge{m}}{\langle\sigma,n&lt;{m}\rangle\to\langle\sigma,false\rangle}
+\]</span></p>
+<p><strong>Commands</strong> <span class="math display">\[
+\frac{\langle\sigma,e\rangle\to\langle\sigma,e&#39;\rangle}{\langle\sigma,x:=e\rangle\to\langle\sigma,x:=e&#39;\rangle}\qquad
+\frac{}{\langle\sigma,x:=n\rangle\to\langle\sigma[x\mapsto{n}],skip\rangle}
+\]</span></p>
+<p><span class="math display">\[
+\frac{\langle\sigma,c_1\rangle\to\langle\sigma&#39;,c_1&#39;\rangle}{\langle\sigma,c_1;c_2\rangle\to\langle\sigma&#39;,c_1&#39;;c_2\rangle}\qquad
+\frac{}{\langle\sigma,skip;c_2\rangle\to\langle\sigma,c_2\rangle}
+\]</span></p>
+<p>对于if命令，先求值测试表达式直到true或false，然后再选择正确的分支： <span class="math display">\[
+\frac{\langle\sigma,b\rangle\to\langle\sigma,b&#39;\rangle}{\langle\sigma,if\;b\;then\;c_1\;else\;c_2\rangle\to\langle\sigma,if\;b&#39;\;then\;c_1\;else\;c_2\rangle}
+\]</span></p>
+<p><span class="math display">\[
+\frac{}{\langle\sigma,if\;true\;then\;c_1\;else\;c_2\rangle\to\langle\sigma,c_1\rangle}\qquad
+\frac{}{\langle\sigma,if\;false\;then\;c_1\;else\;c_2\to\langle\sigma,c_2\rangle}
+\]</span></p>
+<p>对于while命令，上面的策略就不行了（Why？）。我们可以使用下面的规则，你可以把循环想象成把if命令一层一层展开： <span class="math display">\[\frac{}{\langle\sigma,while\;b\;do\;c\rangle\to\langle\sigma,if\;b\;then\,(c;while\;b\;do\;c)\,else\;skip\rangle}\]</span></p>
+<p>现在我们就能利用这些规则来运行程序了，比如（其中W是<span class="math inline">\(while\;foo&lt;{4}\;do\;foo:=foo+5\)</span>的缩写）： <span class="math display">\[
+\begin{align*}
+&amp; \langle\sigma,foo:=3;while\;foo&lt;{4}\;do\;foo:=foo+5\rangle\\
+\to&amp;\langle\sigma&#39;,skip;while\;foo&lt;{4}\;do\;foo:=foo+5\rangle\quad{(其中\sigma&#39;=\sigma[foo\mapsto3])}\\
+\to&amp;\langle\sigma&#39;,while\;foo&lt;{4}\;do\;foo:=foo+5\rangle\\
+\to&amp;\langle\sigma&#39;,if\;foo&lt;{4}\;then\;(foo:=foo+5;W)\;else\;skip\rangle\\
+\to&amp;\langle\sigma&#39;,if\;3&lt;{4}\;then\;(foo:=foo+5;W)\;else\;skip\rangle\\
+\to&amp;\langle\sigma&#39;,if\;true\;then\;(foo:=foo+5;W)\;else\;skip\rangle\\
+\to&amp;\langle\sigma&#39;,foo:=foo+5;while\;foo&lt;{4}\;do\;foo:=foo+5\rangle\\
+\to&amp;\langle\sigma&#39;,foo:=3+5;while\;foo&lt;{4}\;do\;foo:=foo+5\rangle\\
+\to&amp;\langle\sigma&#39;,foo:=8;while\;foo&lt;{4}\;do\;foo:=foo+5\rangle\\
+\to&amp;\langle\sigma&#39;&#39;,while\;foo&lt;{4}\;do\;foo:=foo+5\rangle\quad{(其中\sigma&#39;&#39;=\sigma&#39;[foo\mapsto8])}\\
+\to&amp;\langle\sigma&#39;&#39;,if\;foo&lt;{4}\;then\;(foo:=foo+5;W)\;else\;skip\rangle\\
+\to&amp;\langle\sigma&#39;&#39;,if\;8&lt;{4}\;then\;(foo:=foo+5;W)\;else\;skip\rangle\\
+\to&amp;\langle\sigma&#39;&#39;,if\;false\;then\;(foo:=foo+5;W)\;else\;skip\rangle\\
+\to&amp;\langle\sigma&#39;&#39;,skip\rangle
+\end{align*}
+\]</span></p>
+<h4 id="imp的large-step操作语义">IMP的large-step操作语义</h4>
+<p>同样对算术表达式、布尔表达式和命令我们定义以下不同的large-step求值关系，其中算数表达式关系把表达式和store映射为整数值；布尔表达式的最终值为<span class="math inline">\(Bool=\{true,false\}\)</span>；命令的最终值为一个store： <span class="math display">\[
+\begin{align*}
+\Downarrow_{Aexp}&amp;\subseteq{Aexp\times{Store}\times{Int}}\\
+\Downarrow_{Bexp}&amp;\subseteq{Bexp\times{Store}\times{Bool}}\\
+\Downarrow_{Com}&amp;\subseteq{Com\times{Store}\times{Store}}
+\end{align*}
+\]</span></p>
+<p>同样，为了简化，对三种关系我们都用<span class="math inline">\(\Downarrow\)</span>表示；<span class="math inline">\(\Downarrow\)</span>也使用中缀表示法：<span class="math inline">\(\langle\sigma,c\rangle\Downarrow\sigma&#39;\)</span>的意思就是<span class="math inline">\((c,\sigma,\sigma&#39;)\in\Downarrow_{Com}\)</span>。</p>
+<p><strong>Arithmetic expressions</strong> <span class="math display">\[
+\frac{}{\langle\sigma,n\rangle\Downarrow{n}}\qquad
+\frac{\sigma(x)=n}{\langle\sigma,x\rangle\Downarrow{n}}
+\]</span></p>
+<p><span class="math display">\[
+\frac{\langle\sigma,a_1\rangle\Downarrow{n_1}\quad\langle\sigma,a_2\rangle\Downarrow{n_2}\quad{n=n_1+n_2}}{\langle\sigma,a_1+a_2\rangle\Downarrow{n}}\quad
+\frac{\langle\sigma,a_1\Downarrow{n_1}\rangle\quad\langle\sigma,a_2\rangle\Downarrow{n_2}\quad{n=n_1\times{n_2}}}{\langle\sigma,a_1\times{a_2}\rangle\Downarrow{n}}
+\]</span></p>
+<p><strong>Boolean expressions</strong> <span class="math display">\[
+\frac{}{\langle\sigma,true\rangle\Downarrow{true}}\qquad
+\frac{}{\langle\sigma,false\rangle\Downarrow{false}}
+\]</span></p>
+<p><span class="math display">\[
+\frac{\langle\sigma,a_1\rangle\Downarrow{n_1}\quad\langle\sigma,a_2\rangle\Downarrow{n_2}\quad{n=n_1&lt;n_2}}{\langle\sigma,a_1&lt;a_2\rangle\Downarrow{true}}\quad
+\frac{\langle\sigma,a_1\Downarrow{n_1}\rangle\quad\langle\sigma,a_2\rangle\Downarrow{n_2}\quad{n=n_1\ge{n_2}}}{\langle\sigma,a_1&lt;a_2\rangle\Downarrow{false}}
+\]</span></p>
+<p><strong>Commands</strong> <span class="math display">\[
+{\bf{S}\scriptsize{KIP}}
+\frac{}{\langle\sigma,skip\rangle\Downarrow\sigma}\quad
+{\bf{A}\scriptsize{SSGN}}
+\frac{\langle\sigma,e\rangle\Downarrow{n}}{\langle\sigma,x:=e\rangle\Downarrow\sigma[x\mapsto{n}]}
+\quad{\bf{S}\scriptsize{EQ}}
+\frac{\langle\sigma,c_1\rangle\Downarrow\sigma&#39;\quad\langle\sigma&#39;,c_2\rangle\Downarrow\sigma&#39;&#39;}{\langle\sigma,c_1;c_2\rangle\Downarrow\sigma&#39;&#39;}
+\]</span></p>
+<p><span class="math display">\[
+{\bf{I}\scriptsize{F-T}}
+\frac{\langle\sigma,b\rangle\Downarrow{true}\quad\langle\sigma,c_1\rangle\Downarrow\sigma&#39;}{\langle\sigma,if\;b\;then\;c_1\;else\;c_2\rangle\Downarrow\sigma&#39;}\quad
+{\bf{I}\scriptsize{F-F}}
+\frac{\langle\sigma,b\rangle\Downarrow{false}\quad\langle\sigma,c_2\rangle\Downarrow\sigma&#39;}{\langle\sigma,if\;b\;then\;c_1\;else\;c_2\rangle\Downarrow\sigma&#39;}
+\]</span></p>
+<p><span class="math display">\[
+{\bf{W}\scriptsize{HILE-F}}
+\frac{\langle\sigma,b\rangle\Downarrow{false}}{\langle\sigma,while\;b\;do\;c\rangle\Downarrow\sigma}
+\]</span></p>
+<p><span class="math display">\[
+{\bf{W}\scriptsize{HILE-T}}
+\frac{\langle\sigma,b\rangle\Downarrow{true}\quad\langle\sigma,c\rangle\Downarrow\sigma&#39;\quad\langle\sigma&#39;,while\;b\;do\;c\rangle\Downarrow\sigma&#39;&#39;}{\langle\sigma,while\;b\;do\;c\rangle\Downarrow\sigma&#39;&#39;}
+\]</span></p>
+<p>有意思的是，large-step中的while命令就没有像small-step中的那样依赖if命令定义（Why？）。</p>
+<h3 id="小结imp的一个实现">小结：IMP的一个实现</h3>
+<p>如果你能坚持到这里，好吧，要么你是个爱学习的好孩子，要么你就一直边看边问：“这些都有什么用！？”。讲了这么多理论，是时候搞点实际的东西了。这一节，我们会实现算术表达式语言和这个IMP语言。</p>
+<p>因为这篇文章是针对程序语言的，这里并不会针对编译原理展开讨论，如果你对编译原理不太熟悉，也不要紧，这里的实现所使选用的语言是ocaml，ocaml自带lexer和parser generator，词法分析就已经差不多了，剩下的就是语法分析和求值eval了；另外，ocaml的语法也非常简单，基本一看就懂，不懂的看看文档也就差不多了。</p>
+<p>当然你也可以选定自己的语言，然后实现IMP，基本原理都差不多，没有lexer可以用正则表达式凑合，没有parser可以if-else堆一个嘛（能手写自动机的当我没说…）。我的实现放在了<a href="https://github.com/ACEMerlin/IMP" target="_blank" rel="noopener">Github</a>上，我的建议是先切到<a href="https://github.com/ACEMerlin/IMP/tree/arithmetic" target="_blank" rel="noopener"><code>arithmetic</code></a>分支，这个分支是算数表达式的实现，包括赋值操作和加、乘运算，然后你可以在此基础上扩展语法，实现IMP；当你遇到困难的时候，可以切到master分支寻找灵感。特别是不要眼高手低，觉得简单就不做了，其实实现的过程也是有点耗脑子的，当初我也花了2天时间才能准确的表示IMP的语法（ocaml什么也是现学的…），当然也是挺有趣的。</p>
+<p>我这个IMP的实现依据的是large-step语义，lexer.mll负责把文件输入变成token流，parser.mly负责接受token流输出ast.ml里定义的ast，eval.ml负责接受ast并输出求值ast的结果。下面分别是变量、算术表达式、布尔表达式和命令的类型定义，特别的直观：</p>
+<figure class="highlight ocaml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">type</span> var = <span class="built_in">string</span></div><div class="line"></div><div class="line"><span class="keyword">type</span> aexp =</div><div class="line">  | <span class="type">Int</span> <span class="keyword">of</span> <span class="built_in">int</span>                <span class="comment">(* n *)</span></div><div class="line">  | <span class="type">Var</span> <span class="keyword">of</span> var                <span class="comment">(* x *)</span></div><div class="line">  | <span class="type">Plus</span> <span class="keyword">of</span> aexp * aexp       <span class="comment">(* a0 + a1 *)</span></div><div class="line">  | <span class="type">Times</span> <span class="keyword">of</span> aexp * aexp      <span class="comment">(* a0 * a1 *)</span></div><div class="line"></div><div class="line"><span class="keyword">type</span> bexp =</div><div class="line">  | <span class="type">True</span></div><div class="line">  | <span class="type">False</span></div><div class="line">  | <span class="type">Less</span> <span class="keyword">of</span> aexp * aexp       <span class="comment">(* a0 &lt; a1 *)</span></div><div class="line"></div><div class="line"><span class="keyword">type</span> com =</div><div class="line">  | <span class="type">Seq</span> <span class="keyword">of</span> com * com          <span class="comment">(* c0 ; c1 *)</span></div><div class="line">  | <span class="type">Assign</span> <span class="keyword">of</span> var * aexp      <span class="comment">(* x := a *)</span></div><div class="line">  | <span class="type">Aexp</span> <span class="keyword">of</span> aexp              <span class="comment">(* a *)</span></div><div class="line">  | <span class="type">If</span> <span class="keyword">of</span> bexp * com * com    <span class="comment">(* if b then c0 else c1 *)</span></div><div class="line">  | <span class="type">While</span> <span class="keyword">of</span> bexp * com       <span class="comment">(* while b do c *)</span></div></pre></td></tr></table></figure>
+<p>需要实现的就是下面三个求值方法，分别求值算术表达式、波尔表达式和命令，分别负责输出一个整数、一个布尔值和一个store：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">eval_aexp : aexp * store -&gt; int</div><div class="line">eval_bexp : bexp * store -&gt; bool</div><div class="line">eval_com : com * store -&gt; store</div></pre></td></tr></table></figure>
+<p>为了使IMP更合理和更好实现，我扩展了IMP的语法，最终你要可以解释运行下面的程序，命令由‘;’隔开，while循环体由‘{’、‘}’包含：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">x := 2;</div><div class="line">y := x + 3;</div><div class="line">if y&lt; 6 then z:=x else z:=y;</div><div class="line">while y &lt;6 do &#123;</div><div class="line">  x:=x+1;</div><div class="line">  y:=y+1;</div><div class="line">&#125;</div><div class="line">x := x * x;</div></pre></td></tr></table></figure>
+<p>在make后会有interp文件；./interp + filename运行文件，最终的store应该是：z=2 y=6 x=9。</p>
+<h3 id="imp的属性">IMP的属性</h3>
+<h4 id="文法等价">文法等价</h4>
+<p>IMP的small-step语义和large-step语义是等价的： <span class="math display">\[
+Therom. \forall{c\in{Com}\land\sigma,\sigma&#39;\in{Store}}.\\
+\langle\sigma,c\rangle\to^*\langle\sigma&#39;,skip\rangle\iff\langle\sigma,c\rangle\Downarrow\sigma&#39;
+\]</span></p>
+<h4 id="non-termination">Non-Termination</h4>
+<p>给定命令c的起始状态<span class="math inline">\(\sigma\)</span>，这个命令可能终止，输出<span class="math inline">\(\sigma&#39;\)</span>，但也有可能发散，永远不会终止，永远不会输出最终状态。比如：<span class="math display">\[while\;true\;do\;foo:=foo+1\]</span>永远发散；<span class="math display">\[while\;0&lt;i\;do\;i:i+1\]</span>只有当i在初始<span class="math inline">\(\sigma\)</span>中值大于0时才会发散。如果<span class="math inline">\(\langle\sigma,c\rangle\)</span>是一个发散的配置，那么不存在<span class="math inline">\(\sigma\)</span>使得：<span class="math display">\[\langle\sigma,c\rangle\Downarrow\sigma&#39;\lor\langle\sigma,c\rangle\to^*\langle\sigma&#39;,skip\rangle.\]</span>在small-step语义中，发散的配置生成了无限的序列：<span class="math display">\[\langle\sigma,c\rangle\to\langle\sigma_1,c_1\rangle\to\langle\sigma_2,c_2\rangle\to\dots\]</span>所以，small-step语义让我们有机会表达和证明程序可能发散的属性，large-step语义则不能。</p>
+<h4 id="determinism">Determinism</h4>
+<p>IMP的small-step语义和large-step语义都是确定的。每个IMP命令c和其初始状态<span class="math inline">\(\sigma\)</span>最多求值到一个最终的store： <span class="math display">\[
+Theorem. \forall{c\in{Com}\land\sigma_1,\sigma_2\in{Store}}.\\
+\langle\sigma,c\rangle\Downarrow\sigma_1\land\langle\sigma,c\rangle\Downarrow\sigma_2\implies\sigma_1=\;\sigma_2
+\]</span></p>
+<h3 id="指称语义">指称语义</h3>
+<p>已经学习了两种操作语义，这一节，我们学习新的语义模型–指称语义。指称语义意用数学函数表达程序在计算什么，以IMP为例子就是一个把store转换为另一个store的函数：给定一个store，程序输出一个最终的store。举个例子，可以把程序<span class="math inline">\(foo:=bar+1\)</span>想成一个函数，此函数接受一个store<span class="math inline">\(\;\sigma\)</span>，输出另一个和<span class="math inline">\(\sigma差不多的\)</span>store<span class="math inline">\(\;\sigma&#39;\)</span>，只不过<span class="math inline">\(\sigma&#39;\)</span>另外包含了foo到<span class="math inline">\(\sigma(bar)+1\)</span>的映射：<span class="math inline">\(\sigma&#39;=\sigma[foo\mapsto\sigma(bar)+1]\)</span>。程序就是store到store的函数。操作语义告诉我们程序如何运行，指称语义展示的是程序在计算什么。</p>
+<h4 id="imp的指称语义">IMP的指称语义</h4>
+<p>给定程序c，我们用<span class="math inline">\(C[c]\)</span>表示c的指称（denotation），用数学函数表示就是：<span class="math display">\[C[c]:Store\rightharpoonup{Store}\]</span>其中<span class="math inline">\(C[c]\)</span>其实是个偏函数，因为既可能输入的store不是由程序的自由变量定义的，也可能程序不会终止。不终止的程序的<span class="math inline">\(C[c]\)</span>是未定义的，因为没有对应的store作为结果。把<span class="math inline">\(C[c]\)</span>应用到store<span class="math inline">\(\;\sigma\)</span>上则写成<span class="math inline">\(C[c]\sigma\)</span>，如果用<span class="math inline">\(f\)</span>表示<span class="math inline">\(C[c]\)</span>，那<span class="math inline">\(f(\sigma)\)</span>和<span class="math inline">\(C[c]\)</span>意思是一样的。同时定义下面的两个函数，<span class="math inline">\(A[a]\)</span>是算术表达式a的指称，<span class="math inline">\(B[b]\)</span>是布尔表达式b的指称： <span class="math display">\[
+\begin{align*}
+A[a]&amp;:Store\rightharpoonup{Int}\\
+B[b]&amp;:Store\rightharpoonup\{true,false\}
+\end{align*}
+\]</span></p>
+<p>为了使我们更好的定义指称语义，我们用元素对的集合表示部分映射：给定<span class="math inline">\(f:A\rightharpoonup{B}\)</span>，我们用<span class="math inline">\(F=\{(a,b)|a\in{A}\land{b=f(a)\in{B}}\}\)</span>表示<span class="math inline">\(f\)</span>，其中对每个<span class="math inline">\(a\in{A}\)</span>，最多只有一对<span class="math inline">\((a,_)\)</span>在集合中。所以<span class="math inline">\((a,b)\in{F}\)</span>和<span class="math inline">\(b=f(a)\)</span>是一个意思。</p>
+<p>现在我们能定义IMP的的指称语义了。首先定义算术表达式的布尔表达式的指称： <span class="math display">\[
+\begin{align*}
+A[n]=&amp;\{(\sigma,n)\}\\
+A[x]=&amp;\{(\sigma,\sigma(x))\}\\
+A[a_1+a_2]=&amp;\{(\sigma,n)|(\sigma,n_1)\in{A[a_1]}\land(\sigma,n_2)\in{A[a_2]}\land{n=n_1+n_2}\}\\
+\\
+B[true]=&amp;\{(\sigma,true)\}\\
+B[false]=&amp;\{(\sigma,false)\}\\
+B[a_1&lt;a_2]=&amp;\{(\sigma,true)|(\sigma,n_1)\in{A[a_1]}\land(\sigma,n_2)\in{A[a_2]\land{n_1&lt;n_2}}\}\cup\\
+&amp;\{(\sigma,false)|(\sigma,n_1)\in{A[a_1]}\land(\sigma,n_2)\in{A[a_2]}\land{n_1\geq{n_2}}\}
+\end{align*}
+\]</span></p>
+<p>命令的指称如下： <span class="math display">\[
+\begin{align*}
+C[skip]=&amp;\{(\sigma,\sigma)\}\\
+C[x:=a]=&amp;\{(\sigma,\sigma[x\mapsto{n}])|(\sigma,n)\in{A[a]})\}\\
+C[c_1;c_2]=&amp;\{(\sigma,\sigma&#39;)|\exists\sigma&#39;&#39;.((\sigma,\sigma&#39;&#39;)\in{C[c_1]}\land(\sigma&#39;&#39;,\sigma&#39;\in{C[c_2]})\}
+\end{align*}
+\]</span></p>
+<p>定义关系运算<span class="math inline">\(C[c_1;c_2]=C[c_2]\circ{C[c_1]}\)</span>，<span class="math inline">\(\circ\)</span>是关系的复合运算，定义如下：<span class="math display">\[if\;R_1\subseteq{A\times{b}}\;and\;R_2\subseteq{B\times{C}},R_2\circ{R_1}\subseteq{A\times{C}},then\;R_2\circ{R_1}=\{(a,c)|\exists{b\in{B}}.(a,b)\in{R_1}\land(b,c)\in{R_2}.\}\]</span>如果<span class="math inline">\(C[c_1]\)</span>和<span class="math inline">\(C[c_2]\)</span>是全函数，那么<span class="math inline">\(\circ\)</span>则是函数复合。下面是if命令和while命令的定义： <span class="math display">\[
+\begin{align*}
+C[if\;b\;then\;c_1\;else\;c_2]=&amp;\{(\sigma,\sigma&#39;)|(\sigma,true)\in{B[b]}\land(\sigma,\sigma&#39;)\in{C[c_1]}\}\cup\\
+&amp;\{(\sigma,\sigma&#39;)|(\sigma&#39;,false)\in{B[b]}\land(\sigma,\sigma&#39;)\in{C[c_2]}\}\\
+C[while\;b\;do\;c]=&amp;\{(\sigma,\sigma)|(\sigma,false)\in{B[b]}\}\cup\\
+&amp;\{(\sigma,\sigma&#39;)|(\sigma,true)\in{B[b]}\land\exists\sigma&#39;&#39;.((\sigma,\sigma&#39;&#39;)\in{C[c]}\land(\sigma&#39;&#39;,\sigma&#39;)\in{C[while\;b\;do\;c])}\}
+\end{align*}
+\]</span></p>
+<p>但是只要你仔细一看，就会发现while的定义是不对的，它在自己的定义中用到了自己，这就不是一个定义了，而是一个递归等式，解决这个问题的方法就是不动点。</p>
+<h4 id="不动点fixed-points">不动点（Fixed points）</h4>
+<p>为了解决while定义的问题，我们必须找出符合递归等式的函数。为了理解这个问题，我们先理解下面这个例子，给定函数<span class="math inline">\(f:\mathbb{N}\to\mathbb{N}\)</span>: <span class="math display">\[
+f(x)= \begin{cases} 0, &amp; \text {if $x$=0} \\ f(x-1)+2x-1 &amp; \text{otherwise}\end{cases}
+\]</span></p>
+<p>这不是<span class="math inline">\(f\)</span>的定义，而是<span class="math inline">\(f\)</span>满足的等式，而且这里似乎只有一个函数<span class="math inline">\(f\)</span>满足这个等式：<span class="math inline">\(f(x)=x^2\)</span>，这个函数<span class="math inline">\(f\)</span>就是不动点。通常来说，给定一个递归等式，不一定有解（<span class="math inline">\(g:\mathbb{N}\to\mathbb{N},g(x)=g(x)+1\)</span>就没解）。</p>
+<p>利用逐步渐近法，我们可以计算出不动点。每次计算就越来越逼近最终的答案。为了求出满足递归等式的<span class="math inline">\(f\)</span>，首先给定函数<span class="math inline">\(f_0=\emptyset\)</span>（<span class="math inline">\(f_0\)</span>是空关系，一个定义域为空的偏函数），然后用逐步渐进法逐步计算： <span class="math display">\[
+\begin{align*}
+f_0&amp;=\emptyset\\
+f_1&amp;= \begin{cases} 0, &amp; \text {if $x$=0} \\ f_0(x-1)+2x-1 &amp; \text{otherwise}\end{cases}\\
+&amp;=\{(0,0)\}\\
+f_2&amp;= \begin{cases} 0, &amp; \text {if $x$=0} \\ f_1(x-1)+2x-1 &amp; \text{otherwise}\end{cases}\\
+&amp;=\{(0,0),(1,1)\}\\
+f_3&amp;= \begin{cases} 0, &amp; \text {if $x$=0} \\ f_2(x-1)+2x-1 &amp; \text{otherwise}\end{cases}\\
+&amp;=\{(0,0),(1,1),(2,4)\}
+\end{align*}
+\]</span></p>
+<p><span class="math inline">\(f_i\)</span>逐步呈现出<span class="math inline">\(f(x)=x^2\)</span>。</p>
+<p>但是数学中没有‘显然’，接下来就是给逐步渐进法建立一个数学模型：一个高阶函数F，F接受一个<span class="math inline">\(f_k\)</span>，输出下一个<span class="math inline">\(f_{k+1}\)</span>: <span class="math display">\[F:(\mathbb{N}\rightharpoonup\mathbb{N})\to(\mathbb{N}\rightharpoonup\mathbb{N})\]</span></p>
+<p>其中 <span class="math display">\[(F(f))(x)= \begin{cases} 0, &amp; \text {if $x$=0} \\ f(x-1)+2x-1 &amp; \text{otherwise}\end{cases}\]</span></p>
+<p>上述等式的一个解就是<span class="math inline">\(f=F(f)\)</span>。通常来说，给定函数<span class="math inline">\(F:A\to{A}\)</span>，如果<span class="math inline">\(a\in{A},F(a)=a\)</span>，那么a就是F的不动点。于是，F的所有不动点的集合就是递归等式最终的解： <span class="math display">\[
+\begin{align*}
+f&amp;=fix(F)\\
+&amp;=f_0\cup f_1\cup f_2\cup f_3\cup \dots\\
+&amp;=\emptyset\cup F(\emptyset)\cup F(F(\emptyset))\cup F(F(F(\emptyset)))\cup \dots\\
+&amp;=\bigcup_{i\geq0}F^i(\emptyset)
+\end{align*}
+\]</span></p>
+<h3 id="kleene不动点定理与imp">Kleene不动点定理与IMP</h3>
+<p>让我们利用不动点重新定义IMP的while语义： <span class="math display">\[
+\begin{align*}
+C[while\;b\;do\;c]=&amp;fix(F)\\
+F(f)=&amp;\{(\sigma,\sigma)|(\sigma,false)\in{B[b]}\}\cup\\
+&amp;\{(\sigma,\sigma&#39;)|(\sigma,true)\in{B[b]}\land\exists\sigma&#39;&#39;.(\sigma,\sigma&#39;&#39;)\in{C[c]}\land(\sigma&#39;&#39;,\sigma&#39;)\in{f}\}
+\end{align*}
+\]</span></p>
+<p>但是认真的读者肯定心中已经有个疑问了：“你怎么确定不动点存在？”，是的，就像上一节所说的那样，递归等式不一定有解，不动点不一定存在。这一节就要利用Kleen不动点定理证明while命令的语义是存在不动点的。</p>
+<h4 id="kleene不动点定理">Kleene不动点定理</h4>
+<p><span class="math display">\[
+Definition(Scott连续). 给定函数f: Cl(X) \rightarrow Cl(Y)，如果\forall x \in Cl(X), \forall b \in f(x), \exists x_0 \subseteq_{fin} x, b \in f(x_0)\\
+并且f是单调的a \subseteq b \Rightarrow f(a) \subseteq f(b)，则说f是Scott连续的。
+\]</span></p>
+<p><span class="math display">\[
+Definition(有向集合). 当D是个偏序集合，如果\forall x, x&#39; \in D,\exists z \in D\\
+使得x\subseteq D,x&#39;\subseteq D，则说D是有向集合。
+\]</span></p>
+<p><span class="math inline">\(b\in{f(x)}\)</span>，意思是给定x，其中x可能是由无限的元素组成的，函数接受x输出一个b；函数是连续的意思就是，其实不需要所有的x，只需要x的一个有限的子集就能同样达到输出b的效果。这就是连续的本质。为了得到函数包含有限信息的输出，只要包含有限信息的输入。有限信息的输入的每个元素的有限渐进的总和组成了输出，其实输入从有限到无限时的输出，没有一个神奇的跳跃，你在无限得到的b，其实在有限的某个时候就已经得到了。如下是证明，首先根据上文的解释翻译一下Scott连续的定义，其中D是有向集合： <span class="math display">\[f(\bigcup_{x \in D} x) = \bigcup_{x \in D} f(x)\]</span></p>
+<p><em>proof</em>. 如要证明A=B，可以先证明<span class="math inline">\(A\subseteq{B}\)</span>，再证明<span class="math inline">\(B\subseteq{A}\)</span>：</p>
+<ul>
+<li><strong>Case</strong> <span class="math inline">\(\bigcup_{x \in D} f(x) \subseteq f(\bigcup_{x \in D} x)\)</span>：因为<span class="math inline">\(x \subseteq \bigcup_{x \in D} x\)</span>，根据单调性可得<span class="math inline">\(f(x) \subseteq f(\bigcup_{x \in D} x)\)</span>，又因为对所有<span class="math inline">\(x\in{D}\)</span>，<span class="math inline">\(f(x)\)</span>都满足<span class="math inline">\(f(x) \subseteq f(\bigcup_{x \in D} x)\)</span>，所以<span class="math inline">\(\bigcup_{x \in D} f(x) \subseteq f(\bigcup_{x \in D} x)\)</span>。Case finished;</li>
+<li><strong>Case</strong> <span class="math inline">\(f(\bigcup_{x \in D} x) \subseteq \bigcup_{x \in D} f(x)\)</span>：假设左边的<span class="math inline">\(f(\bigcup_{x \in D} x)\)</span>的结果是b，根据上面的解释，其实只需要输入的有限子集<span class="math inline">\(x_0\)</span>就能输出b，<span class="math inline">\(x_0 \subseteq_{fin} \bigcup_{x \in D} x\)</span>，所以<span class="math inline">\(b \in f(x_0)\)</span>，假设有一个比<span class="math inline">\(x_0\)</span>稍微大一点的z，根据单调性有<span class="math inline">\(f(x_0) \subseteq f(z)\)</span>，所以有<span class="math inline">\(b \in f(z)\)</span>，根据有向集合的定义，有<span class="math inline">\(z\in{D}\)</span>，所以<span class="math inline">\(f(z) \subseteq \bigcup_{x \in D} f(x)\)</span>。Case finished，得证。</li>
+</ul>
+<p><span class="math display">\[
+Theorem(Kleene不动点).给定Scott连续的函数f，f的最小不动点是\bigcup_iF^i(\emptyset)
+\]</span></p>
+<p><em>proof</em>. 设<span class="math inline">\(X=\bigcup_iF^i(\emptyset)\)</span>，首先证明<span class="math inline">\(X\)</span>是<span class="math inline">\(F\)</span>的不动点–<span class="math inline">\(F(X)=X\)</span>：</p>
+<p><span class="math display">\[
+\begin{align*}
+F(X)&amp;=F(\bigcup_iF^i(\emptyset)) \qquad &amp;\text{By definition of X}\\
+&amp;=\bigcup_iF(F^i(\emptyset)) \qquad &amp;\text{By Scott continuity}\\
+&amp;=\bigcup_iF^{i+1}(\emptyset) \\
+&amp;=\emptyset\cup\bigcup_iF^{i+1}(\emptyset) \\
+&amp;=F^0(\emptyset)\cup\bigcup_iF^{i+1}(\emptyset) \\
+&amp;=\bigcup_iF^i(\emptyset)\\
+&amp;=X
+\end{align*}
+\]</span></p>
+<p>然后，我们证明<span class="math inline">\(X\)</span>是<span class="math inline">\(F\)</span>的最小不动点。假设<span class="math inline">\(Y\)</span>是<span class="math inline">\(F\)</span>的另一个不动点，我们要证明的是，对所有得i，<span class="math inline">\(F^i(\emptyset)\subseteq{Y}\)</span>都成立。当i是0的时候，<span class="math inline">\(F^0(\emptyset)=\emptyset\subseteq{Y}\)</span>；对剩下的，我们先假设有<span class="math inline">\(F^i(\emptyset)\subseteq{Y}\)</span>，由单调性可知，所以<span class="math inline">\(F(F^{i+1}(\emptyset))\subseteq{F(Y)}\)</span>，因为<span class="math inline">\(Y\)</span>是一个不动点，所以<span class="math inline">\(F(Y)=Y\)</span>，然后<span class="math inline">\(F^{i+1}(\emptyset)\subseteq{Y}\)</span>。最后，所有的元素都是<span class="math inline">\(Y\)</span>的子集：</p>
+<p><span class="math display">\[F^0\emptyset\subseteq F^1\emptyset\subseteq \dots\]</span></p>
+<p>所以所有元素的并集<span class="math inline">\(X\)</span>也属于<span class="math inline">\(Y\)</span>：<span class="math inline">\(X=\bigcup_iF^i(\emptyset)\subseteq Y\)</span>，故<span class="math inline">\(X\)</span>是<span class="math inline">\(F\)</span>的最小不动点。得证。</p>
+<h4 id="指称语义的论证">指称语义的论证</h4>
+<p>相比操作语义，指称语义的一大好处就是，在论证等价问题的时候，只需要看程序指称的计算结果就行了，而操作语义则必须把抽象机器底层变换、衍生出的都论证清楚。</p>
+<p>比如，要证明<span class="math inline">\(skip;c\)</span>和<span class="math inline">\(c;skip\)</span>是等价的，计算如下：</p>
+<p><span class="math display">\[
+\begin{align*}
+C[skip;c]&amp;=\{(\sigma,\sigma&#39;&#39;)|\exists\sigma&#39;.(\sigma,\sigma&#39;)\in{C[skip]}\land(\sigma&#39;,\sigma&#39;&#39;)\in{C[c]}\}\\
+&amp;=\{(\sigma,\sigma&#39;&#39;)|(\sigma,\sigma&#39;&#39;)\in{C[c]}\}\\
+&amp;=\{(\sigma,\sigma&#39;&#39;)|\exists\sigma&#39;.(\sigma,\sigma&#39;)\in{C[c]}\land(\sigma&#39;,\sigma&#39;&#39;)\in{C[skip]}\}\\
+&amp;=C[c;skip]
+\end{align*}
+\]</span></p>
+<p>利用偏函数，映射关系和集合，证明变得容易多了。再举个例子<span class="math inline">\(C[while\;false\;do\;c]\)</span>，根据定义，只需证<span class="math inline">\(fix(F)\)</span>，其中<span class="math inline">\(F\)</span>为：</p>
+<p><span class="math display">\[
+\begin{align*}
+F(f)=&amp;\{(\sigma,\sigma)|(\sigma,false)\in{B[b]}\}\cup\\
+&amp;\{(\sigma,\sigma&#39;&#39;)|\exists\sigma&#39;.(\sigma,true)\in{B[b]}\land(\sigma,\sigma&#39;)\in{C[c]}\land(\sigma&#39;,\sigma&#39;&#39;)\in{f}\}
+\end{align*}
+\]</span></p>
+<p>由Kleene不动点定理可得<span class="math inline">\(fixF=\bigcup_iF^i(\emptyset)\)</span>，因为对所有的i，都有<span class="math inline">\(F^i(\emptyset)=\{(\sigma,\sigma)\}\)</span>，所以<span class="math inline">\(fixF=\{(\sigma,\sigma)\}\)</span>，即<span class="math inline">\(C[skip]\)</span>。</p>
+<h3 id="公理语义">公理语义</h3>
+<h4 id="什么是公理语义">什么是公理语义</h4>
+<p>公理语义用逻辑规则来定义程序（操作语义模型展示程序如何运行，指称语义模型展示程序计算什么）。公理语义最初由Floyd和Hoare提出，后来由Dijkstra和Gries进一步发展。</p>
+<p>公理语义通常用前置条件和后置条件来描述程序规则：</p>
+<p><span class="math display">\[\{Pre\}c\{Post\}\]</span></p>
+<p>其中c是程序，<em>Pre</em>和<em>Post</em>是描述程序状态的公式，通常称之为断言；这种三元逻辑又称之为部分正确规则，或者霍尔三元组，其意思如下：如果在运行c前<em>Pre</em>成立，而且c是能终止的，那么<em>Post</em>在c终止后也成立。也可以这样说，给定满足<em>Pre</em>的store <span class="math inline">\(\sigma\)</span>，运行<em>c</em>并终止后，<em>Post</em>在输出的store <span class="math inline">\(\sigma&#39;\)</span>中也成立。</p>
+<p>前置条件和后置条件可以看成程序和用户的接口、约定，用户只需关系程序运行的结果，而不用理解程序是怎么运行的。通常，为了使程序更好维护，程序员用写注释的方法给方法、函数添加文档，特别是对那些闭源的库来说，这就是库使用者和库开发者之间的约定。</p>
+<p>但是，谁也不能保证写在注释里的前置条件和后置条件是正确的，注释描述的是开发者的意图，而不能保证程序的正确性。公理语义解决的就是这个问题。</p>
+<p>公理语义展示了如何描述部分正确语句以及用论证证明程序的程序性。但是，部分正确规则不能保证程序会终止，这也是它叫‘部分’的原因，而完全正确规则保证了程序在满足前置条件时一定会终止，我们用方括号表示完全正确规则：</p>
+<p><span class="math display">\[[Pre]c[Post]\]</span></p>
+<p>其意思：如果在执行<em>c</em>之前满足<em>Pre</em>，那么<em>c</em>会终止并且终止后满足<em>Post</em>。</p>
+<p>大体上，在霍尔三元组中，前置条件指明了在运行程序前的需求，后置条件指明了程序的期望结果（如果程序会终止）。举个例子：</p>
+<p><span class="math display">\[
+\{foo=0\land bar=i\}baz:=0;while\;foo\neq bar \; do(baz:=baz-2;foo:=foo+1)\{baz=-2i\}
+\]</span></p>
+<p>表明了如果有个<em>store</em>中有foo和bar，分别映射到0和i，那么如果程序终止，那么最终的<em>store</em>中应该包含baz到-2i的映射。注意其中i只是个逻辑需要的变量，程序中并没有i，它的作用只是表述bar的初始值，通常称这种变量为‘伪变量’（ghost variables）。</p>
+<p>例子中的部分正确语句是正确的：给定任何满足<span class="math inline">\(\sigma(foo)=0\)</span>的store<span class="math inline">\(\;\sigma\)</span>，和<span class="math display">\[C[baz:=0;while\;foo\neq bar do(baz:=baz-2;foo:=foo+1)]\sigma=\sigma&#39;\]</span></p>
+<p>则<span class="math inline">\(\sigma&#39;(baz)=-2\sigma(bar)\)</span>。注意这只是个部分正确语句，只有程序能终止时才成立，有些初始store不能让程序终止。但下面的完全正确语句是成立的：</p>
+<p><span class="math display">\[
+[bar=0\land bar=i\land i\geq0]baz:=0;while\;foo\neq bar\;do(baz:=baz-2;foo:=foo+1)[baz=-2i].
+\]</span></p>
+<p>表明了如果有个包含foo到0、bar到正整数映射的store<span class="math inline">\(\;\sigma\)</span>，那么程序会终止，并输出最终store<span class="math inline">\(\;\sigma&#39;\)</span>：<span class="math inline">\(\sigma&#39;(baz)=-2\sigma(bar)\)</span>。</p>
+<p>我们所讲的公理语义会主要集中在部分正确断言。</p>
+<h4 id="断言">断言</h4>
+<ul>
+<li>怎么写断言？怎么描述前置条件和后置条件？</li>
+<li>一个断言合理是什么意思？一个部分正确语句合理是什么意思？</li>
+<li>怎么证明部分正确语句是合理的？</li>
+</ul>
+<p>怎么表述前置条件或者后置条件？上面的例子中，我们已经用过了程序变量、逻辑相等、逻辑变量、逻辑合取（<span class="math inline">\(\land\)</span>）。能用什么直接影响到部分正确语句描述出的程序属性，对于IMP，我们用算术表达式之间的比较、逻辑操作符和量词（全部量词和部分量词）来表示断言：</p>
+<p><span class="math display">\[
+\begin{align*}
+i,j&amp;\in LVar \\
+a&amp;\in Axep::=x\;|\;i\;|\;n\;|\;a_1+a_2\;|a_1\ \\
+P,Q&amp;\in Assn::=true\;|\;false\;|\;a_1&lt;a_2\;|\;P_1\land P_2\;|\;P_11\lor P_2\;|\;P_1\implies P_2\;|\;\neg P\;|\;\forall i.P\;|\;\exists i.P
+\end{align*}
+\]</span></p>
+<p>为了表示什么是“断言<em>P</em>在store<span class="math inline">\(\;\sigma\)</span>中成立”，我们还要定义一些新东西，因为除了store，我们还需要知道逻辑变量的值，首先我们定义一个逻辑变量到整数的映射<em>I</em>：</p>
+<p><span class="math display">\[I:LVar\to Int\]</span></p>
+<p>接着定义方法<span class="math inline">\(A_i[a]\)</span>，它是逻辑变量的指称语义：</p>
+<p><span class="math display">\[
+\begin{align*}
+A_i[n](\sigma,I)&amp;=n \\
+A_i[x](\sigma,I)&amp;=\sigma(x) \\
+A_i[i](\sigma,I)&amp;=I(i) \\
+A_i[a_1+a_2](\sigma,I)&amp;=A_i[a_1](\sigma,I)+A_i[a_2](\sigma,I)
+\end{align*}
+\]</span></p>
+<p>现在我们能表示断言的正确性了，<span class="math inline">\(\sigma\vDash_IP\)</span>，意为，在<em>I</em>解释下，P在store<span class="math inline">\(\;\sigma\)</span>中成立：</p>
+<p><span class="math display">\[
+\begin{align*}
+&amp;\sigma\vDash_I true             \qquad\qquad &amp;(always) \\
+&amp;\sigma\vDash_I a_1&lt;a_2          \qquad\qquad &amp;if\;A_i[a_1](\sigma,I)&lt;A_i[a_2](\sigma,I) \\
+&amp;\sigma\vDash_I P_1 \land P_2    \qquad\qquad &amp;if\;\sigma\vDash_IP_1\;and\;\sigma\vDash_IP_2 \\
+&amp;\sigma\vDash_I P_1 \lor P_2     \qquad\qquad &amp;if\;\sigma\vDash_IP_1\;or\;\sigma\vDash_IP_2 \\
+&amp;\sigma\vDash_I P_1 \implies P_2 \qquad\qquad &amp;if\;s\nvDash_IP_1\;or\;\sigma\vDash_IP_2 \\
+&amp;\sigma\vDash_I \neg P           \qquad\qquad &amp;if\;s\nvDash_IP \\
+&amp;\sigma\vDash_I \forall i.P      \qquad\qquad &amp;if\;\forall k \in Int.\sigma\vDash_{I[i\mapsto k]}P \\
+&amp;\sigma\vDash_I \exists i.P      \qquad\qquad &amp;if\;\exists k \in Int.\sigma\vDash_{I[i\mapsto k]}P
+\end{align*}
+\]</span></p>
+<p>定义了断言的正确性，现在我们就可以定义一个部分正确语句的正确性了：</p>
+<p><span class="math display">\[\forall \sigma&#39;.if\;\sigma\vDash_IP\;and\;C[c]\sigma=\sigma&#39;\;then\;\sigma&#39;\vDash_IQ\]</span></p>
+<p>当一个霍尔三元组是合理的（写作<span class="math inline">\(\vDash\{P\}c\{Q\}\)</span>），那它在所有的store和解释中都是正确的：<span class="math inline">\(\forall \sigma,I.\sigma\vDash_I\{P\}c\{Q\}\)</span></p>
+<p>现在我们知道当我们说断言P成立、部分正确语句<span class="math inline">\(\{P\}c\{Q\}\)</span>成立是什么意思了。</p>
+<h3 id="霍尔逻辑">霍尔逻辑</h3>
+<p>利用公理和推论，我们可以直接推导出合理的部分正确语句，而不用关心store或者程序，这些就叫做霍尔规则，由霍尔规则组成的证明系统就是霍尔逻辑：</p>
+<p><span class="math display">\[
+{\bf{S}\scriptsize{KIP}}
+\frac{}{\{P\}skip\{P\}}\quad
+{\bf{A}\scriptsize{SSGN}}
+\frac{}{\{P[a/x]\}x:=a\{P\}}
+\]</span></p>
+<p><span class="math display">\[
+{\bf{S}\scriptsize{EQ}}
+\frac{\{P\}c_1\{R\}\quad\{R\}c_2\{Q\}}{\{P\}c_1;c_2\{Q\}}\quad
+{\bf{I}\scriptsize{F}}
+\frac{\{P\land b\}c_1\{Q\}\quad\{P\land\neg b\}c_2\{Q\}}{\{P\}if\;b\;then\;c_1\;else\;c_2\{Q\}}
+\]</span></p>
+<p><span class="math display">\[
+{\bf{W}\scriptsize{HILE}}
+\frac{\{P\land b\}c\{P\}}{\{P\}while\;b\;do\;c\{P\land\neg b\}}
+\]</span></p>
+<p><span class="math display">\[
+{\bf{C}\scriptsize{ONSEQUENCE}}
+\frac{\vDash(P\implies P&#39;)\quad\{P&#39;\}c\{Q&#39;\}\quad\vDash(Q&#39;\implies Q)}{\{P\}c\{Q\}}
+\]</span></p>
+<p>while中的断言<span class="math inline">\(P\)</span>是个循环不变式，它既是前置条件又是后置条件，它在循环前后都成立，这一点在while规则的结论中也体现出来了。consequence规则加强了前置条件，弱化了后置条件。</p>
+<p>这些霍尔逻辑组成了部分正确语句的归纳定义。当我们能为<span class="math inline">\(\{P\}c\{Q\}\)</span>构建一个证明树，那么就说它是霍尔逻辑的一个公理，写成<span class="math inline">\(\vdash\{P\}c\{Q\}\)</span>。</p>
+<h4 id="soundness和completeness">soundness和completeness</h4>
+<p>现在我们已经有两种断言：</p>
+<ul>
+<li>合理的部分正确语句<span class="math inline">\(\vDash\{P\}c\{Q\}\)</span>。其在所有的store和解释中都成立。</li>
+<li>霍尔逻辑公理<span class="math inline">\(\vdash\{P\}c\{Q\}\)</span>。能从霍尔逻辑的公理和推论中推导出的部分正确语句。</li>
+</ul>
+<p>这两者之间有什么关系呢？首先，第一个问题，是不是每个霍尔逻辑公理都是合理的部分正确三元组呢（<span class="math inline">\(\vdash\{P\}c\{Q\}\implies\vDash\{P\}c\{Q\}\)</span>）？答案是肯定的，霍尔逻辑是sound的，这一点很重要，这意味着我们不能推导出不成立的部分正确三元组。</p>
+<p>第二个问题，对每个合理的断言，我们都能构造出一个霍尔逻辑吗（<span class="math inline">\(\vDash\{P\}c\{Q\}\implies\vdash\{P\}c\{Q\}\)</span>）？这个答案也是肯定的，这就是霍尔逻辑相对完整性，由Cook在1974年证明。</p>
+<h4 id="例子阶乘">例子：阶乘</h4>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&#123;x=n ∧ n&gt;0&#125;</div><div class="line">y:=1;</div><div class="line">while x&gt;0 do &#123;</div><div class="line">    y:=y*x;</div><div class="line">    x:=x-1;</div><div class="line">&#125;</div><div class="line">&#123;y=n!&#125;</div></pre></td></tr></table></figure>
+<p>我们会用霍尔逻辑证明上面是计算n的阶乘的程序。</p>
+<p>要证明上面的程序，因为这是一个包含一个赋值语句和一个while语句的程序，就要利用SEQ规则，于是我们要证明下面的两个三元组：</p>
+<p><span class="math display">\[
+\{x=n\land n&gt;0\}y:=1\{I\} \\
+\{I\}while\;x&gt;0\;do\{y:=y*x;x:=x-1\}\{y=n!\}
+\]</span></p>
+<p>但要想利用SEQ规则，要先满足SEQ规则的分子（前提条件），也就是要先找到满足上面两个三元组的<span class="math inline">\(I\)</span>。首先<span class="math inline">\(I\)</span>需要满足在循环前后都满足，我们已经说过，<span class="math inline">\(I\)</span>需要是个循环不变量。只看循环体可知（不要看while的条件，因为我们要找的是循环前后都满足的断言），y的值是先乘x的初始值n，再乘下一个x，也就是n-1，然后一步步累乘的结果：</p>
+<p><span class="math display">\[y=n*(n-1)*\cdots*(x+1)\]</span></p>
+<p>两边同时乘x！，得到x!*y=n!，当然其中的x是正整数。于是我们得到<span class="math inline">\(I\)</span>：</p>
+<p><span class="math display">\[I=x!*y=n!\land x\geq0\]</span></p>
+<p>要证明<span class="math inline">\(I\)</span>是循环不变量，即必须满足while规则的前提:</p>
+<p><span class="math display">\[\{I\land x&gt;0\}y:=y*x;x:=x-1\{I\}\]</span></p>
+<p>要证明上式，我们倒着走一遍：</p>
+<p><span class="math display">\[
+\{(x-1)!*y=n!\land(x-1)\geq0\}x:=x-1\{I\} \\
+\{(x-1)!*y*x=n!\land(x-1)\geq0\}y:=y*x\{(x-1)!*y=n!\land(x-1)\geq0\}
+\]</span></p>
+<p>又因为<span class="math inline">\(I\land x&gt;0\implies(x-1)!*y*x=n!\land(x-1)\geq0\)</span>，再由CONSEQUENCE规则，可得上式。现在满足了while的前提条件，终于可以使用while规则了，得到：</p>
+<p><span class="math display">\[
+\{I\}while\;x&gt;0\;do\{y:=y*x;x:=x-1\}\{I\land x\leq0\}
+\]</span></p>
+<p>剩下的只需证明<span class="math inline">\(I\land x\leq0\implies y=n!\)</span>：</p>
+<p><span class="math display">\[x!*y=n!\land x\geq0\land x\leq0\implies y=n!\]</span></p>
+<p>由CONSEQUENCE规则可得第二个三元组。</p>
+<p>下面，证前一个三元组。首先，利用不需要前提条件的赋值规则：<span class="math inline">\(\{I[1/y]\}y:=1\{I\}\)</span>，展开得到：</p>
+<p><span class="math display">\[\{x!*1=n!\land x\geq0\}y:=1\{x!*y=n!\land x\geq0\}\]</span></p>
+<p>又因为<span class="math inline">\(x=n\land n&gt;0 \implies x!*1=n!\land x\geq0\)</span>，再由CONSEQUENCE规则可得第一个三元组。</p>
+<h2 id="小结">小结</h2>
+<p>到这里，计算的本质 Part 1就告一段落了，虽然写了不少，但基本就是为了介绍语义，以及证明语义属性的方法，都还没摸到Lambda Caculus。下一章就开始讲Lambda Caculus和函数式编程了，our journey is just beginning。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/PLT/" rel="tag">#PLT</a>
+          
+            <a href="/tags/学习一个/" rel="tag">#学习一个</a>
+          
+            <a href="/tags/Programming-Languages/" rel="tag">#Programming Languages</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/Android/2017-01-20-kotlin-the-right-way/" rel="next" title="Kotlin The Right Way">
+                <i class="fa fa-chevron-left"></i> Kotlin The Right Way
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/posts/Kotlin/2017-03-02-so-lets-talk-about-kotlin/" rel="prev" title="So Let's Talk About Kotlin">
+                So Let's Talk About Kotlin <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/haskell.png"
+               alt="Merlin" />
+          <p class="site-author-name" itemprop="name">Merlin</p>
+          <p class="site-description motion-element" itemprop="description">Denn man hat in der Welt nicht viel mehr, als die Wahl zwischen Einsamkeit und Gemeinheit.</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">14</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/ACEMerlin/" target="_blank" title="GitHub" rel="external nofollow">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#why"><span class="nav-number">1.1.</span> <span class="nav-text">Why</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#what-and-how"><span class="nav-number">1.2.</span> <span class="nav-text">What and How</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mathematical-preliminaries"><span class="nav-number">2.</span> <span class="nav-text">Mathematical Preliminaries</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#数学归纳法"><span class="nav-number">2.1.</span> <span class="nav-text">数学归纳法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结构归纳法"><span class="nav-number">2.2.</span> <span class="nav-text">结构归纳法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#逻辑蕴含"><span class="nav-number">2.2.1.</span> <span class="nav-text">逻辑蕴含</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#归纳法"><span class="nav-number">2.2.2.</span> <span class="nav-text">归纳法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#language-implementation-preliminaries"><span class="nav-number">3.</span> <span class="nav-text">Language Implementation Preliminaries</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#the-mountain-of-language-implementation"><span class="nav-number">3.1.</span> <span class="nav-text">The Mountain of Language Implementation</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#scanning"><span class="nav-number">3.1.1.</span> <span class="nav-text">Scanning</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#parsing"><span class="nav-number">3.1.2.</span> <span class="nav-text">Parsing</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#static-analysis"><span class="nav-number">3.1.3.</span> <span class="nav-text">Static analysis</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#intermediate-representations"><span class="nav-number">3.1.4.</span> <span class="nav-text">Intermediate representations</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#optimization"><span class="nav-number">3.1.5.</span> <span class="nav-text">Optimization</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#code-generation"><span class="nav-number">3.1.6.</span> <span class="nav-text">Code generation</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#virtual-machine"><span class="nav-number">3.1.7.</span> <span class="nav-text">Virtual machine</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#runtime"><span class="nav-number">3.1.8.</span> <span class="nav-text">Runtime</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#type-of-different-languagues"><span class="nav-number">3.2.</span> <span class="nav-text">Type of Different Languagues</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#single-pass-compilers"><span class="nav-number">3.2.1.</span> <span class="nav-text">Single-pass compilers</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#tree-walk-interpreters"><span class="nav-number">3.2.2.</span> <span class="nav-text">Tree-walk interpreters</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#transpilers"><span class="nav-number">3.2.3.</span> <span class="nav-text">Transpilers</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#just-in-time-compilation"><span class="nav-number">3.2.4.</span> <span class="nav-text">Just-in-time compilation</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#so-which-path-should-i-chose"><span class="nav-number">3.3.</span> <span class="nav-text">So Which Path Should I Chose</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#programming-languages-and-logic"><span class="nav-number">4.</span> <span class="nav-text">Programming Languages and Logic</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是语义"><span class="nav-number">4.1.</span> <span class="nav-text">什么是语义</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#一个简单的语言算术表达式"><span class="nav-number">4.1.1.</span> <span class="nav-text">一个简单的语言：算术表达式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#操作语义"><span class="nav-number">4.1.2.</span> <span class="nav-text">操作语义</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#归纳定义与归纳证明"><span class="nav-number">4.2.</span> <span class="nav-text">归纳定义与归纳证明</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#程序属性"><span class="nav-number">4.2.1.</span> <span class="nav-text">程序属性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#归纳集"><span class="nav-number">4.2.2.</span> <span class="nav-text">归纳集</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#progress的归纳证明"><span class="nav-number">4.2.3.</span> <span class="nav-text">Progress的归纳证明</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#large-step-操作语义"><span class="nav-number">4.3.</span> <span class="nav-text">Large-step 操作语义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一个简单的指令式语言imp"><span class="nav-number">4.4.</span> <span class="nav-text">一个简单的指令式语言：IMP</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#imp语言a-simple-imperative-language"><span class="nav-number">4.4.1.</span> <span class="nav-text">IMP语言（A simple imperative language）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#imp的small-step操作语义"><span class="nav-number">4.4.2.</span> <span class="nav-text">IMP的small-step操作语义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#imp的large-step操作语义"><span class="nav-number">4.4.3.</span> <span class="nav-text">IMP的large-step操作语义</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#小结imp的一个实现"><span class="nav-number">4.5.</span> <span class="nav-text">小结：IMP的一个实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#imp的属性"><span class="nav-number">4.6.</span> <span class="nav-text">IMP的属性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#文法等价"><span class="nav-number">4.6.1.</span> <span class="nav-text">文法等价</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#non-termination"><span class="nav-number">4.6.2.</span> <span class="nav-text">Non-Termination</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#determinism"><span class="nav-number">4.6.3.</span> <span class="nav-text">Determinism</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#指称语义"><span class="nav-number">4.7.</span> <span class="nav-text">指称语义</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#imp的指称语义"><span class="nav-number">4.7.1.</span> <span class="nav-text">IMP的指称语义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#不动点fixed-points"><span class="nav-number">4.7.2.</span> <span class="nav-text">不动点（Fixed points）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#kleene不动点定理与imp"><span class="nav-number">4.8.</span> <span class="nav-text">Kleene不动点定理与IMP</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#kleene不动点定理"><span class="nav-number">4.8.1.</span> <span class="nav-text">Kleene不动点定理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#指称语义的论证"><span class="nav-number">4.8.2.</span> <span class="nav-text">指称语义的论证</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#公理语义"><span class="nav-number">4.9.</span> <span class="nav-text">公理语义</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是公理语义"><span class="nav-number">4.9.1.</span> <span class="nav-text">什么是公理语义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#断言"><span class="nav-number">4.9.2.</span> <span class="nav-text">断言</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#霍尔逻辑"><span class="nav-number">4.10.</span> <span class="nav-text">霍尔逻辑</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#soundness和completeness"><span class="nav-number">4.10.1.</span> <span class="nav-text">soundness和completeness</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#例子阶乘"><span class="nav-number">4.10.2.</span> <span class="nav-text">例子：阶乘</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结"><span class="nav-number">5.</span> <span class="nav-text">小结</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Merlin</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io" rel="external nofollow">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" rel="external nofollow">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+
+  
+<script type="text/javascript" async src="//push.zhanzhang.baidu.com/push.js">
+</script>
+
+</body>
+</html>

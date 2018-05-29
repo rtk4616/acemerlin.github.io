@@ -1,0 +1,682 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="PLT,学习一个,LISP," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="（这是很久以前写的文章了，那时的我年少无知，在很多知识方面还很天真，so proceed with caution） 计算机是个特别有意思的学科，在普通人看来计算机专业大都是“修电脑的”，在同行看来，我们都是Neo。其实我一直都不知道这个专业到底是干什么的，这个问题我不知道答案，也不想知道了，别人怎么看我不在乎，我只不">
+<meta name="keywords" content="PLT,学习一个,LISP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机的那些事儿">
+<meta property="og:url" content="https://acemerlin.github.io/posts/杂谈/2015-03-03-cs-history/index.html">
+<meta property="og:site_name" content="fmap happier $ Life me">
+<meta property="og:description" content="（这是很久以前写的文章了，那时的我年少无知，在很多知识方面还很天真，so proceed with caution） 计算机是个特别有意思的学科，在普通人看来计算机专业大都是“修电脑的”，在同行看来，我们都是Neo。其实我一直都不知道这个专业到底是干什么的，这个问题我不知道答案，也不想知道了，别人怎么看我不在乎，我只不过是在追逐自己喜欢的东西罢了。不过就计算机这个学科而言，这个由数学家、物理学家和">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-02-09T00:59:00.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="计算机的那些事儿">
+<meta name="twitter:description" content="（这是很久以前写的文章了，那时的我年少无知，在很多知识方面还很天真，so proceed with caution） 计算机是个特别有意思的学科，在普通人看来计算机专业大都是“修电脑的”，在同行看来，我们都是Neo。其实我一直都不知道这个专业到底是干什么的，这个问题我不知道答案，也不想知道了，别人怎么看我不在乎，我只不过是在追逐自己喜欢的东西罢了。不过就计算机这个学科而言，这个由数学家、物理学家和">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://acemerlin.github.io/posts/杂谈/2015-03-03-cs-history/"/>
+
+  <title> 计算机的那些事儿 | fmap happier $ Life me </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-55892506-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">fmap happier $ Life me</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">All about CS</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            四零四
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                计算机的那些事儿
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-03-03T23:10:00+08:00" content="2015-03-03">
+              2015-03-03
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/杂谈/" itemprop="url" rel="index">
+                    <span itemprop="name">杂谈</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>（<em>这是很久以前写的文章了，那时的我年少无知，在很多知识方面还很天真，so proceed with caution</em>）</p>
+<p>计算机是个特别有意思的学科，在普通人看来计算机专业大都是“修电脑的”，在同行看来，我们都是Neo。其实我一直都不知道这个专业到底是干什么的，这个问题我不知道答案，也不想知道了，别人怎么看我不在乎，我只不过是在追逐自己喜欢的东西罢了。不过就计算机这个学科而言，这个由数学家、物理学家和黑客凑在一起组成的学科，它的那些事是真的很有意思，且听我慢慢道来。</p>
+<a id="more"></a>
+<p>我觉得无论什么学科，学习其相关知识，其历史非常重要，历史代表着知识的整体面貌，从历史中我们能得到很多重要的东西，知识不是突然出现然后就立刻被人们接受的，而是，通过时间的沉淀一点点积累完善出来的，这也是为什么在很多国家，历史是一门必修课。但是，从来没有人或书系统地讲述过计算机科学的历史，一切好像突然就出现了的样子，这样，由于不知道现在的知识是从何而来，一切都很难理解和接受，只能强迫自己接受，而强迫自己接受的知识跟本称不上理解，更不要提更上一层楼了，举几个例子：</p>
+<ul>
+<li>关于设计模式。许多人捧着GoF的《Design Patterns》视其为圣经，不过Lisp程序员会告诉你，设计模式在很大程度上是为了弥补程序语言本身的缺陷，《黑客与画家》里提到过： Peter Norvig发现，总共23中设计模式之中，有16中在Lisp语言中“本声就提供，或者被大大简化”。退一步讲，设计模式是先辈在无数实践当中总结出的经验，很多地方并不需要设计模式，却被人强加上用来展现自己的水平，没有必要。</li>
+<li>关于程序语言。许多人都是：“听说学习这门语言对以后找工作有帮助”才去学习，目的功利。他们想知道学习什么语言才好，于是听从了身边或者网上的“大神”的意见，从不怀疑，“大神”的言论成了教条或者信仰。有人反驳，那我到底听谁的呢？要我说，还是要听自己的，保持怀疑的态度，别人说他好或者坏，我都质疑，自己默默去学了，自然就能做出客观的判了。当你学的语言够多，纵观程序语言史， 知道了原来程序语言大都学习了其它的语言，语言相像相通，自然就有了自己的选择。就像武林高手，你天天练习高手用的招式也达不到人家的水平，原因在于武林高手习得的武功无数，你所听到的只是武林高手的杀手锏罢了，人家对武功已有深刻而独到的见解，而这些你是学不到的。</li>
+</ul>
+<p>只有纵观历史，才能知道学什么。有关CS的历史，要从18世纪的一个人开始讲起，他的名字叫Leibniz，大家都知道他是个数学家，因创造微积分而闻名，其实Leibniz是个全才，他曾提出一个宏伟的想法：</p>
+<ul>
+<li>Create a ‘universal language’ in which all possible problems can be stated. 建立一门“通用语言”，以便表述所有的问题。</li>
+<li>Find a decision method to solve all the problems stated in the universal language. 找到一种判定方法，以便解决所有上面用通用语言陈述的问题。</li>
+</ul>
+<p>经过Frege和Russell等数学家的努力，想法一从数学角度已经可以用类似集合论的理论用一阶逻辑来表述。于是后来想法二成了一个重要的哲学问题：“人能解决所有用通用语言表述的问题吗？”，答案似乎是否定地，但又不知道如何证明，这就是著名的Entscheidungsproblem（德语“判定问题”）。1936年，Alonzo Church和Alan Turing各自独立的给出了判定问题的否定答案。为了解释此问题，就需要“判定”，或者说“可计算”的正规定义，于是他俩分别给出了各自的计算模型：</p>
+<ul>
+<li>Church发明了一套叫做lambda演算的系统，并借此系统定义了可计算函数的概念。</li>
+<li>Turing发明了一种机器（后来被叫做图灵机）并借此机器定义了可计算函数的概念。</li>
+</ul>
+<p>同年，Turing又证明了两种模型是一样的健壮，因为他们定义了相同的可计算函数。后来基于图灵机的概念，出现了冯诺伊曼计算机，其本质就是有着随机访问寄存器的图灵机。命令式语言，如Fortran、Pascal，还有汇编语言，都是基于图灵机的构造：命令。而像Miranda，ML等函数式语言则是基于lambda演算，较早的例子则有Lisp语言。再后来，几乎所有的程序语言，所有的编程概念、方法都是从这两个模型出发而得到的。</p>
+<p>Lisp和C是最能代表这两个计算模型的语言，Lisp和C代表着两个极端，前者——Lisp是函数式语言的鼻祖，是第二古老的程序语言，至今活跃着，特别是在人工智能方面的应用（因为McCarthy也是人工智能概念的鼻祖，共享一个爹）；后者——C就更不用说了，TIOBE程序语言排行中C能排第一全靠上个世纪人们写的海量C代码，UNIX、WINDOWS和Linux都是C编写的（至于UNIX为什么用C写，还是因为共享一个爹）。看到这里你肯定会奇怪：怎么没有人用Lisp来写操作系统呢。不是没有，基于Lisp语言的计算机叫Lisp机，后来被历史淘汰，其原因有很多：用来实现Lisp机的语言，叫做Lisp Machine Lisp，采用的是动态作用域；当时Lisp的编译器都实现的不好，很慢；冯构架的电脑已经成为主流，而此构架不是Lisp这种动态类型语言能发挥实力的地方…。总之，历史已经成为历史，现在的Lisp方言，Scheme和Common Lisp等才是Lisp的未来。Stallman当年想振兴Lisp于是搞了个GNU计划，写了个操作系统底层用C，顶层逻辑用Lisp，但是自己设计的内核太难实现，bug多还难调试，看到网上论坛有个叫Linus的家伙写了个内核，好用又稳定，于是项目组有人就提议就用Linus的内核得了，再后来就莫名其妙成了Linux，Stallmal脸一黑，哪个乱起名字，明明GNU才是操作系统，怎么Linux就风光无限了，再后来Stallman一看，既然Linux搞得如火如荼，那就继续搞抄袭UNIX吧，反正大家不知道，于是把原本振兴Lisp的想法就置于身后了，历史就是这么巧。你要是想体验下Lisp机，那用Emacs吧，GUN的Emacs编辑器基本就是个Lisp机实现的样子了。</p>
+<p>还有件事不得不提，其实，Church是Turing的博导，可以说，Turing最大的贡献，就是把Church晦涩难懂的逻辑学以通俗易懂的方式展示出来，简单易懂的命令式语言，让除了逻辑学专家以外的普通人也能编程，命令式风格渐渐深入人心，成为主流。不过随着程序语言的发展，Python、Ruby等类函数式语言也渐渐被人们所接受和喜爱，不仅因为人们对函数式语言的误解慢慢解开（最大的误解要数：函数式语言不能赋值），还因为hacker们的技术越来越高，对更简洁更短小代码的追求促使他们走向抽象能力更强的函数式语言了。后来出现的面向对象概念很大程度上也只是抽象的一种方式，其背后并没有计算模型作为理论基础，Lisp中就有著名的CLOS为Lisp提供面向对象支持，这就是Lisp的优势之一：在语言上构建语言，永远不会过时。所谓的程序语言之争，归根结底就是那个有更好的抽象能力。不过更高的抽象，意味着更难理解，这也就是为什么“There’s Only One Way To Do It”的Python、“Batteries Included”的Python会这么受欢迎。用着别人写的库，写个爬虫只要几十行，当然简单了，但是觉得自己很厉害就是你的不对了。</p>
+<p>程序语言就如同棋一样，什么象棋，围棋，五子棋，各自有各自的规则，各自有各自的棋子和棋盘，这些游戏的乐趣就在于规则，各种不同的组合，根据不同的情况能有千变万化的结果。拿象棋来说，中国象棋最初的目的是战争推演，其实就是古代的实战沙盘。每种不同的棋子，代表的是一种兵种，不过，象棋只是打仗而已，不是最精妙的，最精妙的还要数围棋，如同《天才在左疯子在右》里所说：</p>
+<ul>
+<li>“围棋代表的是真正的智慧！围棋可以说是社会的浓缩，我不能理解围棋是怎么发明的，所以民间对于围棋的起源，有很大的传说性质。你想象一下，各19条平行线交叉，361个点，黑白一共360个棋子，没有高低贵贱之分，完全依靠操纵者的智慧。或者落手绵绵，或者落手铿锵，或者匪夷所思，或者杀声四起。你以为天下在握的时候，突然四面楚歌，生死难卜啊。这是什么？不就是社会吗？依靠的是什么？一个规则，一个简单的规则，棋子呢？就是人。大家都是一样的状态。但是落点决定了你的与众不同，而且每一个都是与众不同！”</li>
+</ul>
+<p>围棋，多么完美的抽象啊，那程序语言中的围棋是什么呢，我觉得就是Lisp了。如果你学过Lisp，那你一定会被它特别的S表达式惊艳到，所有的程序都由S表达式组成，连数据也不需要xml这种外部DSL来存储，而都用S表达式组成，程序也可以看作数据，（xml文法就是S表达式），既然数据可以修改，那可看作数据的程序也自然可以修改了，这里的修改并不是你写代码的时候改来改去的修改，而是程序编译或者运行时，自己修改自己，怎么修改呢？由S表达式组成的程序就像森林，修改程序就是修改树上的结点，这就是宏的工作了。</p>
+<p>当你介绍你的朋友给其他人时，会介绍那些重要、理所当然的东西，比如姓名啊，性格啊设想，如果你要介绍一门程序语言给其他人，你会介绍些什么呢？语法？变量类型？这些当然不可或缺，语法就像下棋的规则，类型就像棋子的分类，但这还不够抽象，你学棋不是为了学习规则和棋子的，而是为了下棋，在下棋上进行抽象才是更深的抽象。对应到程序语言上，就是这三点：</p>
+<ul>
+<li>原始数据类型。</li>
+<li>组合数据的方法。</li>
+<li>抽象的方法。</li>
+</ul>
+<p>都说书籍是人类进步的阶梯，一点都没错。你要是想学C，书多的都不知道选那一本好了，相比之下，学Lisp就不像学C那么养尊处优了，不过，反过来看，正因为书少，那些都是质量超高的、由真正懂计算机的人写的书：</p>
+<p><em>《计算机程序的构造与解释》：著名的小紫本，国外很多大学CS专业的必修课的课本，编程即为抽象，数据即为过程，也只有用Lisp(本书用的其方言Scheme)才能讲的明白吧，后来授课语言改为Python，课本和课程已经完全变了，真是残念。如果你想知道什么是编程、编程的本质，小紫本必不可少。如果这本书读起来比较晦涩难懂，那先看HTDP（程序设计方法）是个不错的选择。 </em>《黑客与画家》：不是程序员也看看这本书吧。不只是对创业者和“黑客”，更是对那些普通读者，如果你想理解我们所处的计算机时代，那这本书会告诉你计算机的过去、现在和未来。 *《On Lisp》和《Let Over Lambda》：Lisp美在S表达式，Lisp厉害在它的宏。在语言上设计语言，用代码生成代码，自底向上程序设计，交互式开发，在代码层进行抽象，闭包代表数据，闭包即为过程，等等一切，Lisp告诉你抽象的力量。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/PLT/" rel="tag">#PLT</a>
+          
+            <a href="/tags/学习一个/" rel="tag">#学习一个</a>
+          
+            <a href="/tags/LISP/" rel="tag">#LISP</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/posts/other/2016-09-24-Hello-World/" rel="prev" title="Hello World">
+                Hello World <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/haskell.png"
+               alt="Merlin" />
+          <p class="site-author-name" itemprop="name">Merlin</p>
+          <p class="site-description motion-element" itemprop="description">Denn man hat in der Welt nicht viel mehr, als die Wahl zwischen Einsamkeit und Gemeinheit.</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">14</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/ACEMerlin/" target="_blank" title="GitHub" rel="external nofollow">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <p class="post-toc-empty">This post does not have a Table of Contents</p>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Merlin</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io" rel="external nofollow">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" rel="external nofollow">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+
+  
+<script type="text/javascript" async src="//push.zhanzhang.baidu.com/push.js">
+</script>
+
+</body>
+</html>

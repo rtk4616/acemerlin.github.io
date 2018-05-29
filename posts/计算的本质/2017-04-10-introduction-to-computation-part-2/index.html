@@ -1,0 +1,1339 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="PLT,学习一个,Programming Languages," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="Functional Programming and Lambda Caculus （这是“计算的本质”系列文章的第二部分） 如今函数式编程“突然”火了起来，随着很多框架和语言都在推崇函数式，大家也越来越关注函数式了，但很多人对它并没有一个整体的概念，觉得这是个新概念，学起来很费劲。这篇文章主要目的就是介绍什么是函数式">
+<meta name="keywords" content="PLT,学习一个,Programming Languages">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算的本质 Part 2">
+<meta property="og:url" content="https://acemerlin.github.io/posts/计算的本质/2017-04-10-introduction-to-computation-part-2/index.html">
+<meta property="og:site_name" content="fmap happier $ Life me">
+<meta property="og:description" content="Functional Programming and Lambda Caculus （这是“计算的本质”系列文章的第二部分） 如今函数式编程“突然”火了起来，随着很多框架和语言都在推崇函数式，大家也越来越关注函数式了，但很多人对它并没有一个整体的概念，觉得这是个新概念，学起来很费劲。这篇文章主要目的就是介绍什么是函数式编程，它的本质是什么，以及为什么大家都在说这个东西。 上个世纪，随着计算机的发展">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-04-10T02:35:56.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="计算的本质 Part 2">
+<meta name="twitter:description" content="Functional Programming and Lambda Caculus （这是“计算的本质”系列文章的第二部分） 如今函数式编程“突然”火了起来，随着很多框架和语言都在推崇函数式，大家也越来越关注函数式了，但很多人对它并没有一个整体的概念，觉得这是个新概念，学起来很费劲。这篇文章主要目的就是介绍什么是函数式编程，它的本质是什么，以及为什么大家都在说这个东西。 上个世纪，随着计算机的发展">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://acemerlin.github.io/posts/计算的本质/2017-04-10-introduction-to-computation-part-2/"/>
+
+  <title> 计算的本质 Part 2 | fmap happier $ Life me </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-55892506-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">fmap happier $ Life me</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">All about CS</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            四零四
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                计算的本质 Part 2
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2017-04-10T10:16:41+08:00" content="2017-04-10">
+              2017-04-10
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/计算的本质/" itemprop="url" rel="index">
+                    <span itemprop="name">计算的本质</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="functional-programming-and-lambda-caculus">Functional Programming and Lambda Caculus</h2>
+<p><em>（这是“计算的本质”系列文章的第二部分）</em></p>
+<p>如今函数式编程“突然”火了起来，随着很多框架和语言都在推崇函数式，大家也越来越关注函数式了，但很多人对它并没有一个整体的概念，觉得这是个新概念，学起来很费劲。这篇文章主要目的就是介绍什么是函数式编程，它的本质是什么，以及为什么大家都在说这个东西。</p>
+<p>上个世纪，随着计算机的发展，代码写的越来越多，软件开发变得越来越难，有人提出了“软件危机”：</p>
+<ul>
+<li>怎样应对庞大、复杂的计算机软件开发</li>
+<li>怎样降低软件开发的时间和成本</li>
+<li>怎样才能保证写出来的程序是正确的</li>
+</ul>
+<a id="more"></a>
+<p>“危机”一词有点标题党的意思，但这些都是实实在在的问题，当时的开发成本也的确是太高了。于是那帮搞函数式的家伙就跳出来了：这简单，设计一个更好的程序语言就可以了（暗示函数式语言），这个语言可以：</p>
+<ul>
+<li>进行更高的抽象，写出更精简的代码</li>
+<li>写出可重用的代码</li>
+<li>在程序上进行形式验证，保证程序的正确性</li>
+</ul>
+<p>虽然这些用面向对象也能做到，但纯函数式语言以自己独特的方式，提供了更简单好用的方法来达到上面的需求，这些独特的方法也逐渐的影响到了几乎所有的语言。虽然我很难精确的描述什么是函数式语言，但大体上是这个意思：</p>
+<ul>
+<li>函数式是一种写代码的方式，其中计算是通过最基本的函数应用达成的</li>
+<li>一个支持和提倡函数式的语言就是函数式语言</li>
+</ul>
+<p>但这个概念和纯函数式还是不同的，纯函数式语言强制你所有的代码都是纯数学函数，像赋值操作这种在其它语言中很常见的东西都没有，全部都是函数，纯函数式的语言一个比较典型的是Haskell。我觉得，函数式的思想就是，你可以利用在纯函数式语言中解决问题的方法来在你的语言中写出函数式的代码，而这种方法可以帮助你写出更加抽象、可重用的代码。举个简单的例子：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">total = <span class="number">0</span>;</div><div class="line"><span class="keyword">for</span> (i = <span class="number">1</span>; i &lt;= <span class="number">10</span>; ++i)</div><div class="line">  total = total + i;</div></pre></td></tr></table></figure>
+<p>典型的指令式代码，其中的“问题”在于：</p>
+<ul>
+<li>整个代码并不是个函数，并没有一个返回值，返回值隐藏在变量<code>total</code>中了</li>
+<li>并不能把它当成函数传到其它地方，我要算完再传<code>total</code></li>
+<li>代码很耦合，后面的语句依赖前面的语句，程序纠结于how to do</li>
+</ul>
+<p>在Haskell中是这样的：</p>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="title">sum</span> [<span class="number">1.</span><span class="number">.10</span>]</div></pre></td></tr></table></figure>
+<p>指令式代码由statement组成，statement之间是耦合的，前面的statement影响后面的statement，程序就像长满了触手，你要关心这些复杂恶心的触手，小心不影响到其他程序；而函数式代码是由expression（表达式）组成的，这样的好处在于表达式之间是不耦合的，是没有关联的，上面的代码就是纯函数应用：<code>[1..10]</code>是<code>sum</code>的参数，它的返回值是1到10的列表；<code>sum</code>接受一个列表并返回一个整数。这其实就是函数式一个很重要的好处：你可以单独拿出一个表达式进行验证、debug、或者干任何你想干的事，因为每个表达式都是独立的，上下文无关的，所以并不会影响到其它的表达式，而程序就是这些独立表达式的组合。</p>
+<p>很多人并不了解计算机历史，觉得这些东西都是新概念，但其实很多计算机的概念都是很早以前数学家提出来的，程序语言也不例外：</p>
+<ul>
+<li>早在20世纪30年代，Alonzo Church就发明了λ演算–函数这一概念的根源。</li>
+<li>1950s，John McCarthy受λ演算启发发明了<code>Lisp</code>，第一个函数式语言，因为受冯诺依曼架构影响（其中的计算模型全靠状态的变换），<code>Lisp</code>中还是有变量赋值的。</li>
+<li>1960s，Peter Landin发明了ISWIM，第一个纯函数式语言，同样基于λ演算，但其中没有赋值，这种凭借纯函数而不需要赋值就可以写出程序的概念在当时是很让人震惊的。不仅如此，Peter Landin还凭借函数式的概念提出了DSL的概念，是的，就是现在大家都在谈论的DSL，也是很早就有了。</li>
+<li>1970s，John Backus发明了FP，一个推崇高阶函数和程序证明的语言，其中的函数式思想影响了很多现代语言。</li>
+<li>1970s，Robin Milner发明了ML，第一个现代函数式语言，其中的类型推导和多态类型在程序语言领域起到了很重要的作用。ML的目的之一是把自己当做写形式证明脚本的脚本语言，是的，脚本语言的概念也是早就有了。需要一提，由函数式语言衍生出了很多概念，可惜而很多人都把这些概念当成理所当然的东西了。</li>
+<li>1970s - 1980s，David Turner发明了一系列惰性求值的语言，这些语言会编译成SKI组合子代码，利用类型系统，程序在编译时就能指出程序的错误，而不是在运行时指出一大串SKI代码不能求值。</li>
+<li>1987，为了统一程序语言学术界使用的众多语言，Haskell出现了，一个lazy的函数式语言，如今Haskell还是程序语言学界起到重要的作用。</li>
+</ul>
+<p>无论什么程序语言，都或多或少的受到了函数式语言的影响，所以说，其实函数式并不是“突然”火的，而是随着时代发展，越来越多的人想写出更好的代码，并且程序语言学界一直在利用函数式语言做研究发展，越来越多的人利用学术界的研究来优化自己的语言，于是慢慢的函数式语言进入了大家的视野。</p>
+<p>为了让大家对函数式有个直观的感受，请看下面一段<code>Haskell</code>代码：</p>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="title">f</span> [] = []</div><div class="line"><span class="title">f</span> (x:xs) = f ys ++ [x] ++ f zs</div><div class="line">           <span class="keyword">where</span> </div><div class="line">              ys = [a | a &lt;- xs, a &lt;= x]</div><div class="line">              zs = [b | b &lt;- xs, b &gt; x]</div></pre></td></tr></table></figure>
+<p>上面的代码是快速排序，虽然上面代码的性能很差（没有原地排序），但如果你想了解快排的本质、快排背后的算法，上面的代码就很完美了：</p>
+<ul>
+<li>第一行说明空列表就是已经排序了，直接返回空列表。</li>
+<li>参数<code>x:xs</code>中<code>x</code>是列表第一个元素，<code>xs</code>是剩下的元素；函数体中<code>ys</code>是列表中比<code>x</code>小的列表，<code>zs</code>是列表中比<code>x</code>大的列表，然后把两个列表和<code>x</code>黏在一起，再递归的调用<code>f</code>在<code>ys</code>和<code>zs</code>上保证它们也是排好的，最终的结果就是排好的列表了。</li>
+</ul>
+<p>稍微总结一下：指令式语言依赖的是机器，是冯诺依曼架构，也就是有随机存储寄存器的图灵机，这也就是为什么你要学好c，就要先学好计算机组成原理，才能更好理解指针、位移等概念；但是，函数式语言依赖的是函数，函数是与机器无关的数学概念，也就是说要想学好函数式语言，先学好数学就行了，这就是为什么最早设计Lisp语言的时候连计算机都还没有。你在指令式语言遇到的大多数问题在函数式语言中并不会遇到，反之亦然，这就是函数式语言“独特方式”体现所在。学习这些独特方式能帮助你看的更广，帮助你以独特的方式解决问题。不过无论是哪种语言，它都还是语言，是语言就有语法、语义–也就是上一章所讲的东西，现在，是不是整个知识网开始清晰起来了。</p>
+<p>扯了那么多，如果你还有兴趣的话，下面就开始干货了–从λ演算开始介绍函数式的本质。</p>
+<p><em>（这篇文章偏λ演算，而不是具体的函数式语言，如果你比较急，直接去学Haskell或者Lisp吧，以后有时间的话会再写和具体语言有关的文章）</em></p>
+<h2 id="lambda-caculus">Lambda Caculus</h2>
+<p>上个世纪30年代，Alonzo Church和Stephen Cole Kleene为了清晰、简介的描述函数发明了λ演算（Lambda caculus），一个函数也是值，并且是第一公民的系统。在λ演算中，函数可以当成参数传给其他函数，函数也可以返回函数，而且一切值只有函数。“lambda”（λ）只是个用在定义函数时的符号，“calculus”意为这是一个操作符号的计算系统，函数是一个给定特定参数输出值得规则，比如<span class="math inline">\(g(x)=x^3-2x^2+5x-6\)</span>。</p>
+<p>λ演算是一切的开端，要说λ演算的最主要贡献：</p>
+<ul>
+<li>函数式语言。有很多语言是直接基于λ演算的，比如Lisp、ML。</li>
+<li>Proof assistant（比如Coq、Agda、Isabelle）。</li>
+<li>Concurrent Model。</li>
+</ul>
+<p>如果你对这些领域有兴趣，那λ演算是逃不了的。这一章就主要介绍λ演算。</p>
+<h2 id="λ演算的语法">λ演算的语法</h2>
+<p>纯λ演算语法只包含三个东西：函数抽象（称作abstraction）、变量和函数应用（应用参数到函数上，称作application）。如果再加上额外的类型或函数（比如整型、加法），就叫applied λ演算。下面为了简化，我们假设λ演算里有整数和算术运算（后面会讲如何用纯λ演算定义整数和加法运算）。</p>
+<p>纯λ演算的语法如下：</p>
+<p><span class="math display">\[
+\begin{align*}
+e::=&amp;x \qquad\qquad &amp; variable\\
+| &amp; \lambda x.e \qquad\qquad &amp; abstraction\\
+| &amp; e_1\;e_2 \qquad\qquad &amp; application
+\end{align*}
+\]</span></p>
+<p><span class="math inline">\(\lambda x.e\)</span>是个函数：x是参数，表达式e是函数体。此函数并没有名字。比如<span class="math inline">\(\lambda x.x^2\)</span>是个求x平方的函数。</p>
+<p><span class="math inline">\(e_1\;e_2\)</span>是个把<span class="math inline">\(e_2\)</span>当做参数传给函数<span class="math inline">\(e_1\)</span>的函数应用。比如<span class="math inline">\((\lambda x.x^2)5\)</span>的值为25。</p>
+<p>仅仅利用这三个规则，就能写出完整的程序，做完整的数学运算，多么简洁的计算系统。</p>
+<p>下面是一些λ演算的例子：</p>
+<p><span class="math display">\[
+\begin{align*}
+&amp;\lambda x.x \qquad &amp; \text 一个返回自己的identity函数 \\
+&amp;\lambda x.(f(g\;x))) \qquad &amp; \text 一个函数抽象 \\
+&amp;(\lambda x.x)42 \qquad &amp; \text 一个应用到identity函数的函数应用 \\
+&amp;\lambda y.\lambda x.x \qquad &amp; \text 一个忽略输入并返回identity函数的函数
+\end{align*}
+\]</span></p>
+<p>λ表达式是向最右扩展的，意味着<span class="math inline">\(\lambda x.x \lambda y.y\)</span>是<span class="math inline">\(\lambda x.x(\lambda y.y)\)</span>，而不是<span class="math inline">\((\lambda x.x)(\lambda y.y)\)</span>；函数应用是左结合的，意味着<span class="math inline">\(e_1\;e_2\;e_3\)</span>是<span class="math inline">\((e_1\;e_2)e_3\)</span>。</p>
+<p>表达式中的变量要么是绑定的（bound），要么是自由的（free）：对于变量x，如果函数定义的参数中包含了x，那么x就是绑定的，否则就是自由的。如果一个表达式所有的变量都是绑定的，那么就称之为闭合的。比如<span class="math inline">\(\lambda x.(x(\lambda y.y\;a)x)y\)</span>中，所有的x都是绑定的，第一个y是绑定的，最后的一个y是自由的，a也是自由的。很显然，一个合理的程序应该不包含自由变量，也就是说，一个良构的程序应该是一个闭合的λ表达式。可以把λ看成一个把变量绑定在一个作用域的绑定操作符，比如<span class="math inline">\(\lambda x.e\)</span>中，x被绑定在了e中。绑定变量的名字并不重要，<span class="math inline">\(\lambda x.x\)</span>和<span class="math inline">\(\lambda y.y\)</span>是同一个函数，像这种<span class="math inline">\(e_1\)</span>和<span class="math inline">\(e_2\)</span>只有绑定变量名不同的叫作<span class="math inline">\(\alpha\)</span>变换，通常写成<span class="math inline">\(e_1=_\alpha e_2\)</span>，这是λ演算中一条重要的规约规则。</p>
+<p>在λ演算中，函数是值，能当参数也能当返回值，在纯λ演算中，每个值也是函数，每个结果都是函数。比如<span class="math inline">\(\lambda f.f\;42\)</span>是个接受函数并应用在42上的函数；<span class="math inline">\(\lambda v.\lambda f.(f\;v)\)</span>返回了一个应用参数v到函数自身的函数。</p>
+<p>介绍完了<span class="math inline">\(\alpha\)</span>变换，下面介绍λ演算中另外一个重要的规约规则–<span class="math inline">\(\beta\)</span>规约</p>
+<h2 id="λ演算的语义">λ演算的语义</h2>
+<p>函数应用<span class="math inline">\((\lambda x. e_1)e_2\)</span>可以看成把<span class="math inline">\(e_1\)</span>单独拿出来，并把其中所有的自由x替换成<span class="math inline">\(e_2\)</span>，比如<span class="math inline">\((\lambda x.x^2)5\)</span>就是<span class="math inline">\(5^2\)</span>，我们把这种替换写成<span class="math inline">\(e_1\{e_2/x\}\)</span>，这种替换叫作<span class="math inline">\(\beta归约\)</span>。给定一个表达式，根据不同的规约顺序，可能有多种<span class="math inline">\(\beta\)</span>规约的方式，比如(λx. x+x)((λy. y) 5)，可以归约成((λy. y) 5)+((λy. y) 5) 或者 (λx. x+x) 5，不同的归约方式意味着不同的语义：Call-by-name和Call-by-value。</p>
+<h3 id="call-by-value">Call-by-value</h3>
+<p>Call-by-value(CBV)语义保证了应用函数时参数都是值(value)。在纯λ演算中，唯一的值是函数，所有的抽象都是函数，所有的抽象都是值（在包含整数和算数运算的applied λ演算中，整数也是值），简单的讲，不能再简化或者求值的表达式都是值。</p>
+<p>下面是CBV的small-step操作语义：</p>
+<p><span class="math display">\[
+\frac{e_1\to e_1&#39;}{e_1 e_2\to e_1&#39;e_2} \quad \frac{e\to e&#39;}{v\;e\to v\;e&#39;} \quad {\bf{\beta}\scriptsize{-REDUCTION}} \frac{}{(\lambda x.e)v\to e\{v/x\}}
+\]</span></p>
+<p>从上面的语义可以看出CBV的求值策略如下：给定应用<span class="math inline">\(e_1\;e_2\)</span>，先对<span class="math inline">\(e_1\)</span>求值直到它是一个值，再对<span class="math inline">\(e_2\)</span>求值直到它是一个值，然后对两者进行<span class="math inline">\(\beta\)</span>归约。举个例子：</p>
+<p><span class="math display">\[
+\begin{align*}
+(\lambda x.\lambda y.y\;x)(5+2)\lambda x.x+1 &amp; \to (\lambda x.\lambda y.y\;x)7\lambda x.x+1\\
+&amp; \to (\lambda y.y\;7)\lambda x.x+1\\
+&amp; \to (\lambda x.x+1)7\\
+&amp; \to 7 + 1\\
+&amp; \to 8
+\end{align*}
+\]</span></p>
+<h3 id="call-by-name">Call-by-name</h3>
+<p>Call-by-name(CBN)语义与CBV不同，在函数应用时CBN会优先应用参数，而不是化简参数变成值。CBN得small-step语义要简单的多，因为它不强制要求参数在应用时为值：</p>
+<p><span class="math display">\[
+\frac{e_1\to e_1&#39;}{e_1 e_2\to e_1&#39;e_2} \quad
+{\bf{\beta}\scriptsize{-REDUCTION}} \frac{}{(\lambda x.e_1)e_2\to e_1\{e_2/x\}}
+\]</span></p>
+<p>举个CBN的例子：</p>
+<p><span class="math display">\[
+\begin{align*}
+(\lambda x.\lambda y.y\;x)(5+2)\lambda x.x+1 &amp; \to (\lambda y.y(5+2))\lambda x.x+1\\
+&amp; \to (\lambda x.x+1)(5+2)\\
+&amp; \to (5+2)+1\\
+&amp; \to 7+1\\
+&amp; \to 8
+\end{align*}
+\]</span></p>
+<h2 id="λ演算的求值策略">λ演算的求值策略</h2>
+<p>如上所诉Lambda Calculus的求值策略有很多种，其中最宽松的是完全<span class="math inline">\(\beta\)</span>规约，表达式<span class="math inline">\((\lambda x.e_1)e_2\)</span>在任何情况下都能规约成<span class="math inline">\(e_1\{e_2/x\}\)</span>，完全<span class="math inline">\(\beta\)</span>规约的small-step语义如下：</p>
+<p><span class="math display">\[
+\frac{e_1\to e_1&#39;}{e_1 e_2\to e_1&#39;e_2} \quad \frac{e_2\to e_2&#39;}{e_1\;e_2\to e_1\;e_2&#39;} \quad \frac{e_1\to e_1&#39;}{\lambda x.e_1\to \lambda x.e_1&#39;} \quad {\bf{\beta}} \frac{}{(\lambda x.e_1)e_2\to e_1\{e_2/x\}}
+\]</span></p>
+<p>call by value(CBV)比完全<span class="math inline">\(\beta\)</span>规约要严格一点：CBV只允许参数为value时的规约，并且不允许λ下的规约；call by name(CBN)允许参数不是value的规约，同时也不允许λ下的规约。</p>
+<p>很明显完全<span class="math inline">\(\beta\)</span>规约是non-determinitic（不确定）的，因为对同一个表达式它可以有不同的求值步骤。这时就有一个很显然的问题了，不同的求值步骤会产生不同的结果吗？答案是，不会。完全<span class="math inline">\(\beta\)</span>规约满足<strong>confluence（合流性）</strong>特性：</p>
+<p><span class="math display">\[
+Therom. 如果e\to^*e_1 \land e\to^*e_2，那么存在e&#39;使得e_1\to^*e&#39; \land e_2\to^*e&#39;.
+\]</span></p>
+<p>confluece就是大家常说的<strong>Church-Rosser定理</strong>，在λ演算中求值的顺序并不重要，结果是一样的，如果表达式a能规约成b和c，那么b和c肯定能进一步规约到表达式d。Church-Rosser定理在好多λ演算变种中都成立，如简单类型λ演算，还有许多带复杂类型系统的λ系统。</p>
+<p>但不管什么求值策略，都要有一个应用函数的过程，也就是替换操作。下面是替换操作的定义：</p>
+<p><span class="math display">\[
+\begin{align*}
+y\{e/x\} &amp; = \begin{cases} e, &amp; \text {if y=x} \\ y, &amp; \text{otherwise} \end{cases} \\
+(e_1\;e_2)\{e/x\} &amp; = (e_1\{e/x\})(e_2\{e/x\}) \\
+(\lambda y.e_1)\{e/x\} &amp; = \lambda.(e_1\{e/x\}) \qquad y\neq x \land y\notin fv(e)
+\end{align*}
+\]</span></p>
+<p>注意其中最后一个在λ抽象上的替换，需要y和x不同，并且y不在e的自由变量中，不然会出问题，比如：</p>
+<p><span class="math display">\[
+(\lambda y.x)\{y/x\}=(\lambda y.y)
+\]</span></p>
+<p>当变量名字重复的时候，可以配合<span class="math inline">\(\alpha\)</span>规则，使得替换操作总能成立。虽然这样可以正确求值，但这些替换操作一般会非常麻烦，下一节就会讲如何用编码解决重名的问题。</p>
+<h2 id="de-bruijn-combinators-encodings">De Bruijn, Combinators, Encodings</h2>
+<h3 id="de-bruijn编码">de Bruijn编码</h3>
+<p>上一节中<span class="math inline">\(\beta\)</span>替换操作时遇到的有关自由、绑定名字的麻烦有很多，什么重名，<span class="math inline">\(\alpha\)</span>变换还要重命名，好麻烦，要没有解决办法呢，能不能不用名字呢？是的，不用名字是可以的，de Bruijn编码就是一种不用名字的编码方法，de Bruijn编码中，把绑定变量看出指向绑定它的λ和指针，de Bruijn编码的语法如下：</p>
+<p><span class="math display">\[
+e::= n\;|\;\lambda.e\;|\;e\;e
+\]</span></p>
+<p>变量用整数表示，其数值就是绑定的下标，下面是一些de Bruijn编码的例子：</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Standard</th>
+<th align="left">de Bruijn</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">λx.x</td>
+<td align="left">λ.0</td>
+</tr>
+<tr class="even">
+<td align="left">λz.z</td>
+<td align="left">λ.0</td>
+</tr>
+<tr class="odd">
+<td align="left">λx.λy.x</td>
+<td align="left">λ.λ.1</td>
+</tr>
+<tr class="even">
+<td align="left">λx.λy.λs.λz.x s (y s z)</td>
+<td align="left">λ.λ.λ.λ.3 1 (2 1 0)</td>
+</tr>
+<tr class="odd">
+<td align="left">(λx.x x) (λx.x x)</td>
+<td align="left">(λ.0 0) (λ.0 0)</td>
+</tr>
+<tr class="even">
+<td align="left">(λx.λx.x) (λy.y)</td>
+<td align="left">(λ.λ.0) (λ.0)</td>
+</tr>
+</tbody>
+</table>
+<p>为了用de Bruijn编码表示带自由变量的λ表达式，我们需要一套映射自由变量到整数的规则，这种映射我们称为上下文，用<span class="math inline">\(\Gamma\)</span>表示，比如有个映射x到0和y到1的映射<span class="math inline">\(\Gamma\)</span>，那么包含<span class="math inline">\(\Gamma\)</span>的<span class="math inline">\(\lambda z.x\;y\;z\)</span>编码后就是<span class="math inline">\(\lambda.1\;2\;0\)</span>，注意其中的x和y为了不被捕捉下标都升了1。这种上升变化的函数为shift操作，其定义如下：</p>
+<p><span class="math display">\[
+\begin{align*}
+\uparrow^i_c(n) &amp; = \begin{cases} n, &amp; \text {if n&lt;c} \\ n+i, &amp; \text{otherwise} \end{cases} \\
+\uparrow^i_c(\lambda.e) &amp; = \lambda.(\uparrow^i_{c+1}e) \\
+\uparrow^i_c(e_1\;e_2) &amp; = (\uparrow^i_c e_1)(\uparrow^i_c e_2)
+\end{align*}
+\]</span></p>
+<p>偏移量c和表达式里绑定的变量是对应的，c控制着哪个变量应该shift。c的初始值为0（所有的变量都要shift），每经过一个函数抽象时c都加1。对于<span class="math inline">\(\uparrow^i_c(t)\)</span>中t的每个标识符k，我们知道当<span class="math inline">\(k&lt;c\)</span>，k是经过c已绑定的变量，不应该shift，当$ k c$，k是自由的，可以shift。利用shift函数，可以重新定义替换操作：</p>
+<p><span class="math display">\[
+\begin{align*}
+n\{e/m\} &amp; = \begin{cases} e, &amp; \text {if n=m} \\ n, &amp; \text{otherwise} \end{cases} \\
+(e_1\;e_2)\{e/m\} &amp; = (e_1\{e/m\})(e_2\{e/m\}) \\
+(\lambda.e_1)\{e/m\} &amp; = \lambda.e_1\{(\uparrow^1_0e)/m+1\}))
+\end{align*}
+\]</span></p>
+<p>下面是de Bruijn编码的<span class="math inline">\(\beta\)</span>规约的规则：</p>
+<p><span class="math display">\[
+{\bf{\beta}} \frac{}{(\lambda .e_1)e_2\to\uparrow^{-1}_0(e_1\{\uparrow^1_0e_2/0\}) }
+\]</span></p>
+<p>注意在规约时，因为外层λ消失了，需要重新标记变量向下shift。比如<span class="math inline">\((\lambda.1\;0\;2)(\lambda.0)\to 0(\lambda.0)1\)</span>，而不是<span class="math inline">\(1(\lambda.0)2\)</span></p>
+<p>举个计算的例子，给定<span class="math inline">\((\lambda u.\lambda v.u\;x)y\)</span>的编码形式：<span class="math inline">\((\lambda.\lambda.1\;2)1\)</span>，其中<span class="math inline">\(\Gamma(x)=0,\Gamma(y)=1\)</span>：</p>
+<p><span class="math display">\[
+\begin{align*}
+&amp; (\lambda.\lambda.1\;2)1 \\
+\to &amp; \uparrow^{-1}_0((\lambda.1\;2)\{( \uparrow^1_01)0\}) \\
+\to &amp; \uparrow^{-1}_0((\lambda.1\;2)\{2/0\}) \\
+\to &amp; \uparrow^{-1}_0\lambda.((1\;2)\{(\uparrow^1_02)/0+1)\}) \\
+\to &amp; \uparrow^{-1}_0\lambda.((1\;2)\{3/1\}) \\
+\to &amp; \uparrow^{-1}_0\lambda.(1\{3/1\})(2\{3/1\}) \\
+\to &amp; \uparrow^{-1}_0\lambda.3\;2 \\
+\to &amp; \lambda.2\;1
+\end{align*}
+\]</span></p>
+<p>最终的结果就是<span class="math inline">\(\lambda v.y\;x\)</span>。</p>
+<h3 id="combinators">Combinators</h3>
+<p>另外一种对付自由、绑定变量的方法就是利用<code>combinator</code>，也就是组合子，组合子就是闭合的λ表达式，闭合的<span class="math inline">\(\lambda表达式\)</span>就是没有自由变量的表达式。利用一些特定的组合子，我们能编码整个λ演算，其中一种组合就是S，K组合子和辅助的I组合子：</p>
+<p><span class="math display">\[
+\begin{align*}
+&amp; K \; x \; y \to \; x \\
+&amp; S \; x \; y \; z \to \; x \; z \; (y \; z) \\
+&amp; I \; x \to x
+\end{align*}
+\]</span></p>
+<p>上面是S、K的应用规则，下面是S、K的闭合λ表示：</p>
+<p><span class="math display">\[
+\begin{align*}
+&amp; K = \lambda x.\lambda y.x \\
+&amp; S = \lambda x.\lambda y.\lambda z.x\;z\;(y\;z) \\
+&amp; I = \lambda x.x
+\end{align*}
+\]</span></p>
+<p>之所以I是辅助的是因为I可以用S和K编码出来：<code>S K K</code>。注意尽管对任意x都有<code>((S K K)x) = (I x)</code>，但<code>(S K K)</code>自身并不不等于I。我们称这种项是外延相等的。外延相等：两个函数是相等的，如果它们对于相同的参数总是生成相同的结果。相反的，内涵相等：两个函数是相等的，当且仅当它们有相同的实现。</p>
+<p>为了解释怎么用组合子编码λ演算，我们需要一个翻译闭合λ表达式到等同组合子的方法–bracket abstraction：首先，我们定义一个函数[x]，它接受一个组合子M作为参数，并生成另一个等同于<span class="math inline">\(\lambda x.M\)</span>的表达式，其中对任意N都有<span class="math inline">\(([x] M)N \to M\{N/x\}\)</span>，下面是函数[x]的定义：</p>
+<p><span class="math display">\[
+\begin{align*}
+[x]x &amp; = I \\
+[x]N &amp; = K N  \qquad\qquad 其中x\notin fv(N)\\
+[x]N_1 N_2 &amp; = S([x]N_1)([x]N_2) \\
+\end{align*}
+\]</span></p>
+<p>然后，我们定义一个映射λ表达式到组合子表达式的函数(e)*：</p>
+<p><span class="math display">\[
+\begin{align*}
+(x)* &amp; = x \\
+(e_1 e_2)* &amp; = (e_1)* (e_2)* \\
+(\lambda x.e)* &amp; = [x](e)* \\
+\end{align*}
+\]</span></p>
+<p>这样我们就能编码λ表达式了，比如：</p>
+<p><span class="math display">\[
+\begin{align*}
+&amp; (\lambda x.\lambda y.x)* \\
+= &amp; [x] (\lambda y.x)* \\
+= &amp; [x] ([y] x) \\
+= &amp; [x] (K x) \\
+= &amp; (S ([x] K) ([x] x)) \\
+= &amp; S (K K) I 
+\end{align*}
+\]</span></p>
+<p>不相信？可以算算看：</p>
+<p><span class="math display">\[
+\begin{align*}
+&amp; (\lambda x.\lambda y.x)e_1 e_2 \\
+= &amp; (\lambda y.e_1)e_2 \\
+= &amp; e_1
+\end{align*}
+\]</span></p>
+<p><span class="math display">\[
+\begin{align*}
+&amp; (S(KK)I)e_1 e_2 \\
+= &amp; (KKe_1)(Ie_1)e_2 \\
+= &amp; Ke_1e_2 \\
+= &amp; e_1
+\end{align*}
+\]</span></p>
+<p>组合子和直觉逻辑的联系：组合子K和S分别对应着命题逻辑里的两条公理：</p>
+<p><span class="math display">\[
+AK: A \to (B \to A) \\
+AS: (A \to (B \to C)) \to ((A \to B) \to (A \to C))
+\]</span></p>
+<p>函数应用则对应着肯定前件：</p>
+<p><span class="math display">\[
+MP: A \to B, A \vdash B
+\]</span></p>
+<p>在Curry-Howard同构层面，AK、AS和MP对于直觉逻辑的蕴含片段是完备的，但对于经典逻辑的蕴含片段需要组合子逻辑模拟排中律（比如皮尔士定律）。后面会有更多关于数理逻辑的介绍，这里就不多说了。</p>
+<h3 id="编码λ演算">编码λ演算</h3>
+<p>纯λ演算只有函数，用纯函数写程序绝对不是啥开心的事儿，为了方便，我们可以编码一些对象，比如布尔值和整数，怎么用函数“实现”对象呢，这里的实现其实是一种约定，比如某个函数就代表整数2，以后遇到这个函数就知道他是整数2了，这种约定就是编码，编码并没有什么神奇的，神奇的在于，当我们合理的编码，比如说整数后，我们就能实现真正的加法、乘法等算数运算了。</p>
+<h4 id="booleans">Booleans</h4>
+<p>为了实现常见的逻辑操作，比如<code>if</code>、<code>NOT</code>和<code>AND</code>，我们首先要定义布尔值，也就是<code>true</code>和<code>false</code>：</p>
+<p><span class="math display">\[
+\begin{align*}
+true &amp; \triangleq \lambda x.\lambda y.x \\
+false &amp; \triangleq \lambda x.\lambda y.y
+\end{align*}
+\]</span></p>
+<p><code>true</code>和<code>false</code>都是接受两个参数的函数，<code>true</code>返回第一个参数，<code>false</code>则返回第二个，至于为什么，这就是我们的编码，它就是这样定义的，神奇的是，有了这个我们就能定义逻辑运算了，比如当我们要定义如下的if函数：</p>
+<p><span class="math display">\[
+\lambda b.\lambda t.\lambda f.if\;b = \text {true  then t else f}.
+\]</span></p>
+<p>有了<code>true</code>和<code>false</code>，写<code>if</code>就变得很简单：</p>
+<p><span class="math display">\[
+if \triangleq \lambda b.\lambda t .\lambda f.b\;t\;f
+\]</span></p>
+<p>很显然，根据定义，当<code>b</code>为<code>true</code>时就取第一个参数–<code>t</code>，当<code>b</code>为<code>false</code>时就取第二个参数–<code>f</code>，符合<code>if</code>的需求。以此类推，其他的逻辑运算也可以很简单的定义出来：</p>
+<p><span class="math display">\[
+\begin{align*}
+not &amp; \triangleq \lambda b.b \; \text{false true} \\
+and &amp; \triangleq \lambda b_1.\lambda b_2.b_1\;b_2 \; \text{false} \\
+or &amp; \triangleq \lambda b_1.\lambda b_2.b_1 \; \text{true} \; b_2
+\end{align*}
+\]</span></p>
+<h4 id="church-numerals">Church numerals</h4>
+<p>丘奇数是一种编码整数的方法，在丘奇数里，整数就是一个接受两个参数–f和x的函数，其中把整数n表示为x在f应用了n次的函数：</p>
+<p><span class="math display">\[
+\begin{align*}
+\overline 0 &amp; \triangleq \lambda f.\lambda x.x \\
+\overline 1 &amp; \triangleq \lambda f.\lambda x.f\;x \\
+\overline 2 &amp; \triangleq \lambda f.\lambda x.f(f\;x) \\
+succ &amp; \triangleq \lambda n.\lambda f.\lambda x.f(n\;f\;x)
+\end{align*}
+\]</span></p>
+<p>其中的<code>succ</code>函数其实很好理解，它接受另一个丘奇数n作为参数，首先表达式<span class="math inline">\(n\;f\;x\)</span>把x应用到f上n次，然后把结果再应用到f上一次，也就是总共把x应用到f上n+1次，最终结果也就是丘奇数n+1，没错，<code>succ</code>函数的作用就是给丘奇数加1。定义了<code>succ</code>函数，加法也就很好定义了，m+n就是在n上应用m次<code>succ</code>函数的结果：</p>
+<p><span class="math display">\[
+plus \triangleq \lambda m.\lambda n.m\;\text{succ}\;n
+\]</span></p>
+<p>比如1 + 2：</p>
+<p><span class="math display">\[
+\begin{align*}
+&amp; 1 + 2 \\
+\to &amp; (\lambda m.\lambda n.m\;\text{succ}\;n)\overline 1\;\overline 2 \\
+\to &amp; \overline 1 \; succ \; \overline 2 \\
+\to &amp; (\lambda f.\lambda x.f\;x)succ(\lambda f.\lambda x.f(f\;x)) \\
+\to &amp; (\lambda n.\lambda f.\lambda x.f(n\;f\;x))(\lambda f.\lambda x.f(f\;x)) \\
+\to &amp; \lambda f.\lambda x.f((\lambda f.\lambda x.f(f\;x))f\;x) \\
+\to &amp; \lambda f.\lambda x.f(f(f\;x)) \\
+\to &amp; \overline 3
+\end{align*}
+\]</span></p>
+<p>这种利用<code>succ</code>函数的加法定义其实挺显而易见的，它把m的f变成了<code>succ</code>、x变成了n，最后的结果肯定是(succ(succ(succ…n))…))的样式，而且<code>succ</code>的个数是m个，那自然结果就是m+n啦。如果不借助<code>succ</code>函数，加法的定义是这样的：</p>
+<p><span class="math display">\[
+plus&#39; \triangleq \lambda m.\lambda n.\lambda f.\lambda x.m\;f(n\;f\;x)
+\]</span></p>
+<p>乍一看，这什么鬼啊，算起来好麻烦，但借助一点小小的变换，理解起来就很简单了。首先所有的丘奇数都是用f应用到x上多少次所表示出的–(f(f(f…x))…))，也就是f的N次幂，可以把丘奇数n简单的看成<span class="math inline">\(f^N\)</span>，再看上面<code>plus'</code>的定义：</p>
+<p><span class="math display">\[((m\;f)((n\;f)x)\]</span></p>
+<p>其中m和n都是丘奇数，上面说了丘奇数可以看成求f的N次幂的函数，于是就变成了：</p>
+<p><span class="math display">\[(f^m(f^n\;x))\]</span></p>
+<p>剩下的就简单了，在x上应用了n次f然后又应用了m次f，结果自然是：</p>
+<p><span class="math display">\[(f^{m+n}x)\]</span></p>
+<p>于是结果就是m+n了，用数学的方式表示就是：</p>
+<p><span class="math display">\[
+f^{m+n}(x) = f^m(f^n(x))
+\]</span></p>
+<p>这么一想，上面的<code>plus'</code>的定义也就显而易见了，如果你理解了<code>plus'</code>，那下面的乘法定义也就不需要更多的解释了，乘法用到了恒等式<span class="math inline">\(f^{(m*n)} = (f^m)^n\)</span>：</p>
+<p><span class="math display">\[
+times \triangleq \lambda m.\lambda n.\lambda f.n(m\;f)
+\]</span></p>
+<h2 id="用λ演算编程">用λ演算编程</h2>
+<h3 id="不会终止的程序">不会终止的程序</h3>
+<p>在用LC写程序时，要注意有可能你的程序永远不会终止。正如下面所示，这是一个永远不会终止的程序，我们叫它<code>omega</code>：</p>
+<p><span class="math display">\[
+\begin{align*}
+omega &amp;  = (\lambda x.x\;x)(\lambda x.x\;x) \\
+&amp; \to (\lambda x.x\;x)(\lambda x.x\;x) \\
+&amp; = omega
+\end{align*}
+\]</span></p>
+<p><code>omega</code>会求值到自己，永远不会结束。更有意思的是当你把<code>omega</code>当做函数的参数时，程序并不一定是不会终止的。比如这个程序：<span class="math inline">\((\lambda x.(\lambda y.y))omega\)</span>，很显然，终止与否和求值策略有关。当使用CBV求值，我们需要参数先求值到值才应用，但是我们的<code>omega</code>永远求不到一个值，自然程序永远不会终止；如果使用CBN求值，由于可以直接应用参数，马上就得到了结果<span class="math inline">\(\lambda y.y\)</span>，也就是说程序是可以终止的。CBV和CBN都是常见的求值策略，大多数语言用的是CBV，后面还会介call-by-need，也就是按需求值，它和CBN很相似，不到必要时候不求值参数，而且效率更高。</p>
+<h3 id="递归">递归</h3>
+<p>要想写出有用的程序，我们还需要递归，需要一种定义递归程序的方法。没有递归，就写不了下面的阶乘函数：</p>
+<p><span class="math display">\[
+fact \triangleq \lambda n.if(iszero\;n)1(times\;n(fact(pred\;n)))
+\]</span></p>
+<p>为了读起来方便，换了如下的写法，这个写法已经和很多真正的程序语言写法差不多了：</p>
+<p><span class="math display">\[
+fact \triangleq \lambda n.if\;n=0\;then\;1\;else\;n\times fact(n-1)
+\]</span></p>
+<p><code>fact</code>只是等式右边的缩写，但这里<code>fact</code>定义显然是不合理的，<code>fact</code>在右边也出现了啊，这不是个定义，而是个递归等式，想起了Part 1讲的Kleen不动点了吗？同样我们需要一个在LC里处理递归等式的方法。那怎么才能在所有函数都是匿名函数的LC中实现递归呢，怎么才能让一个没有名字的函数调用自己呢？</p>
+<p>一种巧妙的方法是定义一个函数<code>fact'</code>，<code>fact</code>不是出现在右边了吗，那就在<code>fact</code>外再包一层λ，把自己当成参数传进去：</p>
+<p><span class="math display">\[
+fact&#39; \triangleq \lambda f.\lambda n.if\;n=0\;then\;1\;else\;n\times(f f(n -1))
+\]</span></p>
+<p>这里的<span class="math inline">\(ff(n-1)\)</span>中<span class="math inline">\(f\)</span>其实是<code>fact'</code>。注意与<code>fact</code>不同，在调用<code>fact'</code>时，不是直接<span class="math inline">\(fact&#39;(n-1)\)</span>，还要传入<code>fact'</code>自身（看到这里递归的思想了吗）。下面是利用<code>fact'</code>定义出的<code>fact</code>：</p>
+<p><span class="math display">\[
+fact \triangleq fact&#39; fact&#39;
+\]</span></p>
+<p>不相信？那举个例子：</p>
+<p><span class="math display">\[
+\begin{align*}
+fact \; 3 &amp; = (fact&#39; fact&#39;)3 \\
+&amp; = (\lambda f.\lambda n.if\;n=0\;then\;1\;else\;n\times(f f(n -1)) fact&#39;)3 \\
+&amp; \to (\lambda n.if\;n=0\;then\;1\;else\;n\times(fact&#39; fact&#39;(n -1)))3 \\
+&amp; \to if\;3=0\;then\;1\;else\;3\times(fact&#39; fact&#39;(3-1)) \\
+&amp; \to 3\times (fact&#39; fact&#39;(3-1)) \\
+&amp; \to \cdots \\
+&amp; \to 3 \times 2 \times 1 \times 1 \\
+&amp; \to^* 6 
+\end{align*}
+\]</span></p>
+<p>神奇吧，if的判断确保了这里并不会无限递归。总结下来，我们有了一个定义递归函数<span class="math inline">\(f\)</span>的技巧：写一个接受自己作为参数的<span class="math inline">\(f&#39;\)</span>，然后<span class="math inline">\(f\)</span>就是<span class="math inline">\(f\triangleq f&#39; f&#39;\)</span>。</p>
+<p>如果上面的方法难以理解的话，那还有一种方法，如果你还记得Part 1中指称语义中定义<code>while</code>的方法的话，那这种方法跟它差不多，没错，就是利用不动点，函数没有名字那就利用高阶函数算出“自己”：把函数表示成一个高阶函数的不动点，这个不动点就是我们想要的函数。比如下面函数G的不动点就是我们想要的<code>fact</code>函数：</p>
+<p><span class="math display">\[
+G \triangleq \lambda f.\lambda n.if\;n=0\;then\;1\;else\;n\times(f(n-1))
+\]</span></p>
+<p>还记得什么是不动点吗？如果g是G的不动点，那就有<span class="math inline">\(G\;g=g\)</span>，也就是说如果有求G不动点的方法，那就可以定义<code>fact</code>了。幸运的是，有很多种可以用来求不动点的组合子，其中最著名的要数Haskell Curry发现的Y组合子了（著名的创业孵化器公司Y Combinator就是以此命名的）：</p>
+<p><span class="math display">\[
+Y \triangleq \lambda f.(\lambda x.f(x\;x))(\lambda x.f(x\;x)).
+\]</span></p>
+<p>尽管Y组合子是最出名的不动点组合子，它有一个很大的问题：Y组合子只能在non-strict的规约策略下使用，否则会发散（diverge）。如下所示，在CBV规则下，会无限递归：</p>
+<p><span class="math display">\[
+\begin{align*}
+&amp; fact \\
+= &amp; Y G \\
+= &amp; (\lambda f.(\lambda x.f(x\;x))(\lambda x.f(x\;x)))G \\
+\to &amp; (\lambda x.G(x\;x))(\lambda x.G(x\;x)) \\
+\to &amp; G((\lambda x.G(x\;x))(\lambda x.G(x\;x))) \\
+\to &amp; G(G((\lambda x.G(x\;x))(\lambda x.G(x\;x)))) \\
+\to &amp; \cdots
+\end{align*}
+\]</span></p>
+<p>为了解决这个问题，我们需要把表达式包装一下以延迟计算（看到惰性求值的思想了吗？后面会详细介绍），包装后的组合子就是Z组合子，也称作CBV Y组合子：</p>
+<p><span class="math display">\[
+Z \triangleq \lambda f.(\lambda x.f(\lambda y.x\;x\;y))(\lambda x.f(\lambda y.x\;x\;y))
+\]</span></p>
+<p>下面是用Z组合子求fact的过程，注意其中是如何利用<span class="math inline">\(\lambda y\)</span>包住(x x)以延迟计算的：</p>
+<p><span class="math display">\[
+\begin{align*}
+&amp; fact \\
+= &amp; Z\;G \\
+= &amp; (\lambda f.(\lambda x.f(\lambda y.x\;x\;y))(\lambda x.f(\lambda y.x\;x\;y)))G \\
+\to &amp; (\lambda x.G(\lambda y.x\;x\;y))(\lambda x.G(\lambda y.x\;x\;y)) \\
+\to &amp; G(\lambda y.(\lambda x.G(\lambda y.x\;x\;y))(\lambda x.G(\lambda y.x\;x\;y)) y) \\
+= &amp; (\lambda f.\lambda n.if\;n=0\;then\;1\;else\;n\times(f(n-1))) \\
+&amp; \quad (\lambda y.(\lambda x.G(\lambda y.x\;x\;y))(\lambda x.G(\lambda y.x\;x\;y)) y) \\
+\to &amp; \lambda n.if\;n=0\;then\;1\;else\;n\times((\lambda y.(\lambda x.G(\lambda y.x\;x\;y))(\lambda x.G(\lambda y.x\;x\;y)) y)(n-1)) \\
+=_\beta &amp; \lambda n.if\;n=0\;then\;1\;else\;n\times(\lambda y.(Z\;G)y)(n-1) \\
+=_\beta &amp; \lambda n.if\;n=0\;then\;1\;else\;n\times(Z\;G(n-1)) \\
+= &amp; \lambda n.if\;n=0\;then\;1\;else\;n\times(fact(n-1))
+\end{align*}
+\]</span></p>
+<p>下面是另一个特别有趣的不动点组合子：</p>
+<p><span class="math display">\[
+Y_k \triangleq (L L L L L L L L L L L L L L L L L L L L L L L L L L) \\
+L \triangleq \lambda abcdefghijklmnopqstuvwxyzr. (r (t h i s i s a f i x e d p o i n t c o m b i n a t o r))
+\]</span></p>
+<p>像这样的组合子有很多，实际上是无穷多的，鉴于有无穷多的不动点组合子，为了更好的理解，我们还是看看最初Alan Turing发现的不动点组合子吧。假设我们有一个高阶函数<span class="math inline">\(f\)</span>，要算<span class="math inline">\(f\)</span>的不动点，首先假设<span class="math inline">\(\Theta f\)</span>是<span class="math inline">\(f\)</span>的不动点，于是根据不动点的定义有：</p>
+<p><span class="math display">\[
+\Theta f = f(\Theta f)
+\]</span></p>
+<p>把左边的<span class="math inline">\(f\)</span>当成右边的参数变化一下：</p>
+<p><span class="math display">\[
+\Theta = \lambda f.f(\Theta f)
+\]</span></p>
+<p>现在再利用我们上面学到的第一个定义递归函数的技巧，定义<span class="math inline">\(\Theta&#39; = \lambda t.\lambda f.f(t\;t\;f)\)</span>，于是就得到：</p>
+<p><span class="math display">\[
+\begin{align*}
+\Theta &amp; = \Theta&#39;\Theta&#39; \\
+&amp; = (\lambda t.\lambda f.f(t\;t\;f))\Theta&#39; \\
+&amp; \to \lambda f.f(\Theta&#39;\Theta&#39;f) \\
+&amp; = \lambda f.f(\Theta f)
+\end{align*}
+\]</span></p>
+<p>Ok，现在让我们试试它对不对，同样，CBV是不行的，这次我们用直接用CBN规则了：</p>
+<p><span class="math display">\[
+\begin{align*}
+fact &amp; = \Theta \; G \\
+&amp; = ((\lambda t.\lambda f.f(t\;t\;f))(\lambda t.\lambda f.f(t\;t\;f)))G \\
+&amp; \to (\lambda f.f((\lambda t.\lambda f.f(t\;t\;f))(\lambda t.\lambda f.f(t\;t\;f)) f)) G \\
+&amp; \to G((\lambda t.\lambda f.f(t\;t\;f))(\lambda t.\lambda f.f(t\;t\;f))G) \\
+&amp; = G(\Theta \; G) \\
+&amp; = (\lambda f.\lambda n.if\;n=0\;then\;1\;else\;n\times(f(n-1)))(\Theta \; G) \\
+&amp; \to \lambda n.if\;n=0\;then\;1\;else\;n\times((\Theta \; G)(n-1)) \\
+&amp; = \lambda n.if\;n=0\;then\;1\;else\;n\times(fact(n-1))
+\end{align*}
+\]</span></p>
+<p>完美。</p>
+<p>虽然我们这里讲了这么多怎么在λ演算里实现递归，但其实在实现真正的程序语言时是不会利用到Y或者Z组合子的，不动点组合子的意义在于展示在无类型λ演算中，递归（满足fix f = f (fix f)的fix）可以用纯λ演算自身来实现，而不需要扩充λ演算的定义。如果你要问为何不直接扩充λ演算，你需要看看<a href="https://en.wikipedia.org/wiki/Occam%27s_razor" target="_blank" rel="noopener">奥卡姆剃刀</a>：如无必要，勿增实体。</p>
+<h2 id="definitional-translation">Definitional translation</h2>
+<p>我们已经看到了如何在λ演算里编码出高级语言中才有的结构（布尔值、条件语句、自然数和递归），但这些结构都还是数学函数，并不是人们熟悉的程序语言，是时候看看Definational translation了（后面用DT代替）：通过把当前语言翻译成另外一种语言来定义语言的意思。这是一种指称语义的手法，但翻译的结果并不像指称语义那样还是数学函数，而是一个简单的程序语言。注意DT并不会生成更简洁或者更高效的代码，它的作用只是用目标语言来描述当前语言的意思。</p>
+<p>对每个语言结构，我们都会定义一个对应的操作语义，然后利用DT翻译成一个简单的语言。不过首先要介绍的是求值上下文（evaluation contexts），它会帮助我们简便的定义新语言特性。</p>
+<h3 id="evaluation-contexts">Evaluation contexts</h3>
+<p>让我们回忆一下λ演算的CBV操作语义：</p>
+<p><span class="math display">\[
+\begin{align*}
+e &amp; ::= x\;|\;\lambda x.e\;|\;e_1\;e_2 \\
+v &amp; ::= \lambda x.e
+\end{align*}
+\]</span></p>
+<p><span class="math display">\[
+\frac{e_1\to e_1&#39;}{e_1 e_2\to e_1&#39;e_2} \quad \frac{e\to e&#39;}{v\;e\to v\;e&#39;} \quad {\bf{\beta}\scriptsize{-REDUCTION}} \frac{}{(\lambda x.e)v\to e\{v/x\}}
+\]</span></p>
+<p>这三个规则中只有<span class="math inline">\(\beta\)</span>规约在干“实事”：规约化简一个表达式，其它两个只是告诉我们求值的顺序：先把第一个参数规约成值，再把第二参数规约成值。大多数的语言都有上述特性：一种规则（congruence rule）定义求值的顺序，另一种规则（computation rule）定义真正的规约计算。</p>
+<p>利用求值上下文我们就能方便的区分这两种规则。我们用<span class="math inline">\(E[\cdot]\)</span>表示一个求值上下文，其中的点表示一个待填充的洞，以后会填进其它的表达式。跟我们上面CBV λ演算的定义一样，求值上下文也可以用BNF来表示：</p>
+<p><span class="math display">\[
+E ::= [\cdot]\;|\;E\;e\;|\;v\;E
+\]</span></p>
+<p>上面就是CBV λ演算的求值上下文定义。当一个求值上下文E的洞被表达式e填充过都后就写成<span class="math inline">\(E[e]\)</span>：</p>
+<p><span class="math display">\[
+\begin{align*}
+E_1 &amp;=[\cdot](\lambda x.x) \qquad \qquad &amp; E_1[\lambda y.y\;y]=(\lambda y.y\;y)\lambda x.x \\
+E_2 &amp;=(\lambda z.z\;z)[\cdot] &amp; E_2[\lambda x.\lambda y.x]=(\lambda z.z\;z)(\lambda x.\lambda y.x) \\
+\end{align*}
+\]</span></p>
+<p>有了求值上下文，上面的CBV λ演算只需两条规则就能定义了：</p>
+<p><span class="math display">\[
+\frac{e\to e&#39;}{E[e]\to E[e&#39;]} \qquad {\bf{\beta}\scriptsize{-REDUCTION}} \frac{}{(\lambda x.e)v\to e\{v/x\}}
+\]</span></p>
+<p>注意上面的第一个规则是怎么利用E的定义巧妙的实现和CBV一样的求值顺序的。理解了CBV，那实现CBN也很简单了：</p>
+<p><span class="math display">\[
+E ::= [\cdot]\;|\;E\;e \qquad \frac{e\to e&#39;}{E[e]\to E[e&#39;]} \qquad {\bf{\beta}\scriptsize{-REDUCTION}} \frac{}{(\lambda x.e_1)e_2\to e_1\{e_2/x\}}
+\]</span></p>
+<p>求值上下文的好处远远不止这些，下面会构造一些更复杂的语言结构。</p>
+<h3 id="多参函数和柯里化">多参函数和柯里化</h3>
+<p>λ演算中的函数只允许一个参数，利用求值上下文我们可以方便的定义一个支持多参函数的语言：</p>
+<p><span class="math display">\[
+e ::= x\;|\;\lambda x_1,...,x_n.e\;|\;e_0\;e_1\;...\;e_n
+\]</span></p>
+<p>多参λ演算的CBV语义如下：</p>
+<p><span class="math display">\[
+E ::= [\cdots]\;|\;v_0 ... v_{i-1}\;E\;e_{i+1}...e_n \qquad \frac{e\to e&#39;}{E[e]\to E[e&#39;]} \\
+{\bf{\beta}\scriptsize{-REDUCTION}}  \frac{}{(\lambda x_1,...,x_n.e_0)v_1...v_n\to e_0\{v_1/x_1\}\{v_2/x_2\}...\{v_n/x_n\}}
+\]</span></p>
+<p>E保证了先把<span class="math inline">\(e_0\;e_1\;...\;e_n\)</span>从左至右依次求值为value从而实现CBV。注意这种多参λ演算和纯λ演算其实是一样的，多参λ演算并不比纯λ演算高到哪里去。为了展示它们是一样的，这里定义了一个函数<span class="math inline">\(T[\cdot]\)</span>，它的作用就是把多参λ演算转换成纯λ演算：</p>
+<p><span class="math display">\[
+\begin{align*}
+T[x] &amp; = x \\
+T[\lambda x_1,...,x_n.e] &amp; = \lambda x_1...\lambda x_n.T[e] \\
+T[e_0\;e_1\;e_2\;...\;e_n] &amp; = (...((T[e_0]T[e_1])T[e_2])...T[e_n])
+\end{align*}
+\]</span></p>
+<p>这种把多参函数转换为单参函数调用链的技术就是柯里化（curring）。想象一个接受两个参数的函数，第一个参数定义域为A，第二个参数定义域为B，最后返回定义域C中的某个结果，用数学的方式表示就是<span class="math inline">\(A\times B \to C\)</span>，这个函数经过柯里化之后是<span class="math inline">\(A\to (B \to C)\)</span>，也就是接受A后返回一个函数，此函数接受B返回C。</p>
+<p>这些对DT来说都是小儿科，是时候扩展λ演算展示下DT真正的实力了。</p>
+<h3 id="products-let">Products 、let</h3>
+<p>下面是我们加入<code>product</code>和<code>let</code>之后的λ演算：</p>
+<p><span class="math display">\[
+\begin{align*}
+e &amp; ::=x\;|\;\lambda x.e\;|\;e_1\;e_2 \\
+  &amp; |\;(e_1,e_2)\;|\;fst\;e\;|\;snd\;e \\
+  &amp; |\;let\;x=e_1\;in\;e_2 \\
+v &amp; ::= \lambda x.e\;|\;(v_1,v_2)
+\end{align*}
+\]</span></p>
+<p>扩展后的λ演算包含</p>
+<ul>
+<li><strong>product</strong>：一对表达式就是一个<code>product</code>，如，如<span class="math inline">\((e_1,e_2)\)</span>，当<span class="math inline">\(e_1\)</span>和<span class="math inline">\(e_2\)</span>都是值的时候，<code>product</code>才是一个值；我们可以用<code>fst</code>运算符获取第一个元素，用<code>snd</code>获取第二个，如<span class="math inline">\(fst\;(v_1,v_2)\to v_1\)</span>。</li>
+<li><strong>let</strong>，<code>let</code>把<span class="math inline">\(e_2\)</span>中所有的x当成<span class="math inline">\(e_1\)</span>，也就是和<span class="math inline">\((\lambda x.e_2)e_1\)</span>是等价的。</li>
+</ul>
+<p>利用求值上下文我们可以写出上述语言的small-step CBV操作语义：</p>
+<p><span class="math display">\[
+E ::= [\cdot]\;|\;E\;e\;|\;v\;E\;|\;(E,e)\;|\;\;(v,E)\;|\;fst\;E\;|\;snd\;E|\;let\;x=E\;in\;e_2 \\
+\frac{e\to e&#39;}{E[e]\to E[e&#39;]} \qquad \qquad {\bf{\beta}\scriptsize{-REDUCTION}} \frac{}{(\lambda x.e)v \to e\{v/x\}} \\ \\
+\frac{}{fst\;(v_1,v_2)\to v_1} \qquad \qquad \qquad \frac{}{snd\;(v_1,v_2)\to v_2} \\ \\
+\frac{}{let\;x=v\;in\;e\to e\{v/x\}}
+\]</span></p>
+<p>最后只需要翻译成纯λ演算就行了：</p>
+<p><span class="math display">\[
+\begin{align*}
+T[x] &amp; = x \\
+T[\lambda x.e] &amp; = \lambda x.T[e] \\
+T[e_1\;e_2] &amp; = T[e_1]T[e_2] \\
+T[(e_1,e_2)] &amp; = (\lambda x.\lambda y.\lambda f.f\;x\;y)T[e_1]T[e_2] \\
+T[fst\;e] &amp; = T[e](\lambda x.\lambda y.x) \\
+T[snd\;e] &amp; = T[e](\lambda x.\lambda y.y) \\
+T[let\;x=e_1\;in\;e_2] &amp; = (\lambda x.T[e_2])T[e_1]
+\end{align*}
+\]</span></p>
+<h3 id="laziness">Laziness</h3>
+<p>我们定义过了λ演算的CBV语义的CBN语义：CBV中参数在应用时必须是值，CBN中参数随时可以应用，两种是截然不同的语义，有些程序在CBV中不会终止，而在CBN中可以终止。但其实，CBV是可以从CBN翻译得到的：在参数上包一层函数以延迟计算。这种在计算上包函数来延迟求值的方法叫做<code>thunk</code>：</p>
+<p><span class="math display">\[
+\begin{align*}
+T[x] &amp; = x(\lambda y.y) \\
+T[\lambda x.e] &amp; = \lambda x.T[e] \\
+T[e_1\;e_2] &amp; = T[e_1](\lambda z.T[e_2])  \quad \text{其中z不是} e_2 \text{的自由变量}
+\end{align*}
+\]</span></p>
+<p>所有的参数都变成了<code>thunk</code>，用的时候应用thunk就可以得到真正的参数了，thunk的参数并不重要，因为并不会用到它。</p>
+<h3 id="references">References</h3>
+<p>像引用这种可以在内存创建、读、写的高级概念利用DT也能实现，而且最终的语言依然是函数式的，但表达式就会有副作了–因为可以改变程序状态。此语言的定义如下：</p>
+<p><span class="math display">\[
+\begin{align*}
+e &amp; ::= x\;|\;\lambda x.e\;|\;e_0\;e_1\;|\;ref\;e\;|\;!e\;|\;e_1:=e_2\;|\;\ell \\
+v &amp; ::= \lambda x.e\;|\;\ell
+\end{align*}
+\]</span></p>
+<p><code>ref e</code>像<code>malloc</code>一样创建一个新的内存区域，并初始化区域内容为<code>e</code>的结果，<code>ref e</code>表达式本身求值的结果是内存地址<span class="math inline">\(\ell\)</span>，<span class="math inline">\(\ell\)</span>像指针一样指向创建的内存区域；<code>!e</code>把<code>e</code>当做内存地址，求值的结果为地址所保存的内容；<span class="math inline">\(e_1:=e_2\)</span>把<span class="math inline">\(e_1\)</span>当做内存地址<span class="math inline">\(\ell\)</span>，并把<span class="math inline">\(\ell\)</span>的内容更新为<span class="math inline">\(e_2\)</span>的结果。注意程序员并不会直接使用<span class="math inline">\(\ell\)</span>，它只是语言操作语义中的东西。这个带引用类型的语言的small-step CBV操作语义如下，其中配置<span class="math inline">\(\langle\sigma,e\rangle\)</span>中<code>e</code>是表达式，<span class="math inline">\(\sigma\)</span>是地址到值得映射。：</p>
+<p><span class="math display">\[
+E ::= [\cdot]\;|\;E\;e\;|\;v\;E\;|\;ref\;E\;|\;!E\;|\;E:=e\;|\;v:=E \quad \frac{\langle\sigma,e\rangle\to\langle\sigma&#39;,e&#39;\rangle}{\langle\sigma,E[e]\rangle\to\langle\sigma&#39;,E[e&#39;]\rangle} \\ \\
+{\bf{\beta}\scriptsize{-REDUCTION}} \frac{}{\langle\sigma,(\lambda x.e)v\rangle\to\langle\sigma,e\{v/x\}\rangle} \quad {\bf{A}\scriptsize{LLOC}} \frac{}{\langle\sigma,ref\;v\rangle\to\langle\sigma[\ell\mapsto v],\ell\rangle}\ell\notin dom(\sigma) \\ \\ 
+{\bf{D}\scriptsize{EREF}} \frac{}{\langle\sigma,!\ell\rangle\to\langle\sigma,v\rangle}\sigma(\ell)=v \qquad \qquad {\bf{A}\scriptsize{SSIGN}} \frac{}{\langle\sigma,\ell:=v\rangle\to\langle\sigma[\ell\mapsto v],v\rangle}
+\]</span></p>
+<p>这个新语言并不比λ演算高到哪里去，它也能翻译成λ演算，不过很麻烦就是了。</p>
+<h2 id="continuations">Continuations</h2>
+<p>前面的翻译中，源语言的控制结构直接翻译成了目标语言额结构，比如：</p>
+<p><span class="math display">\[
+\begin{align*}
+T[\lambda x.e] &amp; = \lambda x.T[e] \\
+T[e_1\;e_2] &amp; = T[e_1]T[e_2]
+\end{align*}
+\]</span></p>
+<p>当目标语言的控制结构和源语言很相似的时候，这种翻译还是够用的，但当两者有较大区别时（比如<code>goto</code>命令），就需要借助其它东西了–Continuation。Continuation是个很重要的编程技巧，因为它能让程序的控制流变成明确的东西。Continuation还可以用来定义复杂的控制结构，比如异常处理、goto。一般来说，一个continuation代表着“剩下的程序”，虽然“剩下的程序”在命令式语言中很显而易见（因为是一句一句statement组成的，剩下的程序就是剩下的statement），但在函数式语言中就不一样了，因为不能写出<span class="math inline">\(fun1();fun2()\)</span>这种代码。举个例子，给定下面的代码：</p>
+<p><span class="math display">\[
+\text {if foo &lt; 10 then 32 + 6 else 7 + bar}
+\]</span></p>
+<p>在求值<code>if</code>语句之前要先求值<code>foo &lt; 10</code>，求值<code>if</code>语句已经之后发生的事情就是<code>foo &lt; 10</code>的continuation，我们可以这样表示：</p>
+<p><span class="math display">\[
+(\lambda y.\text{if y then 32 + 6 else 7 + bar)(foo &lt; 10)}
+\]</span></p>
+<p>虽然这和原本的表达式是等价的，但这里的控制流更明显了，表达出了先求值<span class="math inline">\(foo &lt; 10\)</span>这个需求，这一点其实是很重要的，因为在函数式程序里，控制流是隐藏起来的。再举个例子：</p>
+<p><span class="math display">\[
+(\lambda x.x)((1+2)+3)+4
+\]</span></p>
+<p>首先，最外层的求值结果是一个<code>value</code>，也就是说它的continuation如下：</p>
+<p><span class="math display">\[
+k_0 = \lambda v.(\lambda x.x)v
+\]</span></p>
+<p>下一层接受一个值，然后把它加4，并把结果传给<span class="math inline">\(k_0\)</span>：</p>
+<p><span class="math display">\[
+k_1 = \lambda a.k_0(a+4)
+\]</span></p>
+<p>以此类推：</p>
+<p><span class="math display">\[
+k_2 = \lambda b.k_1(b+3) \\
+k_3 = \lambda c.k_2(c+2) 
+\]</span></p>
+<p>最后程序就是<span class="math inline">\(k_3 1\)</span>，又因为<span class="math inline">\(let x=e\;in\;e&#39;\)</span>语法糖和<span class="math inline">\(\lambda x.e&#39;)e\)</span>是等价的：</p>
+<p><span class="math display">\[
+\begin{align*}
+&amp; let\;c = 1\;in \\
+&amp; let\;b = 2\;in \\
+&amp; let\;a = 3\;in \\
+&amp; let\;v = a + 4\;in \\
+&amp; (\lambda x.x)v
+\end{align*}
+\]</span></p>
+<p>这就和机器指令很像了：</p>
+<p><span class="math display">\[
+\begin{align*}
+&amp; set\;c,1 \\
+&amp; set\;b,c,2 \\
+&amp; set\;a,b,3 \\
+&amp; set\;v,a,4 \\
+&amp; call\;id,v
+\end{align*}
+\]</span></p>
+<p>利用这些continuation，函数都变成“没有返回值”，并在原本的参数之上又加了个参数用来表示continuation。当函数结束时，会调用continuation并把结果当成参数传给continuation，而不是直接把结果返回给调用者，这种风格的代码通常叫做Continuation-Passing Style，简写是CPS。举个例子，下面是CPS风格的阶乘函数：</p>
+<p><span class="math display">\[
+FACT_{cps} = Y\;\lambda f.\lambda n,k.if\;n=0\;then\;k\;1\;else\;f(n-1)(\lambda v.k(n*v))
+\]</span></p>
+<p>其中k是continuation，因为用到了Y组合子，可能不容易理解，下面是Haskell实现：</p>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="title">fac</span> :: <span class="type">Int</span> -&gt; <span class="type">Int</span></div><div class="line"><span class="title">fac</span> <span class="number">0</span> = <span class="number">1</span></div><div class="line"><span class="title">fac</span> n = n * fac (n <span class="number">-1</span>)</div><div class="line"></div><div class="line"><span class="title">facCPS</span> :: <span class="type">Int</span> -&gt; (<span class="type">Int</span> -&gt; a) -&gt; a</div><div class="line"><span class="title">facCPS</span> <span class="number">0</span> k = k <span class="number">1</span></div><div class="line"><span class="title">facCPS</span> n k = facCPS (n<span class="number">-1</span>) $</div><div class="line">  \res -&gt; k $ n * res</div><div class="line"></div><div class="line"><span class="title">print</span> $ fac <span class="number">6</span>                                       <span class="comment">-- 720</span></div><div class="line"><span class="title">print</span> $ facCPS <span class="number">6</span> id                                 <span class="comment">-- 720</span></div><div class="line"><span class="title">print</span> $ fmap ((*<span class="number">2</span>) . (+<span class="number">10</span>) . (fac)) [<span class="number">1.</span><span class="number">.3</span>]          <span class="comment">-- [22,24,32]</span></div><div class="line"><span class="title">print</span> $ fmap (flip facCPS ((*<span class="number">2</span>) . (+<span class="number">10</span>))) [<span class="number">1.</span><span class="number">.3</span>]    <span class="comment">-- [22,24,32]</span></div></pre></td></tr></table></figure>
+<p>CPS在实现函数式语言编译器中是很重要的概念，常常被当做编译器IR（参考Part 1对编译器的概述）。正如上面展示的那样，CPS让控制结构变明显，其最终形式和机器指令很像，非常利于翻译函数到机器码。比如，CPS调用可以翻译成函数jump，因为被调用的函数并不会返回控制。</p>
+<h3 id="cps-λ演算">CPS λ演算</h3>
+<p>我们可以把λ演算翻译成CPS样式，我们要翻译的语言语法如下：</p>
+<p><span class="math display">\[
+e ::= x\;|\;\lambda x.e\;|\;e_1\;e_2\;|\;n\;|\;e_1+e_2\;|\;(e_1,e_2)\;|\;fst\;e\;|\;snd\;e
+\]</span></p>
+<p>首先定义一个<span class="math inline">\(CPS[\cdot]\)</span>函数，它接受一个CBV λ表达式，并返回CPS样式的λ表达式。对所有的表达式<code>e</code>，都有<span class="math inline">\(CPS[e] = \lambda k.\cdots\)</span>，其中<code>k</code>是continuation，<span class="math inline">\(\cdots\)</span>是求值<code>e</code>的结果。并且为了简介，把<span class="math inline">\(CPS[e]=\lambda xk.\cdots\)</span>写成<span class="math inline">\(CPS[e]\;k\)</span>：</p>
+<p><span class="math display">\[
+\begin{align*}
+CPS[n]\;k = &amp; k\;n \\
+CPS[e_1+e_2]\;k = &amp; CPS[e_1](\lambda n.CPS[e_2](\lambda m.k(n+m))) \quad n\text{不是}e_2\text{的自由变量} \\
+CPS[(e_1,e_2)]\;k = &amp; CPS[e_1](\lambda v.CPS[e_2](\lambda w.k(v,w))) \quad v\text{不是}e_2\text{的自由变量} \\
+CPS[fst\;e]\;k = &amp; CPS[e](\lambda v.k(fst\;v)) \\
+CPS[snd\;e]\;k = &amp; CPS[e](\lambda v.k(snd\;v)) \\
+CPS[x]\;k    = &amp; k\;x \\
+CPS[\lambda x.e]\;k = &amp; k (\lambda x.\lambda k&#39;.CPS[e]k&#39;)  \quad k&#39;\text{不是}e_2\text{的自由变量} \\ 
+CPS[e_1\;e_2]\;k = &amp; CPS[e_1](\lambda f.CPS[e_2](\lambda v.f\;v\;k)) \quad f\text{不是}e_2\text{的自由变量}
+\end{align*}
+\]</span></p>
+<p>利用这种翻译，我们可以方便的写出一个简单的λ演算编译器。像这种的例子有很多，如果一个程序语言支持First-class Continuation，那么我们程序员就能写出操作程序控制流的代码，创造出自己的流程结构，这样才是完整掌控了自己的代码。很多“复杂”概念其背后的原理都是CPS，比如异常（exception）、协程（fiber）、生成器（generator）。有了First-class Continuation就像有了时光机，能在代码时空穿梭，随心所欲。</p>
+<h2 id="小结">小结</h2>
+<p>这一章主要讲解了λ演算，准确的说是untyped Lambda Calculus，也就是无类型λ演算，重点介绍了：</p>
+<ul>
+<li>λ演算定义，语法，语义以及求值策略；</li>
+<li>De Bruijn编码、SKI编码以及如何编码高级语言结果（如布尔值和布尔运算、整数和算数运算）；</li>
+<li>如何在λ演算中实现递归；</li>
+<li>如何利用Definitional translation扩展λ演算并构造新语言；</li>
+<li>什么是Continuations以及无敌的CPS；</li>
+</ul>
+<p>下一章就开始介绍类型了，our journey has just begun!</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/PLT/" rel="tag">#PLT</a>
+          
+            <a href="/tags/学习一个/" rel="tag">#学习一个</a>
+          
+            <a href="/tags/Programming-Languages/" rel="tag">#Programming Languages</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/uncategorized/2017-03-23-kotlin-presentation/" rel="next" title="Kotlin: A Brief Introduction">
+                <i class="fa fa-chevron-left"></i> Kotlin: A Brief Introduction
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/posts/LLVM/2017-04-11-emacs-haskell-llvm-together/" rel="prev" title="Emacs、Haskell、LLVM">
+                Emacs、Haskell、LLVM <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/haskell.png"
+               alt="Merlin" />
+          <p class="site-author-name" itemprop="name">Merlin</p>
+          <p class="site-description motion-element" itemprop="description">Denn man hat in der Welt nicht viel mehr, als die Wahl zwischen Einsamkeit und Gemeinheit.</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">14</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/ACEMerlin/" target="_blank" title="GitHub" rel="external nofollow">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#functional-programming-and-lambda-caculus"><span class="nav-number">1.</span> <span class="nav-text">Functional Programming and Lambda Caculus</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lambda-caculus"><span class="nav-number">2.</span> <span class="nav-text">Lambda Caculus</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#λ演算的语法"><span class="nav-number">3.</span> <span class="nav-text">λ演算的语法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#λ演算的语义"><span class="nav-number">4.</span> <span class="nav-text">λ演算的语义</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#call-by-value"><span class="nav-number">4.1.</span> <span class="nav-text">Call-by-value</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#call-by-name"><span class="nav-number">4.2.</span> <span class="nav-text">Call-by-name</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#λ演算的求值策略"><span class="nav-number">5.</span> <span class="nav-text">λ演算的求值策略</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#de-bruijn-combinators-encodings"><span class="nav-number">6.</span> <span class="nav-text">De Bruijn, Combinators, Encodings</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#de-bruijn编码"><span class="nav-number">6.1.</span> <span class="nav-text">de Bruijn编码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#combinators"><span class="nav-number">6.2.</span> <span class="nav-text">Combinators</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编码λ演算"><span class="nav-number">6.3.</span> <span class="nav-text">编码λ演算</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#booleans"><span class="nav-number">6.3.1.</span> <span class="nav-text">Booleans</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#church-numerals"><span class="nav-number">6.3.2.</span> <span class="nav-text">Church numerals</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#用λ演算编程"><span class="nav-number">7.</span> <span class="nav-text">用λ演算编程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#不会终止的程序"><span class="nav-number">7.1.</span> <span class="nav-text">不会终止的程序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#递归"><span class="nav-number">7.2.</span> <span class="nav-text">递归</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#definitional-translation"><span class="nav-number">8.</span> <span class="nav-text">Definitional translation</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#evaluation-contexts"><span class="nav-number">8.1.</span> <span class="nav-text">Evaluation contexts</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多参函数和柯里化"><span class="nav-number">8.2.</span> <span class="nav-text">多参函数和柯里化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#products-let"><span class="nav-number">8.3.</span> <span class="nav-text">Products 、let</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#laziness"><span class="nav-number">8.4.</span> <span class="nav-text">Laziness</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#references"><span class="nav-number">8.5.</span> <span class="nav-text">References</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#continuations"><span class="nav-number">9.</span> <span class="nav-text">Continuations</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#cps-λ演算"><span class="nav-number">9.1.</span> <span class="nav-text">CPS λ演算</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结"><span class="nav-number">10.</span> <span class="nav-text">小结</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Merlin</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io" rel="external nofollow">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" rel="external nofollow">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+
+  
+<script type="text/javascript" async src="//push.zhanzhang.baidu.com/push.js">
+</script>
+
+</body>
+</html>
